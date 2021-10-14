@@ -29,6 +29,11 @@ namespace B_GOpt.Classes
         Vector3d dirY = new Vector3d(0, 1, 0);
         Vector3d dirZ = new Vector3d(0, 0, 1);
 
+
+
+
+
+
         //Methods
         //----------------------------------------------------------------------------------------------------------
 

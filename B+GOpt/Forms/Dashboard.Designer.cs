@@ -63,6 +63,7 @@ namespace B_GOpt.Forms
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.lblSurfaceAreaValue = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -647,6 +648,16 @@ namespace B_GOpt.Forms
             this.lblSurfaceAreaValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblSurfaceAreaValue.Click += new System.EventHandler(this.lblSurfaceAreaValue_Click);
             // 
+            // label1
+            // 
+            this.label1.Font = new System.Drawing.Font("IBM Plex Sans", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label1.Location = new System.Drawing.Point(2, 458);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(135, 26);
+            this.label1.TabIndex = 33;
+            this.label1.Text = "Embodied CO2";
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -654,6 +665,7 @@ namespace B_GOpt.Forms
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
             this.ClientSize = new System.Drawing.Size(527, 641);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.lblSurfaceAreaValue);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
@@ -718,5 +730,6 @@ namespace B_GOpt.Forms
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label lblSurfaceAreaValue;
+        private System.Windows.Forms.Label label1;
     }
 }

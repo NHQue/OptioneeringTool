@@ -47,6 +47,12 @@
     <Reference Include="ComponentFactory.Krypton.Workspace">
       <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Krypton-master\Bin\ComponentFactory.Krypton.Workspace.dll</HintPath>
     </Reference>
+    <Reference Include="Dlubal.RFEM5, Version=5.7.0.0, Culture=neutral, PublicKeyToken=f22b2f92593d105e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>..\..\..\..\..\..\..\..\..\..\Public\Documents\Dlubal\SDK\Reference Assemblies\x86\Dlubal.RFEM5.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RhinoWindows">
@@ -81,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\BuildingGeometry.cs" />
+    <Compile Include="Classes\ExportToDlubal.cs" />
     <Compile Include="Commands\BGOpt_DefaultCommand.cs" />
     <Compile Include="BGOptPlugIn.cs" />
     <Compile Include="Commands\OptPanel.cs" />
