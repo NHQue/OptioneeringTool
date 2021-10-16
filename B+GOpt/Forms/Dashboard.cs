@@ -26,13 +26,19 @@ namespace B_GOpt.Forms
 
         //public string documentName = RhinoDoc.ActiveDoc.Name;
 
-        
 
         public Form2(RhinoDoc doc)
         {
             InitializeComponent();
 
             docform = doc;
+
+            //Displays the chart
+            //chartCO2.Titles.Add("Pie Chart");
+            chartCO2.Series["CO2"].Points.AddXY("1", "33");
+            chartCO2.Series["CO2"].Points.AddXY("2", "34");
+            chartCO2.Series["CO2"].Points.AddXY("3", "33");
+
         }
 
         private void Form2_Load(object sender, EventArgs e)
@@ -44,19 +50,19 @@ namespace B_GOpt.Forms
         private void tbarSpacX_ValueChanged(object sender, EventArgs e)
         {
             float value = tbarSpacX.Value / 100f;
-            lblSpacXValue.Text = value.ToString();
+            lblSpacXValue.Text = value.ToString() + "  m";
         }
 
         private void tbarSpacY_ValueChanged(object sender, EventArgs e)
         {
             float value = tbarSpacY.Value / 100f;
-            lblSpacYValue.Text = value.ToString();
+            lblSpacYValue.Text = value.ToString() + "  m";
         }
 
         private void tbarFloorHeight_ValueChanged(object sender, EventArgs e)
         {
             float value = tbarFloorHeight.Value / 100f;
-            lblFloorHeightValue.Text = value.ToString();
+            lblFloorHeightValue.Text = value.ToString() + "  m";
         }
 
 
@@ -82,7 +88,7 @@ namespace B_GOpt.Forms
 
                 surfaceArea = Math.Round(buildingGeom.SurfaceArea(slabs), 2);
 
-                lblSurfaceAreaValue.Text = surfaceArea.ToString();
+                //lblSurfaceAreaValue.Text = surfaceArea.ToString();
 
                 RhinoApp.WriteLine(surfaceArea.ToString());
 
