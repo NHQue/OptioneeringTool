@@ -123,7 +123,7 @@ namespace B_GOpt.Classes
                     continue;
             }
 
-            doc.Objects.AddBrep(baseSrf);
+            //doc.Objects.AddBrep(baseSrf);
             doc.Views.Redraw();
 
             return baseSrf;
@@ -290,8 +290,6 @@ namespace B_GOpt.Classes
         }
 
 
-
-
         /// <summary>
         /// This method constructs the building's columns
         /// </summary>
@@ -332,7 +330,6 @@ namespace B_GOpt.Classes
                 doc.Objects.AddLine(columns[i]);
             }
             doc.Views.Redraw();
-
 
             return columns;
         }

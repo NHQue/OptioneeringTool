@@ -14,6 +14,7 @@ using System.Runtime.InteropServices;
 using Rhino.Geometry.Collections;
 using System.Windows.Forms;
 using ComponentFactory.Krypton.Toolkit;
+using Rhino.Geometry.Intersect;
 
 namespace B_GOpt
 {
@@ -127,7 +128,6 @@ namespace B_GOpt
             }
 
 
-
             //Calculating the building's geometry
             //----------------------------------------------------------------------------------------------
             List<double> xVals = new List<double> { };
@@ -209,7 +209,7 @@ namespace B_GOpt
         /// </summary>
         /// <param name="selCrv"></param>
         /// <param name="doc"></param>
-        public static void CreateGrid2D(Curve selCrv, RhinoDoc doc)
+        public static void CreateGrid2D(Curve selCrv, double xSpac, double ySpac, double floorHeight, RhinoDoc doc)
         {
             //Creates the Bounding Box
 
@@ -233,8 +233,9 @@ namespace B_GOpt
 
             for (int i = 0; i <= 3; i++)
             {
-                doc.Objects.AddLine(edges[i]);
+                //doc.Objects.AddLine(edges[i]);
             }
+
 
             //Creates a grid for the Bounding Rectangle 
 
@@ -249,11 +250,11 @@ namespace B_GOpt
             edges[2].Flip();
             edges[3].Flip();
 
-            var parX0 = edges[0].ToNurbsCurve().DivideByCount(divNrX, false, out divPtsX0);
-            var ptsX2 = edges[2].ToNurbsCurve().DivideByCount(divNrX, false, out divPtsX2);
+            double[] parX0 = edges[0].ToNurbsCurve().DivideByCount(divNrX, false, out divPtsX0);
+            double[] ptsX2 = edges[2].ToNurbsCurve().DivideByCount(divNrX, false, out divPtsX2);
 
-            var parY1 = edges[1].ToNurbsCurve().DivideByCount(divNrY, false, out divPtsY1);
-            var ptsY3 = edges[3].ToNurbsCurve().DivideByCount(divNrY, false, out divPtsY3);
+            double[] parY1 = edges[1].ToNurbsCurve().DivideByCount(divNrY, false, out divPtsY1);
+            double[] ptsY3 = edges[3].ToNurbsCurve().DivideByCount(divNrY, false, out divPtsY3);
 
             RhinoList<Line> gridLinesX = new RhinoList<Line>();
             RhinoList<Line> gridLinesY = new RhinoList<Line>();
@@ -262,15 +263,197 @@ namespace B_GOpt
             {
                 Line line = new Line(divPtsX0[i], divPtsX2[i]);
                 gridLinesX.Add(line);
-                doc.Objects.AddLine(line);
+                //doc.Objects.AddLine(line);
             }
 
             for (int i = 0; i < divPtsY1.Length; i++)
             {
                 Line line = new Line(divPtsY1[i], divPtsY3[i]);
                 gridLinesY.Add(line);
-                doc.Objects.AddLine(line);
+                //doc.Objects.AddLine(line);
             }
+
+
+
+
+            //Creates the self intersection of the gridlines -> girder grid
+
+            //Basic intersection parameters
+            const double intersection_tolerance = 0.001;
+            const double overlap_tolerance = 0.0;
+
+            RhinoList<Line> intLinesX = new RhinoList<Line>();
+            RhinoList<Line> intLinesY = new RhinoList<Line>();
+
+            for (int i = 0; i < gridLinesX.Count; i++)
+            {
+                NurbsCurve gridCurve = gridLinesX[i].ToNurbsCurve();
+                CurveIntersections intEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(gridCurve, selCrv, intersection_tolerance, overlap_tolerance);
+
+                if (intEvents != null)
+                {
+                    for (int j = 0; j < intEvents.Count - 1; j++)
+                    {
+                        IntersectionEvent ccx_event = intEvents[j];
+                        IntersectionEvent ccy_event = intEvents[j + 1];
+
+                        Line line = new Line(ccx_event.PointA, ccy_event.PointA);
+                        intLinesX.Add(line);
+
+                        doc.Objects.AddLine(line);
+                        //doc.Objects.AddPoint(ccx_event.PointA);
+                    }
+                }
+            }
+
+
+
+            for (int i = 0; i < gridLinesY.Count; i++)
+            {
+                NurbsCurve gridCurve = gridLinesY[i].ToNurbsCurve();
+                CurveIntersections intEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(gridCurve, selCrv, intersection_tolerance, overlap_tolerance);
+
+                if (intEvents != null)
+                {
+                    for (int j = 0; j < intEvents.Count - 1; j++)
+                    {
+                        IntersectionEvent ccx_event = intEvents[j];
+                        IntersectionEvent ccy_event = intEvents[j + 1];
+
+                        Line line = new Line(ccx_event.PointA, ccy_event.PointA);
+                        intLinesY.Add(line);
+
+                        doc.Objects.AddLine(line);
+                        //doc.Objects.AddPoint(ccx_event.PointA);
+                    }
+                }
+            }
+
+
+
+
+            //Creates the outer columns
+            List<Point3d> posOuterColumns = new List<Point3d>();
+
+            List<Line> outerColumns = new List<Line>();
+
+            for (int i = 0; i < intLinesX.Count; i++)
+            {
+                posOuterColumns.Add(intLinesX[i].From);
+                posOuterColumns.Add(intLinesX[i].To);
+            }
+
+            for (int i = 0; i < intLinesY.Count; i++)
+            {
+                posOuterColumns.Add(intLinesY[i].From);
+                posOuterColumns.Add(intLinesY[i].To);
+            }
+
+            for (int i = 0; i < posOuterColumns.Count; i++)
+            {
+                Point3d pt1 = posOuterColumns[i];
+                Vector3d vec = new Vector3d(0, 0, -floorHeight);
+                Point3d pt2 = pt1 + vec;
+                Line column = new Line(pt1, pt2);
+                doc.Objects.AddLine(column);
+                outerColumns.Add(column);
+            }
+
+
+
+
+            //List<Point3d> posInnerColumns = new List<Point3d>();
+            List<Line> innerColumns = new List<Line>();
+            List<Curve> beamsX = new List<Curve>();
+            List<Curve> beamsY = new List<Curve>();
+
+
+            //Creates the beams in x-Direction and inner columns
+
+            if (xSpac < ySpac)
+            {
+                for (int i = 0; i < intLinesX.Count; i++)
+                {
+                    NurbsCurve gridCurveX = intLinesX[i].ToNurbsCurve();
+                    gridCurveX.Domain = new Interval(0, 1);
+                    var intParams = new List<double>();
+
+                    for (int j = 0; j < intLinesY.Count; j++)
+                    {
+                        NurbsCurve gridCurveY = intLinesY[j].ToNurbsCurve();
+                        CurveIntersections intEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(gridCurveX, gridCurveY, intersection_tolerance, overlap_tolerance);
+
+                        if (intEvents.Count >= 1)
+                        {
+                            intParams.Add(intEvents[0].ParameterA);
+                            Point3d pt1 = new Point3d(intEvents[0].PointA);
+                            Vector3d vec = new Vector3d(0, 0, -floorHeight);
+                            Point3d pt2 = pt1 + vec;
+                            Line column = new Line(pt1, pt2);
+                            doc.Objects.AddLine(column);
+                            //posInnerColumns.Add(intEvents[0].PointA);
+                            innerColumns.Add(column);
+                            //doc.Objects.AddPoint(intEvents[0].PointA);
+                        }
+                    }
+
+                    Curve[] curveSeg = gridCurveX.Split(intParams);
+
+                    for (int j = 0; j < curveSeg.Length; j++)
+                    {
+                        beamsX.Add(curveSeg[j]);
+                        doc.Objects.AddCurve(curveSeg[j]);
+                    }
+                }
+
+            }
+
+
+
+            //Creates the beams in y-Direction
+            else
+            {
+                for (int i = 0; i < intLinesY.Count; i++)
+                {
+                    NurbsCurve gridCurveY = intLinesY[i].ToNurbsCurve();
+                    gridCurveY.Domain = new Interval(0, 1);
+                    var intParams = new List<double>();
+
+                    for (int j = 0; j < intLinesX.Count; j++)
+                    {
+                        NurbsCurve gridCurveX = intLinesX[j].ToNurbsCurve();
+                        CurveIntersections intEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(gridCurveY, gridCurveX, intersection_tolerance, overlap_tolerance);
+
+                        if (intEvents.Count >= 1)
+                        {
+                            intParams.Add(intEvents[0].ParameterA);
+                            Point3d pt1 = new Point3d(intEvents[0].PointA);
+                            Vector3d vec = new Vector3d(0, 0, -floorHeight);
+                            Point3d pt2 = pt1 + vec;
+                            Line column = new Line(pt1, pt2);
+                            doc.Objects.AddLine(column);
+                            innerColumns.Add(column);
+                            //doc.Objects.AddPoint(intEvents[0].PointA);
+                        }
+                    }
+
+                    Curve[] curveSeg = gridCurveY.Split(intParams);
+
+                    for (int j = 0; j < curveSeg.Length; j++)
+                    {
+                        beamsY.Add(curveSeg[j]);
+                        doc.Objects.AddCurve(curveSeg[j]);
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
         }
 
     }

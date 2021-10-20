@@ -34,6 +34,8 @@ namespace B_GOpt.Forms
 
             docform = doc;
 
+
+
             //Displays the chart
             //chartCO2.Titles.Add("Pie Chart");
             chartCO2.Series["CO2"].Points.AddXY("1", "33");
@@ -69,11 +71,10 @@ namespace B_GOpt.Forms
 
         private void btnSelectBuilding_Click_1(object sender, EventArgs e)
         {
-            
             brep = MyFunctions.SelectBuildingGeometry(brep);
-
-
         }
+
+
 
         private void btnCalculate_Click(object sender, EventArgs e) 
         {
@@ -93,7 +94,7 @@ namespace B_GOpt.Forms
 
                 RhinoApp.WriteLine(surfaceArea.ToString());
 
-                RhinoList<Rhino.Geometry.Line> columns = buildingGeom.ConstructColumns(brep, valueSpacX, valueSpacY, valueFloorHeight, docform);
+                RhinoList<Line> columns = buildingGeom.ConstructColumns(brep, valueSpacX, valueSpacY, valueFloorHeight, docform);
 
                 buildingGeom.ConstructBeams(brep, valueSpacX, valueSpacY, valueFloorHeight, docform);
             }
@@ -110,8 +111,6 @@ namespace B_GOpt.Forms
                 double valueSpacX = tbarSpacX.Value / 100f;
                 double valueSpacY = tbarSpacY.Value / 100f;
 
-
-
                 Brep baseSrf = buildingGeom.GetBaseSurface(brep, docform);
 
                 BrepEdgeList baseSrfEdges = baseSrf.Edges;
@@ -121,27 +120,32 @@ namespace B_GOpt.Forms
                 for (int i = 0; i < baseSrfEdges.Count; i++)
                 {
                     baseSrfEdgeCurves.Add(baseSrfEdges[i]);
-                    docform.Objects.AddCurve(baseSrfEdges[i].ToNurbsCurve()); 
-
+                    //docform.Objects.AddCurve(baseSrfEdges[i].ToNurbsCurve()); 
                 }
 
                 Curve[] baseSrfJoinedEdgeCurves = Curve.JoinCurves(baseSrfEdgeCurves);
 
 
                 //Creates the grid at baseFloor
-                MyFunctions.CreateGrid2D(baseSrfJoinedEdgeCurves[0], docform);
+                //MyFunctions.CreateGrid2D(baseSrfJoinedEdgeCurves[0], actXSpac, actYSpac, docform);
+
+
+                double actFloorHeight = buildingGeom.FloorHeight(brep, valueFloorHeight);
+                double actXSpac = buildingGeom.ActualXSpacing(brep, valueSpacX);
+                double actYSpac = buildingGeom.ActualXSpacing(brep, valueSpacY);
+
+
 
 
                 //Creates the slabs edge curves to use them for their own Grid 2D creation
 
-                RhinoList<Brep> slabs = buildingGeom.ConstructSlabs(brep, valueFloorHeight, docform);
+                RhinoList<Brep> slabs = buildingGeom.ConstructSlabs(brep, actFloorHeight, docform);
 
                 CurveList slabOuterCurves = new CurveList();
 
                 for (int i = 0; i < slabs.Count; i++)
                 {
                     BrepEdgeList slabEdges = slabs[i].Edges;
-
                     CurveList crvs = new CurveList();
 
                     for (int j= 0; j < slabEdges.Count; j++)
@@ -161,7 +165,7 @@ namespace B_GOpt.Forms
 
                 for (int i = 0; i < slabOuterCurves.Count; i++)
                 {
-                    MyFunctions.CreateGrid2D(slabOuterCurves[i], docform);
+                    MyFunctions.CreateGrid2D(slabOuterCurves[i], actXSpac, actYSpac, actFloorHeight, docform);
                 }
 
 
@@ -169,15 +173,6 @@ namespace B_GOpt.Forms
                 {
                     docform.Objects.AddCurve(slabOuterCurves[i]);
                 }
-
-
-
-
-
-
-
-
-
 
 
 
