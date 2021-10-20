@@ -71,6 +71,7 @@ namespace B_GOpt.Forms
             this.lblCO2Value = new System.Windows.Forms.Label();
             this.panelProgramm = new System.Windows.Forms.Panel();
             this.panelStructSystem = new System.Windows.Forms.Panel();
+            this.btnStructGrid3D = new B_GOpt.CustomControls.CustomButton();
             this.rbtnSlabSystem = new B_GOpt.CustomControls.CustomRadioButton();
             this.rbtnGirderSystem = new B_GOpt.CustomControls.CustomRadioButton();
             this.rbtnIndustrial = new B_GOpt.CustomControls.CustomRadioButton();
@@ -396,7 +397,7 @@ namespace B_GOpt.Forms
             // 
             // btnSelectBuilding
             // 
-            this.btnSelectBuilding.Location = new System.Drawing.Point(-8, 83);
+            this.btnSelectBuilding.Location = new System.Drawing.Point(6, 83);
             this.btnSelectBuilding.Name = "btnSelectBuilding";
             this.btnSelectBuilding.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
             this.btnSelectBuilding.OverrideDefault.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
@@ -458,7 +459,7 @@ namespace B_GOpt.Forms
             // 
             // btnSelectCore
             // 
-            this.btnSelectCore.Location = new System.Drawing.Point(179, 83);
+            this.btnSelectCore.Location = new System.Drawing.Point(193, 83);
             this.btnSelectCore.Name = "btnSelectCore";
             this.btnSelectCore.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
             this.btnSelectCore.OverrideDefault.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
@@ -694,6 +695,26 @@ namespace B_GOpt.Forms
             this.panelStructSystem.Size = new System.Drawing.Size(244, 38);
             this.panelStructSystem.TabIndex = 45;
             // 
+            // btnStructGrid3D
+            // 
+            this.btnStructGrid3D.BackColor = System.Drawing.Color.Transparent;
+            this.btnStructGrid3D.BackgorundColor = System.Drawing.Color.Transparent;
+            this.btnStructGrid3D.BorderColor = System.Drawing.Color.Black;
+            this.btnStructGrid3D.BorderRadius = 40;
+            this.btnStructGrid3D.BorderSize = 2;
+            this.btnStructGrid3D.FlatAppearance.BorderSize = 0;
+            this.btnStructGrid3D.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStructGrid3D.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStructGrid3D.ForeColor = System.Drawing.Color.Black;
+            this.btnStructGrid3D.Location = new System.Drawing.Point(166, 702);
+            this.btnStructGrid3D.Name = "btnStructGrid3D";
+            this.btnStructGrid3D.Size = new System.Drawing.Size(253, 40);
+            this.btnStructGrid3D.TabIndex = 46;
+            this.btnStructGrid3D.Text = "Create Structural Grid 3D";
+            this.btnStructGrid3D.TextColor = System.Drawing.Color.Black;
+            this.btnStructGrid3D.UseVisualStyleBackColor = false;
+            this.btnStructGrid3D.Click += new System.EventHandler(this.btnStructGrid3D_Click);
+            // 
             // rbtnSlabSystem
             // 
             this.rbtnSlabSystem.Appearance = System.Windows.Forms.Appearance.Button;
@@ -709,7 +730,7 @@ namespace B_GOpt.Forms
             this.rbtnSlabSystem.ForeColor = System.Drawing.Color.Black;
             this.rbtnSlabSystem.Location = new System.Drawing.Point(125, 5);
             this.rbtnSlabSystem.Name = "rbtnSlabSystem";
-            this.rbtnSlabSystem.Size = new System.Drawing.Size(88, 26);
+            this.rbtnSlabSystem.Size = new System.Drawing.Size(91, 27);
             this.rbtnSlabSystem.TabIndex = 2;
             this.rbtnSlabSystem.TabStop = true;
             this.rbtnSlabSystem.Text = "Slab System";
@@ -731,7 +752,7 @@ namespace B_GOpt.Forms
             this.rbtnGirderSystem.ForeColor = System.Drawing.Color.Black;
             this.rbtnGirderSystem.Location = new System.Drawing.Point(3, 4);
             this.rbtnGirderSystem.Name = "rbtnGirderSystem";
-            this.rbtnGirderSystem.Size = new System.Drawing.Size(101, 26);
+            this.rbtnGirderSystem.Size = new System.Drawing.Size(106, 27);
             this.rbtnGirderSystem.TabIndex = 0;
             this.rbtnGirderSystem.TabStop = true;
             this.rbtnGirderSystem.Text = "Girder System";
@@ -753,7 +774,7 @@ namespace B_GOpt.Forms
             this.rbtnIndustrial.ForeColor = System.Drawing.Color.Black;
             this.rbtnIndustrial.Location = new System.Drawing.Point(146, 5);
             this.rbtnIndustrial.Name = "rbtnIndustrial";
-            this.rbtnIndustrial.Size = new System.Drawing.Size(72, 26);
+            this.rbtnIndustrial.Size = new System.Drawing.Size(78, 27);
             this.rbtnIndustrial.TabIndex = 2;
             this.rbtnIndustrial.TabStop = true;
             this.rbtnIndustrial.Text = "Industrial";
@@ -775,7 +796,7 @@ namespace B_GOpt.Forms
             this.rbtnOffice.ForeColor = System.Drawing.Color.Black;
             this.rbtnOffice.Location = new System.Drawing.Point(90, 5);
             this.rbtnOffice.Name = "rbtnOffice";
-            this.rbtnOffice.Size = new System.Drawing.Size(52, 26);
+            this.rbtnOffice.Size = new System.Drawing.Size(56, 27);
             this.rbtnOffice.TabIndex = 1;
             this.rbtnOffice.TabStop = true;
             this.rbtnOffice.Text = "Office";
@@ -797,7 +818,7 @@ namespace B_GOpt.Forms
             this.rbtnResidential.ForeColor = System.Drawing.Color.Black;
             this.rbtnResidential.Location = new System.Drawing.Point(3, 4);
             this.rbtnResidential.Name = "rbtnResidential";
-            this.rbtnResidential.Size = new System.Drawing.Size(81, 26);
+            this.rbtnResidential.Size = new System.Drawing.Size(87, 27);
             this.rbtnResidential.TabIndex = 0;
             this.rbtnResidential.TabStop = true;
             this.rbtnResidential.Text = "Residential";
@@ -819,7 +840,7 @@ namespace B_GOpt.Forms
             this.rbtnTimberMat.ForeColor = System.Drawing.Color.Black;
             this.rbtnTimberMat.Location = new System.Drawing.Point(155, 7);
             this.rbtnTimberMat.Name = "rbtnTimberMat";
-            this.rbtnTimberMat.Size = new System.Drawing.Size(59, 26);
+            this.rbtnTimberMat.Size = new System.Drawing.Size(63, 27);
             this.rbtnTimberMat.TabIndex = 5;
             this.rbtnTimberMat.TabStop = true;
             this.rbtnTimberMat.Text = "Timber";
@@ -841,7 +862,7 @@ namespace B_GOpt.Forms
             this.rbtnConcreteMat.ForeColor = System.Drawing.Color.Black;
             this.rbtnConcreteMat.Location = new System.Drawing.Point(71, 7);
             this.rbtnConcreteMat.Name = "rbtnConcreteMat";
-            this.rbtnConcreteMat.Size = new System.Drawing.Size(71, 26);
+            this.rbtnConcreteMat.Size = new System.Drawing.Size(76, 27);
             this.rbtnConcreteMat.TabIndex = 4;
             this.rbtnConcreteMat.TabStop = true;
             this.rbtnConcreteMat.Text = "Concrete";
@@ -863,7 +884,7 @@ namespace B_GOpt.Forms
             this.rbtnSteelMat.ForeColor = System.Drawing.Color.Black;
             this.rbtnSteelMat.Location = new System.Drawing.Point(4, 7);
             this.rbtnSteelMat.Name = "rbtnSteelMat";
-            this.rbtnSteelMat.Size = new System.Drawing.Size(47, 26);
+            this.rbtnSteelMat.Size = new System.Drawing.Size(48, 27);
             this.rbtnSteelMat.TabIndex = 3;
             this.rbtnSteelMat.TabStop = true;
             this.rbtnSteelMat.Text = "Steel";
@@ -877,6 +898,7 @@ namespace B_GOpt.Forms
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
             this.ClientSize = new System.Drawing.Size(532, 754);
+            this.Controls.Add(this.btnStructGrid3D);
             this.Controls.Add(this.panelStructSystem);
             this.Controls.Add(this.panelProgramm);
             this.Controls.Add(this.lblCO2Value);
@@ -968,5 +990,6 @@ namespace B_GOpt.Forms
         private CustomControls.CustomRadioButton rbtnTimberMat;
         private CustomControls.CustomRadioButton rbtnConcreteMat;
         private CustomControls.CustomRadioButton rbtnSteelMat;
+        private CustomControls.CustomButton btnStructGrid3D;
     }
 }

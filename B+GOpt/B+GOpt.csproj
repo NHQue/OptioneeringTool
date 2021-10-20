@@ -87,18 +87,22 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Beam.cs" />
     <Compile Include="Classes\BuildingGeometry.cs" />
+    <Compile Include="Classes\Column.cs" />
+    <Compile Include="Classes\Core.cs" />
     <Compile Include="Classes\ExportToDlubal.cs" />
+    <Compile Include="Classes\Slab.cs" />
     <Compile Include="Commands\BGOpt_DefaultCommand.cs" />
     <Compile Include="BGOptPlugIn.cs" />
     <Compile Include="Commands\OptPanel.cs" />
-    <Compile Include="CustomControls\CustomButton - Copy.cs">
+    <Compile Include="CustomControls\CustomButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CustomControls\CustomRadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomControls\CustomButton.cs">
+    <Compile Include="CustomControls\CustomPictureBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Forms\Dashboard.cs">

@@ -42,7 +42,8 @@ namespace B_GOpt
                 RhinoApp.WriteLine("Building geometry successfully selected");
                 return  brep;
             }
-              
+
+
             return null;
 
         }
@@ -203,7 +204,74 @@ namespace B_GOpt
 
 
 
+        /// <summary>
+        /// This method creates a 2D Colum Grid for an "arbitrary" closed curve
+        /// </summary>
+        /// <param name="selCrv"></param>
+        /// <param name="doc"></param>
+        public static void CreateGrid2D(Curve selCrv, RhinoDoc doc)
+        {
+            //Creates the Bounding Box
 
+            BoundingBox bbox = selCrv.GetBoundingBox(true);
+            //if (!boundingBox.IsValid)
+            //    return Rhino.Commands.Result.Failure;
+
+            Point3d minBBox = bbox.Min;
+            Point3d maxBBox = bbox.Max;
+
+            double xDim = maxBBox.X - minBBox.X;
+            double yDim = maxBBox.Y - minBBox.Y;
+
+            Rhino.RhinoApp.WriteLine("X-Dimension: {0}", xDim);
+            Rhino.RhinoApp.WriteLine("Y-Dimension: {0}", yDim);
+
+            //Gets the edges of the Bounding Box
+
+            Line[] edges = bbox.GetEdges();
+            int numEdges = edges.Count();
+
+            for (int i = 0; i <= 3; i++)
+            {
+                doc.Objects.AddLine(edges[i]);
+            }
+
+            //Creates a grid for the Bounding Rectangle 
+
+            Point3d[] divPtsX0;
+            Point3d[] divPtsX2;
+            Point3d[] divPtsY1;
+            Point3d[] divPtsY3;
+
+            int divNrX = 5;
+            int divNrY = 8;
+
+            edges[2].Flip();
+            edges[3].Flip();
+
+            var parX0 = edges[0].ToNurbsCurve().DivideByCount(divNrX, false, out divPtsX0);
+            var ptsX2 = edges[2].ToNurbsCurve().DivideByCount(divNrX, false, out divPtsX2);
+
+            var parY1 = edges[1].ToNurbsCurve().DivideByCount(divNrY, false, out divPtsY1);
+            var ptsY3 = edges[3].ToNurbsCurve().DivideByCount(divNrY, false, out divPtsY3);
+
+            RhinoList<Line> gridLinesX = new RhinoList<Line>();
+            RhinoList<Line> gridLinesY = new RhinoList<Line>();
+
+            for (int i = 0; i < divPtsX0.Length; i++)
+            {
+                Line line = new Line(divPtsX0[i], divPtsX2[i]);
+                gridLinesX.Add(line);
+                doc.Objects.AddLine(line);
+            }
+
+            for (int i = 0; i < divPtsY1.Length; i++)
+            {
+                Line line = new Line(divPtsY1[i], divPtsY3[i]);
+                gridLinesY.Add(line);
+                doc.Objects.AddLine(line);
+            }
+        }
 
     }
 }

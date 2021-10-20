@@ -32,8 +32,6 @@ namespace B_GOpt.Classes
 
 
 
-
-
         //Methods
         //----------------------------------------------------------------------------------------------------------
 
@@ -107,6 +105,31 @@ namespace B_GOpt.Classes
         }
 
 
+        public Brep GetBaseSurface(Brep brep, RhinoDoc doc)
+        {
+            BrepFaceList faces = brep.Faces;
+            Brep baseSrf = new Brep();
+
+            for (int i = 0; i < faces.Count; i++)
+            {
+                Vector3d neg_z = new Vector3d(0, 0, -1);
+
+                if (faces[i].NormalAt(1, 1) == neg_z)
+                {
+                    BrepFace baseFace = faces[i];
+                    baseSrf = baseFace.ToBrep();
+                }
+                else
+                    continue;
+            }
+
+            doc.Objects.AddBrep(baseSrf);
+            doc.Views.Redraw();
+
+            return baseSrf;
+        }
+
+
         /// <summary>
         /// This method calculates the actual floor height for the selected building geometry and the desired values
         /// </summary>
@@ -122,6 +145,11 @@ namespace B_GOpt.Classes
             return actFloorHeight;
         }
 
+        /// <summary>
+        /// This method gets the starting point for the creation of the structural grid
+        /// </summary>
+        /// <param name="brep"></param>
+        /// <returns></returns>
         public Point3d StartingPoint(Brep brep)
         {
             Point3d tempRefPt = new Point3d(-10000, -10000, 0);     //Constructs a helping Point to find the start for the structural grid
@@ -386,5 +414,9 @@ namespace B_GOpt.Classes
             }
             return totalArea;
         }
+
+
+
+
     }
 }

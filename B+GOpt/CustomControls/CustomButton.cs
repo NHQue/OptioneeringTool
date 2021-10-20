@@ -11,7 +11,7 @@ using System.ComponentModel;
 
 namespace B_GOpt.CustomControls
 {
-    public class CustomPictureBox : PictureBox
+    public class CustomButton : Button
     {
         //Fields (with default values)
 
@@ -87,8 +87,10 @@ namespace B_GOpt.CustomControls
 
 
         //Constructor (with default values)
-        public CustomPictureBox()
+        public CustomButton()
         {
+            this.FlatStyle = FlatStyle.Flat;
+            this.FlatAppearance.BorderSize = 0;
             this.Size = new Size(150, 40);
             this.BackColor = Color.MediumSlateBlue;
             this.ForeColor = Color.White;

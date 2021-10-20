@@ -12,6 +12,7 @@ using Rhino;
 using Rhino.Geometry;
 using B_GOpt.Classes;
 using Rhino.Collections;
+using Rhino.Geometry.Collections;
 
 namespace B_GOpt.Forms
 {
@@ -98,31 +99,97 @@ namespace B_GOpt.Forms
             }
         }
 
-        private void radioButton1_MouseClick(object sender, MouseEventArgs e)
+
+        private void btnStructGrid3D_Click(object sender, EventArgs e)
         {
+            if (brep != null)
+            {
+                BuildingGeometry buildingGeom = new BuildingGeometry(brep);
+
+                double valueFloorHeight = tbarFloorHeight.Value / 100f;
+                double valueSpacX = tbarSpacX.Value / 100f;
+                double valueSpacY = tbarSpacY.Value / 100f;
+
+
+
+                Brep baseSrf = buildingGeom.GetBaseSurface(brep, docform);
+
+                BrepEdgeList baseSrfEdges = baseSrf.Edges;
+
+                CurveList baseSrfEdgeCurves = new CurveList();
+
+                for (int i = 0; i < baseSrfEdges.Count; i++)
+                {
+                    baseSrfEdgeCurves.Add(baseSrfEdges[i]);
+                    docform.Objects.AddCurve(baseSrfEdges[i].ToNurbsCurve()); 
+
+                }
+
+                Curve[] baseSrfJoinedEdgeCurves = Curve.JoinCurves(baseSrfEdgeCurves);
+
+
+                //Creates the grid at baseFloor
+                MyFunctions.CreateGrid2D(baseSrfJoinedEdgeCurves[0], docform);
+
+
+                //Creates the slabs edge curves to use them for their own Grid 2D creation
+
+                RhinoList<Brep> slabs = buildingGeom.ConstructSlabs(brep, valueFloorHeight, docform);
+
+                CurveList slabOuterCurves = new CurveList();
+
+                for (int i = 0; i < slabs.Count; i++)
+                {
+                    BrepEdgeList slabEdges = slabs[i].Edges;
+
+                    CurveList crvs = new CurveList();
+
+                    for (int j= 0; j < slabEdges.Count; j++)
+                    {
+                        crvs.Add(slabEdges[j]);
+                    }
+
+                    Curve[] joinedEdgeCurves = Curve.JoinCurves(crvs);
+
+                    slabOuterCurves.Add(joinedEdgeCurves[0]);
+                }
+
+
+
+
+                //Creates the Grid 2D for all slabs
+
+                for (int i = 0; i < slabOuterCurves.Count; i++)
+                {
+                    MyFunctions.CreateGrid2D(slabOuterCurves[i], docform);
+                }
+
+
+                for (int i = 0; i < slabOuterCurves.Count; i++)
+                {
+                    docform.Objects.AddCurve(slabOuterCurves[i]);
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+                docform.Views.Redraw();
+
+
+
+
+            }
+
+
 
         }
-
-        private void radioButton1_MouseHover(object sender, EventArgs e)
-        {
-
-        }
-
-        private void rbtnSteelMat_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lblSurfaceAreaValue_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-
     }
 }
