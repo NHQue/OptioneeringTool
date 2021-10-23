@@ -330,8 +330,6 @@ namespace B_GOpt
             }
 
 
-
-
             //Creates the outer columns
             List<Point3d> posOuterColumns = new List<Point3d>();
 
@@ -358,9 +356,6 @@ namespace B_GOpt
                 doc.Objects.AddLine(column);
                 outerColumns.Add(column);
             }
-
-
-
 
             //List<Point3d> posInnerColumns = new List<Point3d>();
             List<Line> innerColumns = new List<Line>();
@@ -405,7 +400,6 @@ namespace B_GOpt
                         doc.Objects.AddCurve(curveSeg[j]);
                     }
                 }
-
             }
 
 
@@ -446,15 +440,6 @@ namespace B_GOpt
                     }
                 }
             }
-
-
-
-
-
-
-
-
         }
-
     }
 }

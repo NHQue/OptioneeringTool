@@ -38,9 +38,11 @@ namespace B_GOpt.Forms
 
             //Displays the chart
             //chartCO2.Titles.Add("Pie Chart");
-            chartCO2.Series["CO2"].Points.AddXY("1", "33");
-            chartCO2.Series["CO2"].Points.AddXY("2", "34");
-            chartCO2.Series["CO2"].Points.AddXY("3", "33");
+            chartCO2.Series["CO2"].IsValueShownAsLabel = false;
+            chartCO2.Series["CO2"].Points.AddXY("Slabs", "50");
+            chartCO2.Series["CO2"].Points.AddXY("Columns", "25");
+            chartCO2.Series["CO2"].Points.AddXY("Beams", "35");
+            chartCO2.Series["CO2"].Points.AddXY("Steel Rebar", "10");
 
         }
 
@@ -75,30 +77,6 @@ namespace B_GOpt.Forms
         }
 
 
-
-        private void btnCalculate_Click(object sender, EventArgs e) 
-        {
-            if (brep != null)
-            {
-                BuildingGeometry buildingGeom = new BuildingGeometry(brep);
-
-                double valueFloorHeight = tbarFloorHeight.Value / 100f;
-                double valueSpacX =  tbarSpacX.Value / 100f;
-                double valueSpacY = tbarSpacY.Value / 100f;
-
-                RhinoList<Brep> slabs = buildingGeom.ConstructSlabs(brep, valueFloorHeight, docform);
-
-                surfaceArea = Math.Round(buildingGeom.SurfaceArea(slabs), 2);
-
-                //lblSurfaceAreaValue.Text = surfaceArea.ToString();
-
-                RhinoApp.WriteLine(surfaceArea.ToString());
-
-                RhinoList<Line> columns = buildingGeom.ConstructColumns(brep, valueSpacX, valueSpacY, valueFloorHeight, docform);
-
-                buildingGeom.ConstructBeams(brep, valueSpacX, valueSpacY, valueFloorHeight, docform);
-            }
-        }
 
 
         private void btnStructGrid3D_Click(object sender, EventArgs e)

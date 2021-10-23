@@ -36,12 +36,11 @@ namespace B_GOpt.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.kryptonPalette1 = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.lblProjectName = new System.Windows.Forms.Label();
-            this.btnCalculate = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.lblFloorHeight = new System.Windows.Forms.Label();
             this.lblSpacX = new System.Windows.Forms.Label();
             this.lblSpacY = new System.Windows.Forms.Label();
@@ -157,67 +156,6 @@ namespace B_GOpt.Forms
             this.lblProjectName.TabIndex = 1;
             this.lblProjectName.Text = "Project: xx.xx";
             // 
-            // btnCalculate
-            // 
-            this.btnCalculate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnCalculate.Location = new System.Drawing.Point(6, 779);
-            this.btnCalculate.Name = "btnCalculate";
-            this.btnCalculate.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.btnCalculate.OverrideDefault.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.btnCalculate.OverrideDefault.Back.ColorAngle = 45F;
-            this.btnCalculate.OverrideDefault.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.btnCalculate.OverrideDefault.Border.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.btnCalculate.OverrideDefault.Border.ColorAngle = 45F;
-            this.btnCalculate.OverrideDefault.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.btnCalculate.OverrideDefault.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
-            this.btnCalculate.OverrideDefault.Border.Rounding = 20;
-            this.btnCalculate.OverrideDefault.Border.Width = 1;
-            this.btnCalculate.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.ProfessionalSystem;
-            this.btnCalculate.Size = new System.Drawing.Size(123, 43);
-            this.btnCalculate.StateCommon.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.btnCalculate.StateCommon.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.btnCalculate.StateCommon.Back.ColorAngle = 45F;
-            this.btnCalculate.StateCommon.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.btnCalculate.StateCommon.Border.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.btnCalculate.StateCommon.Border.ColorAngle = 45F;
-            this.btnCalculate.StateCommon.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.btnCalculate.StateCommon.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
-            this.btnCalculate.StateCommon.Border.Rounding = 20;
-            this.btnCalculate.StateCommon.Border.Width = 1;
-            this.btnCalculate.StateCommon.Content.ShortText.Color1 = System.Drawing.Color.White;
-            this.btnCalculate.StateCommon.Content.ShortText.Color2 = System.Drawing.Color.White;
-            this.btnCalculate.StateCommon.Content.ShortText.Font = new System.Drawing.Font("IBM Plex Sans", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCalculate.StatePressed.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(145)))), ((int)(((byte)(198)))));
-            this.btnCalculate.StatePressed.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(121)))), ((int)(((byte)(206)))));
-            this.btnCalculate.StatePressed.Back.ColorAngle = 135F;
-            this.btnCalculate.StatePressed.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(145)))), ((int)(((byte)(198)))));
-            this.btnCalculate.StatePressed.Border.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(22)))), ((int)(((byte)(121)))), ((int)(((byte)(206)))));
-            this.btnCalculate.StatePressed.Border.ColorAngle = 135F;
-            this.btnCalculate.StatePressed.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.btnCalculate.StatePressed.Border.Rounding = 20;
-            this.btnCalculate.StatePressed.Border.Width = 1;
-            this.btnCalculate.StateTracking.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.btnCalculate.StateTracking.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.btnCalculate.StateTracking.Back.ColorAngle = 45F;
-            this.btnCalculate.StateTracking.Border.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(174)))), ((int)(((byte)(244)))));
-            this.btnCalculate.StateTracking.Border.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
-            this.btnCalculate.StateTracking.Border.ColorAngle = 45F;
-            this.btnCalculate.StateTracking.Border.DrawBorders = ((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders)((((ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Top | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Bottom) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Left) 
-            | ComponentFactory.Krypton.Toolkit.PaletteDrawBorders.Right)));
-            this.btnCalculate.StateTracking.Border.GraphicsHint = ComponentFactory.Krypton.Toolkit.PaletteGraphicsHint.AntiAlias;
-            this.btnCalculate.StateTracking.Border.Rounding = 20;
-            this.btnCalculate.StateTracking.Border.Width = 1;
-            this.btnCalculate.TabIndex = 4;
-            this.btnCalculate.Values.Text = "Calculate";
-            this.btnCalculate.Click += new System.EventHandler(this.btnCalculate_Click);
-            // 
             // lblFloorHeight
             // 
             this.lblFloorHeight.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -242,7 +180,7 @@ namespace B_GOpt.Forms
             // 
             this.lblSpacY.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSpacY.ForeColor = System.Drawing.Color.Black;
-            this.lblSpacY.Location = new System.Drawing.Point(4, 350);
+            this.lblSpacY.Location = new System.Drawing.Point(3, 350);
             this.lblSpacY.Name = "lblSpacY";
             this.lblSpacY.Size = new System.Drawing.Size(188, 26);
             this.lblSpacY.TabIndex = 11;
@@ -271,7 +209,7 @@ namespace B_GOpt.Forms
             this.tbarSpacX.Minimum = 200;
             this.tbarSpacX.Name = "tbarSpacX";
             this.tbarSpacX.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.ProfessionalSystem;
-            this.tbarSpacX.Size = new System.Drawing.Size(200, 26);
+            this.tbarSpacX.Size = new System.Drawing.Size(142, 26);
             this.tbarSpacX.StateCommon.Position.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(254)))), ((int)(((byte)(254)))));
             this.tbarSpacX.StateCommon.Position.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tbarSpacX.StateCommon.Position.Color3 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -305,7 +243,7 @@ namespace B_GOpt.Forms
             this.tbarSpacY.Minimum = 200;
             this.tbarSpacY.Name = "tbarSpacY";
             this.tbarSpacY.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.ProfessionalSystem;
-            this.tbarSpacY.Size = new System.Drawing.Size(200, 26);
+            this.tbarSpacY.Size = new System.Drawing.Size(144, 26);
             this.tbarSpacY.StateCommon.Position.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(254)))), ((int)(((byte)(254)))));
             this.tbarSpacY.StateCommon.Position.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tbarSpacY.StateCommon.Position.Color3 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -339,7 +277,7 @@ namespace B_GOpt.Forms
             this.tbarFloorHeight.Minimum = 200;
             this.tbarFloorHeight.Name = "tbarFloorHeight";
             this.tbarFloorHeight.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.ProfessionalSystem;
-            this.tbarFloorHeight.Size = new System.Drawing.Size(200, 26);
+            this.tbarFloorHeight.Size = new System.Drawing.Size(144, 26);
             this.tbarFloorHeight.StateCommon.Position.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tbarFloorHeight.StateCommon.Position.Color3 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.tbarFloorHeight.StateCommon.Position.Color4 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -383,7 +321,7 @@ namespace B_GOpt.Forms
             // 
             // btnSelectBuilding
             // 
-            this.btnSelectBuilding.Location = new System.Drawing.Point(6, 83);
+            this.btnSelectBuilding.Location = new System.Drawing.Point(2, 80);
             this.btnSelectBuilding.Name = "btnSelectBuilding";
             this.btnSelectBuilding.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
             this.btnSelectBuilding.OverrideDefault.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
@@ -445,7 +383,7 @@ namespace B_GOpt.Forms
             // 
             // btnSelectCore
             // 
-            this.btnSelectCore.Location = new System.Drawing.Point(193, 83);
+            this.btnSelectCore.Location = new System.Drawing.Point(189, 80);
             this.btnSelectCore.Name = "btnSelectCore";
             this.btnSelectCore.OverrideDefault.Back.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
             this.btnSelectCore.OverrideDefault.Back.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
@@ -508,7 +446,7 @@ namespace B_GOpt.Forms
             // 
             this.picBG.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.picBG.Image = global::B_GOpt.Properties.Resources.B_G;
-            this.picBG.Location = new System.Drawing.Point(580, 9);
+            this.picBG.Location = new System.Drawing.Point(492, 9);
             this.picBG.Name = "picBG";
             this.picBG.Size = new System.Drawing.Size(66, 60);
             this.picBG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -519,7 +457,7 @@ namespace B_GOpt.Forms
             // 
             this.lblRes.Font = new System.Drawing.Font("Lato", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRes.ForeColor = System.Drawing.Color.Black;
-            this.lblRes.Location = new System.Drawing.Point(4, 392);
+            this.lblRes.Location = new System.Drawing.Point(4, 413);
             this.lblRes.Name = "lblRes";
             this.lblRes.Size = new System.Drawing.Size(99, 26);
             this.lblRes.TabIndex = 29;
@@ -529,7 +467,7 @@ namespace B_GOpt.Forms
             // 
             this.lblSrfArea.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSrfArea.ForeColor = System.Drawing.Color.Black;
-            this.lblSrfArea.Location = new System.Drawing.Point(4, 428);
+            this.lblSrfArea.Location = new System.Drawing.Point(4, 449);
             this.lblSrfArea.Name = "lblSrfArea";
             this.lblSrfArea.Size = new System.Drawing.Size(117, 26);
             this.lblSrfArea.TabIndex = 30;
@@ -539,11 +477,11 @@ namespace B_GOpt.Forms
             // 
             this.lblCO2.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCO2.ForeColor = System.Drawing.Color.Black;
-            this.lblCO2.Location = new System.Drawing.Point(4, 517);
+            this.lblCO2.Location = new System.Drawing.Point(4, 552);
             this.lblCO2.Name = "lblCO2";
             this.lblCO2.Size = new System.Drawing.Size(135, 26);
             this.lblCO2.TabIndex = 33;
-            this.lblCO2.Text = "Embodied CO2";
+            this.lblCO2.Text = "Embodied CO₂";
             // 
             // lblSpacXValue
             // 
@@ -558,17 +496,17 @@ namespace B_GOpt.Forms
             // 
             // chartCO2
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chartCO2.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.chartCO2.Legends.Add(legend1);
-            this.chartCO2.Location = new System.Drawing.Point(219, 557);
+            chartArea2.Name = "ChartArea1";
+            this.chartCO2.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartCO2.Legends.Add(legend2);
+            this.chartCO2.Location = new System.Drawing.Point(219, 586);
             this.chartCO2.Name = "chartCO2";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
-            series1.Legend = "Legend1";
-            series1.Name = "CO2";
-            this.chartCO2.Series.Add(series1);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
+            series2.Legend = "Legend1";
+            series2.Name = "CO2";
+            this.chartCO2.Series.Add(series2);
             this.chartCO2.Size = new System.Drawing.Size(346, 194);
             this.chartCO2.TabIndex = 34;
             this.chartCO2.Text = "chart1";
@@ -577,7 +515,7 @@ namespace B_GOpt.Forms
             // 
             this.lblFAR.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblFAR.ForeColor = System.Drawing.Color.Black;
-            this.lblFAR.Location = new System.Drawing.Point(4, 460);
+            this.lblFAR.Location = new System.Drawing.Point(4, 486);
             this.lblFAR.Name = "lblFAR";
             this.lblFAR.Size = new System.Drawing.Size(117, 26);
             this.lblFAR.TabIndex = 35;
@@ -587,7 +525,7 @@ namespace B_GOpt.Forms
             // 
             this.lblCosts.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCosts.ForeColor = System.Drawing.Color.Black;
-            this.lblCosts.Location = new System.Drawing.Point(4, 489);
+            this.lblCosts.Location = new System.Drawing.Point(3, 520);
             this.lblCosts.Name = "lblCosts";
             this.lblCosts.Size = new System.Drawing.Size(169, 26);
             this.lblCosts.TabIndex = 36;
@@ -627,7 +565,7 @@ namespace B_GOpt.Forms
             // 
             this.lblFarValue.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblFarValue.ForeColor = System.Drawing.Color.Black;
-            this.lblFarValue.Location = new System.Drawing.Point(199, 460);
+            this.lblFarValue.Location = new System.Drawing.Point(199, 486);
             this.lblFarValue.Name = "lblFarValue";
             this.lblFarValue.Size = new System.Drawing.Size(117, 26);
             this.lblFarValue.TabIndex = 40;
@@ -637,7 +575,7 @@ namespace B_GOpt.Forms
             // 
             this.lblSurfaceValue.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSurfaceValue.ForeColor = System.Drawing.Color.Black;
-            this.lblSurfaceValue.Location = new System.Drawing.Point(199, 428);
+            this.lblSurfaceValue.Location = new System.Drawing.Point(199, 449);
             this.lblSurfaceValue.Name = "lblSurfaceValue";
             this.lblSurfaceValue.Size = new System.Drawing.Size(117, 26);
             this.lblSurfaceValue.TabIndex = 41;
@@ -647,7 +585,7 @@ namespace B_GOpt.Forms
             // 
             this.lblCostsValue.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCostsValue.ForeColor = System.Drawing.Color.Black;
-            this.lblCostsValue.Location = new System.Drawing.Point(199, 489);
+            this.lblCostsValue.Location = new System.Drawing.Point(199, 520);
             this.lblCostsValue.Name = "lblCostsValue";
             this.lblCostsValue.Size = new System.Drawing.Size(117, 26);
             this.lblCostsValue.TabIndex = 42;
@@ -657,7 +595,7 @@ namespace B_GOpt.Forms
             // 
             this.lblCO2Value.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCO2Value.ForeColor = System.Drawing.Color.Black;
-            this.lblCO2Value.Location = new System.Drawing.Point(199, 517);
+            this.lblCO2Value.Location = new System.Drawing.Point(199, 552);
             this.lblCO2Value.Name = "lblCO2Value";
             this.lblCO2Value.Size = new System.Drawing.Size(117, 26);
             this.lblCO2Value.TabIndex = 43;
@@ -668,7 +606,7 @@ namespace B_GOpt.Forms
             this.panelProgramm.Controls.Add(this.rbtnIndustrial);
             this.panelProgramm.Controls.Add(this.rbtnOffice);
             this.panelProgramm.Controls.Add(this.rbtnResidential);
-            this.panelProgramm.Location = new System.Drawing.Point(273, 231);
+            this.panelProgramm.Location = new System.Drawing.Point(219, 227);
             this.panelProgramm.Name = "panelProgramm";
             this.panelProgramm.Size = new System.Drawing.Size(244, 38);
             this.panelProgramm.TabIndex = 44;
@@ -743,7 +681,7 @@ namespace B_GOpt.Forms
             // 
             this.panelStructSystem.Controls.Add(this.rbtnSlabSystem);
             this.panelStructSystem.Controls.Add(this.rbtnGirderSystem);
-            this.panelStructSystem.Location = new System.Drawing.Point(273, 155);
+            this.panelStructSystem.Location = new System.Drawing.Point(219, 151);
             this.panelStructSystem.Name = "panelStructSystem";
             this.panelStructSystem.Size = new System.Drawing.Size(244, 38);
             this.panelStructSystem.TabIndex = 45;
@@ -804,9 +742,9 @@ namespace B_GOpt.Forms
             this.btnStructGrid3D.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnStructGrid3D.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnStructGrid3D.ForeColor = System.Drawing.Color.Black;
-            this.btnStructGrid3D.Location = new System.Drawing.Point(166, 782);
+            this.btnStructGrid3D.Location = new System.Drawing.Point(2, 787);
             this.btnStructGrid3D.Name = "btnStructGrid3D";
-            this.btnStructGrid3D.Size = new System.Drawing.Size(253, 40);
+            this.btnStructGrid3D.Size = new System.Drawing.Size(229, 40);
             this.btnStructGrid3D.TabIndex = 46;
             this.btnStructGrid3D.Text = "Create Structural Grid 3D";
             this.btnStructGrid3D.TextColor = System.Drawing.Color.Black;
@@ -818,7 +756,7 @@ namespace B_GOpt.Forms
             this.panel1.Controls.Add(this.rbtnTimberMat);
             this.panel1.Controls.Add(this.rbtnConcreteMat);
             this.panel1.Controls.Add(this.rbtnSteelMat);
-            this.panel1.Location = new System.Drawing.Point(273, 192);
+            this.panel1.Location = new System.Drawing.Point(219, 188);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(242, 38);
             this.panel1.TabIndex = 47;
@@ -895,7 +833,7 @@ namespace B_GOpt.Forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
-            this.ClientSize = new System.Drawing.Size(658, 834);
+            this.ClientSize = new System.Drawing.Size(570, 834);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnStructGrid3D);
             this.Controls.Add(this.panelStructSystem);
@@ -924,7 +862,6 @@ namespace B_GOpt.Forms
             this.Controls.Add(this.lblSpacY);
             this.Controls.Add(this.lblSpacX);
             this.Controls.Add(this.lblFloorHeight);
-            this.Controls.Add(this.btnCalculate);
             this.Controls.Add(this.lblMat);
             this.Controls.Add(this.picBG);
             this.Controls.Add(this.lblProjectName);
@@ -951,7 +888,6 @@ namespace B_GOpt.Forms
         private ComponentFactory.Krypton.Toolkit.KryptonPalette kryptonPalette1;
         private System.Windows.Forms.Label lblProjectName;
         private System.Windows.Forms.PictureBox picBG;
-        private ComponentFactory.Krypton.Toolkit.KryptonButton btnCalculate;
         private System.Windows.Forms.Label lblFloorHeight;
         private System.Windows.Forms.Label lblSpacX;
         private System.Windows.Forms.Label lblSpacY;
