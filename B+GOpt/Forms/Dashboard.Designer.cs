@@ -36,9 +36,9 @@ namespace B_GOpt.Forms
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.kryptonPalette1 = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.lblProjectName = new System.Windows.Forms.Label();
             this.lblFloorHeight = new System.Windows.Forms.Label();
@@ -79,6 +79,7 @@ namespace B_GOpt.Forms
             this.rbtnTimberMat = new B_GOpt.CustomControls.CustomRadioButton();
             this.rbtnConcreteMat = new B_GOpt.CustomControls.CustomRadioButton();
             this.rbtnSteelMat = new B_GOpt.CustomControls.CustomRadioButton();
+            this.btnTestGrid = new B_GOpt.CustomControls.CustomButton();
             ((System.ComponentModel.ISupportInitialize)(this.picBG)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCO2)).BeginInit();
             this.panelProgramm.SuspendLayout();
@@ -496,17 +497,17 @@ namespace B_GOpt.Forms
             // 
             // chartCO2
             // 
-            chartArea2.Name = "ChartArea1";
-            this.chartCO2.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.chartCO2.Legends.Add(legend2);
+            chartArea1.Name = "ChartArea1";
+            this.chartCO2.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chartCO2.Legends.Add(legend1);
             this.chartCO2.Location = new System.Drawing.Point(219, 586);
             this.chartCO2.Name = "chartCO2";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
-            series2.Legend = "Legend1";
-            series2.Name = "CO2";
-            this.chartCO2.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
+            series1.Legend = "Legend1";
+            series1.Name = "CO2";
+            this.chartCO2.Series.Add(series1);
             this.chartCO2.Size = new System.Drawing.Size(346, 194);
             this.chartCO2.TabIndex = 34;
             this.chartCO2.Text = "chart1";
@@ -827,6 +828,27 @@ namespace B_GOpt.Forms
             this.rbtnSteelMat.TextColor = System.Drawing.Color.Black;
             this.rbtnSteelMat.UseVisualStyleBackColor = false;
             // 
+            // btnTestGrid
+            // 
+            this.btnTestGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnTestGrid.BackColor = System.Drawing.Color.Transparent;
+            this.btnTestGrid.BackgorundColor = System.Drawing.Color.Transparent;
+            this.btnTestGrid.BorderColor = System.Drawing.Color.Black;
+            this.btnTestGrid.BorderRadius = 32;
+            this.btnTestGrid.BorderSize = 2;
+            this.btnTestGrid.FlatAppearance.BorderSize = 0;
+            this.btnTestGrid.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTestGrid.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTestGrid.ForeColor = System.Drawing.Color.Black;
+            this.btnTestGrid.Location = new System.Drawing.Point(250, 787);
+            this.btnTestGrid.Name = "btnTestGrid";
+            this.btnTestGrid.Size = new System.Drawing.Size(229, 40);
+            this.btnTestGrid.TabIndex = 48;
+            this.btnTestGrid.Text = "testGrid";
+            this.btnTestGrid.TextColor = System.Drawing.Color.Black;
+            this.btnTestGrid.UseVisualStyleBackColor = false;
+            this.btnTestGrid.Click += new System.EventHandler(this.btnTestGrid_Click);
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -834,6 +856,7 @@ namespace B_GOpt.Forms
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
             this.ClientSize = new System.Drawing.Size(570, 834);
+            this.Controls.Add(this.btnTestGrid);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnStructGrid3D);
             this.Controls.Add(this.panelStructSystem);
@@ -925,5 +948,6 @@ namespace B_GOpt.Forms
         private CustomControls.CustomRadioButton rbtnTimberMat;
         private CustomControls.CustomRadioButton rbtnConcreteMat;
         private CustomControls.CustomRadioButton rbtnSteelMat;
+        private CustomControls.CustomButton btnTestGrid;
     }
 }

@@ -170,6 +170,13 @@ namespace B_GOpt
         }
 
 
+        /// <summary>
+        /// This method constructs slabs
+        /// </summary>
+        /// <param name="brep"></param>
+        /// <param name="actFloorHeight"></param>
+        /// <param name="buildingHeight"></param>
+        /// <returns></returns>
         public static bool ConstructSlabs(Brep brep, double actFloorHeight, double buildingHeight)
         {
 
@@ -200,6 +207,93 @@ namespace B_GOpt
             }
 
             return false;
+        }
+
+
+
+        /// <summary>
+        /// This method splits multiple lines with a curve and returns the line segments
+        /// </summary>
+        /// <param name="linesToSplit"></param>
+        /// <param name="splitCurve"></param>
+        /// <returns></returns>
+        public static RhinoList<Line> SplitLinesByCurve(RhinoList<Line> linesToSplit, Curve splitCurve)
+        {
+            //Basic intersection parameters
+            const double intersection_tolerance = 0.001;
+            const double overlap_tolerance = 0.0;
+
+            RhinoList<Line> intLines = new RhinoList<Line>();
+            //RhinoList<Line> intLinesY = new RhinoList<Line>();
+
+            for (int i = 0; i < linesToSplit.Count; i++)
+            {
+                NurbsCurve lineToCrv = linesToSplit[i].ToNurbsCurve();
+                CurveIntersections intEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(lineToCrv, splitCurve, intersection_tolerance, overlap_tolerance);
+
+                if (intEvents != null)
+                {
+                    for (int j = 0; j < intEvents.Count - 1; j++)
+                    {
+                        IntersectionEvent ccx_event = intEvents[j];
+                        IntersectionEvent ccy_event = intEvents[j + 1];
+
+                        Line line = new Line(ccx_event.PointA, ccy_event.PointA);
+                        intLines.Add(line);
+
+                        //doc.Objects.AddLine(line);
+                        //doc.Objects.AddPoint(ccx_event.PointA);
+                    }
+                }
+            }
+
+            return intLines;
+        }
+
+
+
+        /// <summary>
+        /// This method splits multiple lines with multiple lines and returns the first LineList as segments
+        /// </summary>
+        /// <param name="linesToSplit"></param>
+        /// <param name="linesSplit"></param>
+        /// <returns></returns>
+        public static List<Line> SplitLinesByLines(RhinoList<Line> linesToSplit, RhinoList<Line> linesSplit)
+        {
+            //Basic intersection parameters
+            const double intersection_tolerance = 0.001;
+            const double overlap_tolerance = 0.0;
+
+            List<Line> lineSegments = new List<Line>();
+
+            for (int i = 0; i < linesToSplit.Count; i++)
+            {
+                NurbsCurve lineToSplitToCrv = linesToSplit[i].ToNurbsCurve();
+                lineToSplitToCrv.Domain = new Interval(0, 1);
+                var intParams = new List<double>();
+
+                for (int j = 0; j < linesSplit.Count; j++)
+                {
+                    NurbsCurve lineSplitToCrv = linesSplit[j].ToNurbsCurve();
+                    CurveIntersections intEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(lineToSplitToCrv, lineSplitToCrv, intersection_tolerance, overlap_tolerance);
+
+                    if (intEvents.Count >= 1)
+                    {
+                        intParams.Add(intEvents[0].ParameterA);
+                    }
+                }
+
+                Curve[] curveSeg = lineToSplitToCrv.Split(intParams);
+
+                for (int j = 0; j < curveSeg.Length; j++)
+                {
+                    Line line = new Line(curveSeg[j].PointAtStart, curveSeg[j].PointAtEnd);
+                    lineSegments.Add(line);
+                    //doc.Objects.AddCurve(curveSeg[j]);
+                }
+            }
+
+            return lineSegments;
         }
 
 
@@ -305,7 +399,6 @@ namespace B_GOpt
                     }
                 }
             }
-
 
 
             for (int i = 0; i < gridLinesY.Count; i++)

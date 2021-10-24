@@ -43,9 +43,11 @@ namespace B_GOpt.Classes
         /// <returns></returns>
         public double BuildingHeight(Brep brep)
         {
+            BoundingBox bBox = brep.GetBoundingBox(true);
+
             List<double> zVals = new List<double> { };
 
-            BrepVertexList brepVerts = brep.Vertices;
+            BrepVertexList brepVerts = bBox.ToBrep().Vertices;
 
             foreach (var brepVert in brepVerts)
             {
@@ -66,9 +68,11 @@ namespace B_GOpt.Classes
         /// <returns></returns>
         public double BuildingLength(Brep brep)
         {
+            BoundingBox bBox = brep.GetBoundingBox(true);
+
             List<double> xVals = new List<double> { };
 
-            BrepVertexList brepVerts = brep.Vertices;
+            BrepVertexList brepVerts = bBox.ToBrep().Vertices;
 
             foreach (var brepVert in brepVerts)
             {
@@ -89,9 +93,11 @@ namespace B_GOpt.Classes
         /// <returns></returns>
         public double BuildingWidth(Brep brep)
         {
+            BoundingBox bBox = brep.GetBoundingBox(true);
+
             List<double> yVals = new List<double> { };
 
-            BrepVertexList brepVerts = brep.Vertices;
+            BrepVertexList brepVerts = bBox.ToBrep().Vertices;
 
             foreach (var brepVert in brepVerts)
             {
@@ -279,12 +285,12 @@ namespace B_GOpt.Classes
             }
 
             //Adds the slabs do the Rhino Document
-            for (int i = 0; i < floorSlabs.Count; i++)
-            {
-                doc.Objects.AddBrep(floorSlabs[i]);
-            }
+            //for (int i = 0; i < floorSlabs.Count; i++)
+            //{
+            //    doc.Objects.AddBrep(floorSlabs[i]);
+            //}
 
-            doc.Views.Redraw();
+            //doc.Views.Redraw();
 
             return floorSlabs;
         }
