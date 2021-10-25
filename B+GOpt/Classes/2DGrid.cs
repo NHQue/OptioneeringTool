@@ -121,6 +121,100 @@ namespace B_GOpt.Classes
             return yBeams;
         }
 
+        public static List<Curve> EdgeBeams(RhinoList<Line> xIntLines, RhinoList<Line> yIntLines, Curve selCrv, RhinoDoc doc)
+        {
+            //Basic intersection parameters
+            const double intersection_tolerance = 0.001;
+            const double overlap_tolerance = 0.0;
+
+            List<Curve> edgeBeams = new List<Curve>();
+
+            //If selCrv is PolylineCurve
+            if (selCrv.IsPolyline())
+            {
+                PolylineCurve selPolyCrv = selCrv as PolylineCurve;
+                Line[] segPoly = selPolyCrv.ToPolyline().GetSegments();
+
+                for (int i = 0; i < segPoly.Length; i++)
+                {
+                    NurbsCurve segNurbsCrv = segPoly[i].ToNurbsCurve();
+                    segNurbsCrv.Domain = new Interval(0, 1);
+
+                    List<double> intParams = new List<double>();
+
+                    for (int j = 0; j < yIntLines.Count; j++)
+                    {
+                        NurbsCurve gridCurveY = yIntLines[j].ToNurbsCurve();
+                        CurveIntersections intEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(segNurbsCrv, gridCurveY, intersection_tolerance, overlap_tolerance);
+
+                        if (intEvents.Count >= 1)
+                        {
+                            intParams.Add(intEvents[0].ParameterA);
+                        }
+                    }
+
+                    for (int j = 0; j < xIntLines.Count; j++)
+                    {
+                        NurbsCurve gridCurveX = xIntLines[j].ToNurbsCurve();
+                        CurveIntersections intEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(segNurbsCrv, gridCurveX, intersection_tolerance, overlap_tolerance);
+
+                        if (intEvents.Count >= 1)
+                        {
+                            intParams.Add(intEvents[0].ParameterA);
+                        }
+                    }
+
+                    Curve[] curveSeg = segNurbsCrv.Split(intParams);
+
+                    for (int j = 0; j < curveSeg.Length; j++)
+                    {
+                        edgeBeams.Add(curveSeg[j]);
+                        doc.Objects.AddCurve(curveSeg[j]);
+                    }
+                }
+            }
+
+            //If selCrv is NOT PolylineCurve
+            else
+            {
+                selCrv.Domain = new Interval(0, 1);
+                var intParams = new List<double>();
+
+                for (int j = 0; j < yIntLines.Count; j++)
+                {
+                    NurbsCurve gridCurveY = yIntLines[j].ToNurbsCurve();
+                    CurveIntersections intEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(selCrv, gridCurveY, intersection_tolerance, overlap_tolerance);
+
+                    if (intEvents.Count >= 1)
+                    {
+                        intParams.Add(intEvents[0].ParameterA);
+                    }
+                }
+
+                for (int j = 0; j < xIntLines.Count; j++)
+                {
+                    NurbsCurve gridCurveX = xIntLines[j].ToNurbsCurve();
+                    CurveIntersections intEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(selCrv, gridCurveX, intersection_tolerance, overlap_tolerance);
+
+                    if (intEvents.Count >= 1)
+                    {
+                        intParams.Add(intEvents[0].ParameterA);
+                    }
+                }
+
+                Curve[] curveSeg = selCrv.Split(intParams);
+
+                for (int j = 0; j < curveSeg.Length; j++)
+                {
+                    edgeBeams.Add(curveSeg[j]);
+                    doc.Objects.AddCurve(curveSeg[j]);
+                }
+            }
+
+            return edgeBeams;
+        }
+
+
         public static List<Line> InnerColumns(RhinoList<Line> linesA, RhinoList<Line> linesB, double floorHeight, RhinoDoc doc)
         {
             //Basic intersection parameters
@@ -189,5 +283,46 @@ namespace B_GOpt.Classes
 
             return outerColumns;
         }
+
+        public static List<Line> EdgeColumns(Curve selCrv, double floorHeight, RhinoDoc doc)
+        {
+            List<Line> edgeColumns = new List<Line>();
+
+            if (selCrv.IsPolyline())
+            {
+                PolylineCurve selPolyCrv = selCrv as PolylineCurve;
+                Line[] segPoly = selPolyCrv.ToPolyline().GetSegments();
+
+                for (int i = 0; i < segPoly.Length; i++)
+                {
+                    Point3d pt1 = segPoly[i].From;
+                    Vector3d vec = new Vector3d(0, 0, -floorHeight);
+                    Point3d pt2 = pt1 + vec;
+                    Line column = new Line(pt1, pt2);
+                    edgeColumns.Add(column);
+                    //doc.Objects.AddLine(column);
+                }
+            }
+
+            return edgeColumns;
+        }
+
+        public static void DeleteOuterMembers(List<Line> members, Brep brep, RhinoDoc doc)
+        {
+            //Basic variables for IsPointInside operation
+            double tolerance = doc.ModelAbsoluteTolerance;
+            bool strictlyIn = false;
+
+            for (int i = 0; i < members.Count; i++)
+            {
+                bool inside = brep.IsPointInside(members[i].PointAt(0.5), tolerance, strictlyIn);
+
+                if (inside != true)
+                {
+                    members.Remove(members[i]);
+                }
+            }
+        }
+
     }
 }

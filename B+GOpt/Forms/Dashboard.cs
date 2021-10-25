@@ -206,6 +206,7 @@ namespace B_GOpt.Forms
 
 
                 //Creates the grid at base floor
+                //-------------------------------------------------------------------------------------------
                 BoundingBox bBox = _2DGrid.CreateBoundingBox(baseSrfJoinedEdgeCurves[0]);
 
                 RhinoList<Line> xGridLines = _2DGrid.XGridLines(bBox, nspacX, docform);
@@ -213,13 +214,16 @@ namespace B_GOpt.Forms
 
                 RhinoList<Line> xBeams = new RhinoList<Line>();
                 RhinoList<Line> yBeams = new RhinoList<Line>();
+                RhinoList<Curve> edgeBeams = new RhinoList<Curve>();
 
                 List<Line> outerColumns = new List<Line>();
                 List<Line> innerColumns = new List<Line>();
+                List<Line> edgeColumns = new List<Line>();
 
 
                 //Creates the Grid 2D for all slabs
                 //Iteration variable i corresponds to the storey
+                //-------------------------------------------------------------------------------------------
                 Transform xTrans = Transform.Translation(0, 0, actFloorHeight);
 
                 for (int i = 0; i < slabs.Count; i++)
@@ -231,7 +235,8 @@ namespace B_GOpt.Forms
                     RhinoList<Line> xIntLines = _2DGrid.XIntLines(xGridLines, slabOuterCurves[i], docform);
                     RhinoList<Line> yIntLines = _2DGrid.YIntLines(yGridLines, slabOuterCurves[i], docform);
 
-                    if (actXSpac < actYSpac)            //xBeams as SingleSpanBeams, yBeams as ContinousBeams
+                    //xBeams as SingleSpanBeams, yBeams as ContinousBeams
+                    if (actXSpac < actYSpac)
                     {
                         List<Line> xBeamsIt = _2DGrid.YBeams(xIntLines, yIntLines, docform);
                         for (int j = 0; j < xBeamsIt.Count; j++)
@@ -251,7 +256,9 @@ namespace B_GOpt.Forms
                             innerColumns.Add(innerColumnsIt[j]);
                         }
                     }
-                    else                                //xBeams as ContinousBeams, yBeams as SingleSpanBeams
+
+                    //xBeams as ContinousBeams, yBeams as SingleSpanBeams
+                    else
                     {
                         for (int j = 0; j < xIntLines.Count; j++)
                         {
@@ -278,6 +285,20 @@ namespace B_GOpt.Forms
                     {
                         outerColumns.Add(outerColumnsIt[j]);
                     }
+
+                    //EdgeColumns
+                    List<Line> edgeColumnsIt = _2DGrid.EdgeColumns(slabOuterCurves[i], actFloorHeight, docform);
+                    for (int j = 0; j < edgeColumnsIt.Count; j++)
+                    {
+                        edgeColumns.Add(edgeColumnsIt[j]);
+                    }
+
+                    //EdgeBeams
+                    List<Curve> edgeBeamsIt = _2DGrid.EdgeBeams(xIntLines, yIntLines, slabOuterCurves[i], docform);
+                    for (int j = 0; j < edgeBeamsIt.Count; j++)
+                    {
+                        edgeBeams.Add(edgeBeamsIt[j]);
+                    }
                 }
 
 
@@ -293,6 +314,11 @@ namespace B_GOpt.Forms
                     docform.Objects.AddLine(yBeams[i]);
                 }
 
+                //for (int i = 0; i < edgeBeams.Count; i++)
+                //{
+                //    docform.Objects.AddLine(edgeBeams[i]);
+                //}
+
                 for (int i = 0; i < outerColumns.Count; i++)
                 {
                     docform.Objects.AddLine(outerColumns[i]);
@@ -303,6 +329,11 @@ namespace B_GOpt.Forms
                     docform.Objects.AddLine(innerColumns[i]);
                 }
 
+                for (int i = 0; i < edgeColumns.Count; i++)
+                {
+                    docform.Objects.AddLine(edgeColumns[i]);
+                }
+
                 //for (int i = 0; i < slabs.Count; i++)
                 //{
                 //    docform.Objects.AddBrep(slabs[i]);
@@ -311,7 +342,10 @@ namespace B_GOpt.Forms
                 docform.Views.Redraw();
 
 
+
+
                 //Prompting the results to the dashboard
+                //-------------------------------------------------------------------------------------------
                 for (int i = 0; i < slabs.Count; i++)
                 {
                     double area = slabs[i].GetArea();
