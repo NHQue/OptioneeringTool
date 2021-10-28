@@ -74,12 +74,15 @@ namespace B_GOpt.Forms
             this.panelStructSystem = new System.Windows.Forms.Panel();
             this.rbtnSlabSystem = new B_GOpt.CustomControls.CustomRadioButton();
             this.rbtnGirderSystem = new B_GOpt.CustomControls.CustomRadioButton();
-            this.btnStructGrid3D = new B_GOpt.CustomControls.CustomButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rbtnTimberMat = new B_GOpt.CustomControls.CustomRadioButton();
             this.rbtnConcreteMat = new B_GOpt.CustomControls.CustomRadioButton();
             this.rbtnSteelMat = new B_GOpt.CustomControls.CustomRadioButton();
+            this.lblWeight = new System.Windows.Forms.Label();
+            this.lblWeightValue = new System.Windows.Forms.Label();
+            this.btnEvaluateObj = new B_GOpt.CustomControls.CustomButton();
             this.btnTestGrid = new B_GOpt.CustomControls.CustomButton();
+            this.btnStructGrid3D = new B_GOpt.CustomControls.CustomButton();
             ((System.ComponentModel.ISupportInitialize)(this.picBG)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCO2)).BeginInit();
             this.panelProgramm.SuspendLayout();
@@ -442,6 +445,7 @@ namespace B_GOpt.Forms
             this.btnSelectCore.StateTracking.Content.ShortText.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
             this.btnSelectCore.TabIndex = 28;
             this.btnSelectCore.Values.Text = "Select the Building Core";
+            this.btnSelectCore.Click += new System.EventHandler(this.btnSelectCore_Click);
             // 
             // picBG
             // 
@@ -478,7 +482,7 @@ namespace B_GOpt.Forms
             // 
             this.lblCO2.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCO2.ForeColor = System.Drawing.Color.Black;
-            this.lblCO2.Location = new System.Drawing.Point(4, 552);
+            this.lblCO2.Location = new System.Drawing.Point(4, 588);
             this.lblCO2.Name = "lblCO2";
             this.lblCO2.Size = new System.Drawing.Size(135, 26);
             this.lblCO2.TabIndex = 33;
@@ -526,7 +530,7 @@ namespace B_GOpt.Forms
             // 
             this.lblCosts.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCosts.ForeColor = System.Drawing.Color.Black;
-            this.lblCosts.Location = new System.Drawing.Point(3, 520);
+            this.lblCosts.Location = new System.Drawing.Point(3, 556);
             this.lblCosts.Name = "lblCosts";
             this.lblCosts.Size = new System.Drawing.Size(169, 26);
             this.lblCosts.TabIndex = 36;
@@ -550,7 +554,7 @@ namespace B_GOpt.Forms
             this.lblStructSystem.Name = "lblStructSystem";
             this.lblStructSystem.Size = new System.Drawing.Size(152, 26);
             this.lblStructSystem.TabIndex = 38;
-            this.lblStructSystem.Text = "Strucutural System";
+            this.lblStructSystem.Text = "Structural System";
             // 
             // lblUI
             // 
@@ -586,7 +590,7 @@ namespace B_GOpt.Forms
             // 
             this.lblCostsValue.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCostsValue.ForeColor = System.Drawing.Color.Black;
-            this.lblCostsValue.Location = new System.Drawing.Point(199, 520);
+            this.lblCostsValue.Location = new System.Drawing.Point(199, 556);
             this.lblCostsValue.Name = "lblCostsValue";
             this.lblCostsValue.Size = new System.Drawing.Size(117, 26);
             this.lblCostsValue.TabIndex = 42;
@@ -596,9 +600,9 @@ namespace B_GOpt.Forms
             // 
             this.lblCO2Value.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCO2Value.ForeColor = System.Drawing.Color.Black;
-            this.lblCO2Value.Location = new System.Drawing.Point(199, 552);
+            this.lblCO2Value.Location = new System.Drawing.Point(199, 588);
             this.lblCO2Value.Name = "lblCO2Value";
-            this.lblCO2Value.Size = new System.Drawing.Size(117, 26);
+            this.lblCO2Value.Size = new System.Drawing.Size(72, 26);
             this.lblCO2Value.TabIndex = 43;
             this.lblCO2Value.Text = "-";
             // 
@@ -633,6 +637,7 @@ namespace B_GOpt.Forms
             this.rbtnIndustrial.Text = "Industrial";
             this.rbtnIndustrial.TextColor = System.Drawing.Color.Black;
             this.rbtnIndustrial.UseVisualStyleBackColor = false;
+            this.rbtnIndustrial.CheckedChanged += new System.EventHandler(this.rbtnIndustrial_CheckedChanged);
             // 
             // rbtnOffice
             // 
@@ -655,6 +660,7 @@ namespace B_GOpt.Forms
             this.rbtnOffice.Text = "Office";
             this.rbtnOffice.TextColor = System.Drawing.Color.Black;
             this.rbtnOffice.UseVisualStyleBackColor = false;
+            this.rbtnOffice.CheckedChanged += new System.EventHandler(this.rbtnOffice_CheckedChanged);
             // 
             // rbtnResidential
             // 
@@ -677,6 +683,7 @@ namespace B_GOpt.Forms
             this.rbtnResidential.Text = "Residential";
             this.rbtnResidential.TextColor = System.Drawing.Color.Black;
             this.rbtnResidential.UseVisualStyleBackColor = false;
+            this.rbtnResidential.CheckedChanged += new System.EventHandler(this.rbtnResidential_CheckedChanged);
             // 
             // panelStructSystem
             // 
@@ -731,27 +738,6 @@ namespace B_GOpt.Forms
             this.rbtnGirderSystem.TextColor = System.Drawing.Color.Black;
             this.rbtnGirderSystem.UseVisualStyleBackColor = false;
             // 
-            // btnStructGrid3D
-            // 
-            this.btnStructGrid3D.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnStructGrid3D.BackColor = System.Drawing.Color.Transparent;
-            this.btnStructGrid3D.BackgorundColor = System.Drawing.Color.Transparent;
-            this.btnStructGrid3D.BorderColor = System.Drawing.Color.Black;
-            this.btnStructGrid3D.BorderRadius = 32;
-            this.btnStructGrid3D.BorderSize = 2;
-            this.btnStructGrid3D.FlatAppearance.BorderSize = 0;
-            this.btnStructGrid3D.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnStructGrid3D.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStructGrid3D.ForeColor = System.Drawing.Color.Black;
-            this.btnStructGrid3D.Location = new System.Drawing.Point(2, 787);
-            this.btnStructGrid3D.Name = "btnStructGrid3D";
-            this.btnStructGrid3D.Size = new System.Drawing.Size(229, 40);
-            this.btnStructGrid3D.TabIndex = 46;
-            this.btnStructGrid3D.Text = "Create Structural Grid 3D";
-            this.btnStructGrid3D.TextColor = System.Drawing.Color.Black;
-            this.btnStructGrid3D.UseVisualStyleBackColor = false;
-            this.btnStructGrid3D.Click += new System.EventHandler(this.btnStructGrid3D_Click);
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.rbtnTimberMat);
@@ -783,6 +769,7 @@ namespace B_GOpt.Forms
             this.rbtnTimberMat.Text = "Timber";
             this.rbtnTimberMat.TextColor = System.Drawing.Color.Black;
             this.rbtnTimberMat.UseVisualStyleBackColor = false;
+            this.rbtnTimberMat.CheckedChanged += new System.EventHandler(this.rbtnTimberMat_CheckedChanged);
             // 
             // rbtnConcreteMat
             // 
@@ -805,6 +792,7 @@ namespace B_GOpt.Forms
             this.rbtnConcreteMat.Text = "Concrete";
             this.rbtnConcreteMat.TextColor = System.Drawing.Color.Black;
             this.rbtnConcreteMat.UseVisualStyleBackColor = false;
+            this.rbtnConcreteMat.CheckedChanged += new System.EventHandler(this.rbtnConcreteMat_CheckedChanged);
             // 
             // rbtnSteelMat
             // 
@@ -827,6 +815,48 @@ namespace B_GOpt.Forms
             this.rbtnSteelMat.Text = "Steel";
             this.rbtnSteelMat.TextColor = System.Drawing.Color.Black;
             this.rbtnSteelMat.UseVisualStyleBackColor = false;
+            this.rbtnSteelMat.CheckedChanged += new System.EventHandler(this.rbtnSteelMat_CheckedChanged);
+            // 
+            // lblWeight
+            // 
+            this.lblWeight.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWeight.ForeColor = System.Drawing.Color.Black;
+            this.lblWeight.Location = new System.Drawing.Point(4, 522);
+            this.lblWeight.Name = "lblWeight";
+            this.lblWeight.Size = new System.Drawing.Size(117, 26);
+            this.lblWeight.TabIndex = 49;
+            this.lblWeight.Text = "Weight";
+            // 
+            // lblWeightValue
+            // 
+            this.lblWeightValue.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWeightValue.ForeColor = System.Drawing.Color.Black;
+            this.lblWeightValue.Location = new System.Drawing.Point(199, 522);
+            this.lblWeightValue.Name = "lblWeightValue";
+            this.lblWeightValue.Size = new System.Drawing.Size(117, 26);
+            this.lblWeightValue.TabIndex = 50;
+            this.lblWeightValue.Text = "-";
+            // 
+            // btnEvaluateObj
+            // 
+            this.btnEvaluateObj.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnEvaluateObj.BackColor = System.Drawing.Color.Transparent;
+            this.btnEvaluateObj.BackgorundColor = System.Drawing.Color.Transparent;
+            this.btnEvaluateObj.BorderColor = System.Drawing.Color.Black;
+            this.btnEvaluateObj.BorderRadius = 32;
+            this.btnEvaluateObj.BorderSize = 2;
+            this.btnEvaluateObj.FlatAppearance.BorderSize = 0;
+            this.btnEvaluateObj.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEvaluateObj.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEvaluateObj.ForeColor = System.Drawing.Color.Black;
+            this.btnEvaluateObj.Location = new System.Drawing.Point(394, 787);
+            this.btnEvaluateObj.Name = "btnEvaluateObj";
+            this.btnEvaluateObj.Size = new System.Drawing.Size(121, 40);
+            this.btnEvaluateObj.TabIndex = 51;
+            this.btnEvaluateObj.Text = "Ev Obj";
+            this.btnEvaluateObj.TextColor = System.Drawing.Color.Black;
+            this.btnEvaluateObj.UseVisualStyleBackColor = false;
+            this.btnEvaluateObj.Click += new System.EventHandler(this.btnEvaluateObj_Click);
             // 
             // btnTestGrid
             // 
@@ -842,12 +872,33 @@ namespace B_GOpt.Forms
             this.btnTestGrid.ForeColor = System.Drawing.Color.Black;
             this.btnTestGrid.Location = new System.Drawing.Point(250, 787);
             this.btnTestGrid.Name = "btnTestGrid";
-            this.btnTestGrid.Size = new System.Drawing.Size(229, 40);
+            this.btnTestGrid.Size = new System.Drawing.Size(121, 40);
             this.btnTestGrid.TabIndex = 48;
             this.btnTestGrid.Text = "testGrid";
             this.btnTestGrid.TextColor = System.Drawing.Color.Black;
             this.btnTestGrid.UseVisualStyleBackColor = false;
             this.btnTestGrid.Click += new System.EventHandler(this.btnTestGrid_Click);
+            // 
+            // btnStructGrid3D
+            // 
+            this.btnStructGrid3D.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnStructGrid3D.BackColor = System.Drawing.Color.Transparent;
+            this.btnStructGrid3D.BackgorundColor = System.Drawing.Color.Transparent;
+            this.btnStructGrid3D.BorderColor = System.Drawing.Color.Black;
+            this.btnStructGrid3D.BorderRadius = 32;
+            this.btnStructGrid3D.BorderSize = 2;
+            this.btnStructGrid3D.FlatAppearance.BorderSize = 0;
+            this.btnStructGrid3D.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnStructGrid3D.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStructGrid3D.ForeColor = System.Drawing.Color.Black;
+            this.btnStructGrid3D.Location = new System.Drawing.Point(2, 787);
+            this.btnStructGrid3D.Name = "btnStructGrid3D";
+            this.btnStructGrid3D.Size = new System.Drawing.Size(229, 40);
+            this.btnStructGrid3D.TabIndex = 46;
+            this.btnStructGrid3D.Text = "Create Structural Grid 3D";
+            this.btnStructGrid3D.TextColor = System.Drawing.Color.Black;
+            this.btnStructGrid3D.UseVisualStyleBackColor = false;
+            this.btnStructGrid3D.Click += new System.EventHandler(this.btnStructGrid3D_Click);
             // 
             // Form2
             // 
@@ -856,6 +907,9 @@ namespace B_GOpt.Forms
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
             this.ClientSize = new System.Drawing.Size(570, 834);
+            this.Controls.Add(this.btnEvaluateObj);
+            this.Controls.Add(this.lblWeightValue);
+            this.Controls.Add(this.lblWeight);
             this.Controls.Add(this.btnTestGrid);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnStructGrid3D);
@@ -949,5 +1003,8 @@ namespace B_GOpt.Forms
         private CustomControls.CustomRadioButton rbtnConcreteMat;
         private CustomControls.CustomRadioButton rbtnSteelMat;
         private CustomControls.CustomButton btnTestGrid;
+        private System.Windows.Forms.Label lblWeight;
+        private System.Windows.Forms.Label lblWeightValue;
+        private CustomControls.CustomButton btnEvaluateObj;
     }
 }

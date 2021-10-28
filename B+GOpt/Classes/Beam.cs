@@ -13,9 +13,10 @@ namespace B_GOpt.Classes
         //Properties with getter and setter
 
         public LineCurve LineCurve { get; set; }
+
         public string Type { get; set; }
 
-        //public double Length { get; set; }              //Already exist as a LineCurve methods
+        public double Length { get; set; }              
 
         public double Height { get; set; }
 
@@ -29,14 +30,34 @@ namespace B_GOpt.Classes
 
 
         //Constructors
-        public Beam(LineCurve lineCurve)
+
+        public Beam()
+        {
+
+        }
+
+        public Beam(LineCurve lineCurve, string type, int storey, double load, double xSpac, double ySpac)
         {
             LineCurve = lineCurve;
+            Length = lineCurve.GetLength();
+            Type = type;
+            Storey = storey;
+            Load = load * xSpac;
         }
 
 
         //Methods
         //----------------------------------------------------------------------------------------------------------
+        public override string ToString()
+        {
+            return String.Format($"Beam; Length: {Length} [m]; Storey: {Storey} [m]; Load: {Load} [kN/m]; CrossSection: {CrossSection}");
+        }
+
+        //public Line ToLine(Beam beam)
+        //{
+        //    Line beamLine = new Line(beam.PointAtStart, beam.PointAtEnd);
+        //    return beamLine; 
+        //}
 
     }
 }

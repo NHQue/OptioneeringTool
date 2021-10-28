@@ -113,24 +113,29 @@ namespace B_GOpt.Classes
 
         public Brep GetBaseSurface(Brep brep, RhinoDoc doc)
         {
-            BrepFaceList faces = brep.Faces;
+            double tolerance = doc.ModelAbsoluteTolerance;
+
+            BrepEdgeList brepEdges = brep.Edges;
+            CurveList brepBaseCurves = new CurveList();
             Brep baseSrf = new Brep();
 
-            for (int i = 0; i < faces.Count; i++)
+            for (int i = 0; i < brepEdges.Count; i++)
             {
-                Vector3d neg_z = new Vector3d(0, 0, -1);
-
-                if (faces[i].NormalAt(1, 1) == neg_z)
+                if (brepEdges[i].PointAt(0.5).Z == 0)
                 {
-                    BrepFace baseFace = faces[i];
-                    baseSrf = baseFace.ToBrep();
-                }
-                else
-                    continue;
+                    brepBaseCurves.Add(brepEdges[i].ToNurbsCurve());
+                    //doc.Objects.AddCurve(brepEdges[i].ToNurbsCurve());
+                } 
             }
 
-            //doc.Objects.AddBrep(baseSrf);
-            doc.Views.Redraw();
+            Brep[] breps = Brep.CreatePlanarBreps(brepBaseCurves, tolerance);
+
+            //for (int i = 0; i < breps.Length; i++)
+            //{
+            //    doc.Objects.AddBrep(breps[i]);
+            //}
+
+            baseSrf = breps[0];
 
             return baseSrf;
         }
@@ -235,7 +240,7 @@ namespace B_GOpt.Classes
         /// <param name="floorHeight"></param>
         /// <param name="doc"></param>
         /// <returns></returns>
-        public RhinoList<Brep> ConstructSlabs(Brep brep, double floorHeight, RhinoDoc doc)
+        public RhinoList<Brep> ConstructSlabs(Brep brep, double actFloorHeight, int storeyCount, RhinoDoc doc)
         {
             double tolerance = doc.ModelAbsoluteTolerance;
 
@@ -244,30 +249,37 @@ namespace B_GOpt.Classes
             RhinoList<Curve> outerEdgeCurves = new RhinoList<Curve>();       //Constructs a new empty List of curves 
             RhinoList<Curve> innerEdgeCurves = new RhinoList<Curve>();       //Constructs a new empty List of curves 
 
-            for (double d = FloorHeight(brep, floorHeight); d < BuildingHeight(brep); d = d + FloorHeight(brep, floorHeight))
+            for (int i = 0; i < storeyCount; i++)
             {
-                Point3d origin = new Point3d(0, 0, d);
+                double height = actFloorHeight * (i+1);
+                Point3d origin = new Point3d(0, 0, height);
                 Vector3d planeNorm = new Vector3d(0, 0, 1);
                 Plane plane = new Plane(origin, planeNorm);
                 planes.Add(plane);
             }
 
-
             //Calculate the intersections from building geometry and planes
             for (int i = 0; i < planes.Count; i++)
             {
-                bool res = Rhino.Geometry.Intersect.Intersection.BrepPlane(brep, planes[i], 0.01, out Curve[] intCurves, out Point3d[] intPoints);
+                bool res = Rhino.Geometry.Intersect.Intersection.BrepPlane(brep, planes[i], tolerance, out Curve[] intCurves, out Point3d[] intPoints);
 
                 for (int j = 0; j < intCurves.Length; j++)
                 {
                     outerEdgeCurves.Add(intCurves[j]);
-                    //doc.Objects.AddCurve(intCurves[j]);
 
+                    //doc.Objects.AddCurve(intCurves[j]);
                 }
             }
 
+            int numberOfSlabs = planes.Count;
+            if (planes.Count >= outerEdgeCurves.Count)
+            {
+                numberOfSlabs = outerEdgeCurves.Count;
+            }
+
+
             //Creates the floor slabs
-            for (int i = 0; i < planes.Count; i++)
+            for (int i = 0; i < numberOfSlabs; i++)
             {
                 RhinoList<Curve> crvs = new RhinoList<Curve>();
 
@@ -284,16 +296,9 @@ namespace B_GOpt.Classes
                 crvs.Clear();
             }
 
-            //Adds the slabs do the Rhino Document
-            //for (int i = 0; i < floorSlabs.Count; i++)
-            //{
-            //    doc.Objects.AddBrep(floorSlabs[i]);
-            //}
-
-            //doc.Views.Redraw();
-
             return floorSlabs;
         }
+
 
 
         /// <summary>

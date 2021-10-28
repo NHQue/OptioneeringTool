@@ -15,6 +15,7 @@ using Rhino.Geometry.Collections;
 using System.Windows.Forms;
 using ComponentFactory.Krypton.Toolkit;
 using Rhino.Geometry.Intersect;
+using B_GOpt.Classes;
 
 namespace B_GOpt
 {
@@ -46,8 +47,102 @@ namespace B_GOpt
 
 
             return null;
-
         }
+
+        public static RhinoList<Brep> SelectCores()
+        {
+            GetObject gb = new GetObject();
+            gb.SetCommandPrompt("Select the buildin's cores");
+            gb.EnablePreSelect(false, true);
+            gb.GeometryFilter = ObjectType.Brep;
+            gb.GetMultiple(1, 0);
+
+            //if (gb.CommandResult() != Result.Success)
+            //    return gb.CommandResult();
+
+            RhinoList<Brep> cores = new RhinoList<Brep>();
+
+            for (int i = 0; i < gb.ObjectCount; i++)
+            {
+                Brep core = gb.Object(i).Brep();                    //Checks if the selected object can be converted to a brep that means it is a brep
+                if (null != core)
+                    cores.Add(core);
+            }
+
+            if (cores != null)
+            {
+                if (cores.Count == 1)
+                    RhinoApp.WriteLine( "One core successfully selected");
+                else if (cores.Count == 2)
+                    RhinoApp.WriteLine("Two cores successfully selected");
+                else if (cores.Count == 3)
+                    RhinoApp.WriteLine("Three cores successfully selected");
+                else if (cores.Count == 3)
+                    RhinoApp.WriteLine("Four cores successfully selected");
+                else
+                    RhinoApp.WriteLine("Multiple cores successfully selected");
+
+                return cores;
+            }
+
+            return null;
+        }
+
+        public static bool IsColumnInsideBreps(RhinoList<Brep> breps, Line column, RhinoDoc doc)
+        {
+            double tolerance = doc.ModelAbsoluteTolerance;
+            bool strictlyIn = false;
+
+            column.ToNurbsCurve().Domain = new Interval(0, 1);
+            Point3d midPt = new Point3d(column.PointAt(0.5));
+
+            List<bool> boolValues = new List<bool>();
+
+            for (int i = 0; i < breps.Count; i++)
+            {
+                if (breps[i].IsPointInside(midPt, tolerance, strictlyIn))
+                    boolValues.Add(true);
+                else
+                    boolValues.Add(false);
+            }
+
+            if (boolValues.Contains(true))
+                return true;
+            else
+                return false;
+        }
+
+
+
+
+
+
+
+        public static Beam SelectMember(Beam lineCurve)
+        {
+            GetObject gb = new GetObject();
+            gb.SetCommandPrompt("Select a building geometry");
+            gb.GeometryFilter = ObjectType.Curve;
+            gb.DisablePreSelect();
+            gb.SubObjectSelect = false;
+            gb.Get();
+            Curve crv = gb.Object(0).Curve();
+
+            lineCurve = crv as Beam;
+
+            if (gb.CommandResult() != Result.Success)
+                return null;
+
+            if (lineCurve != null)
+            {
+                RhinoApp.WriteLine("LineCurve successfully selected");
+                return lineCurve;
+            }
+
+            return null;
+        }
+
+
 
 
         /// <summary>
@@ -77,7 +172,6 @@ namespace B_GOpt
             }
 
             return null;
-
         }
 
 

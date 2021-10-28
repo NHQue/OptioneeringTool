@@ -10,7 +10,7 @@ using Rhino.Geometry.Intersect;
 
 namespace B_GOpt.Classes
 {
-    public static class _2DGrid
+    public static class StructGrid
     {
         //Methods
         //----------------------------------------------------------------------------------------------------------
@@ -169,7 +169,7 @@ namespace B_GOpt.Classes
                     for (int j = 0; j < curveSeg.Length; j++)
                     {
                         edgeBeams.Add(curveSeg[j]);
-                        doc.Objects.AddCurve(curveSeg[j]);
+                        //doc.Objects.AddCurve(curveSeg[j]);
                     }
                 }
             }
@@ -207,7 +207,7 @@ namespace B_GOpt.Classes
                 for (int j = 0; j < curveSeg.Length; j++)
                 {
                     edgeBeams.Add(curveSeg[j]);
-                    doc.Objects.AddCurve(curveSeg[j]);
+                    //doc.Objects.AddCurve(curveSeg[j]);
                 }
             }
 
@@ -323,6 +323,78 @@ namespace B_GOpt.Classes
                 }
             }
         }
+
+
+        public static void CoreBeamInt(List<Brep> cores, List<Line> columns, RhinoDoc doc)
+        {
+
+
+
+        }
+
+
+        public static bool IsColumnInsideBreps(RhinoList<Brep> breps, Line column, RhinoDoc doc)
+        {
+            double tolerance = doc.ModelAbsoluteTolerance;
+            bool strictlyIn = false;
+
+            column.ToNurbsCurve().Domain = new Interval(0, 1);
+            Point3d midPt = new Point3d(column.PointAt(0.5));
+
+            List<bool> boolValues = new List<bool>();
+
+            for (int i = 0; i < breps.Count; i++)
+            {
+                if (breps[i].IsPointInside(midPt, tolerance, strictlyIn))
+                    boolValues.Add(true);
+                else
+                    boolValues.Add(false);
+            }
+
+            if (boolValues.Contains(true))
+                return true;
+            else
+                return false;
+        }
+
+
+
+
+
+        public static void CoreColumnsInt(RhinoList<Brep> cores, List<Line> columns, RhinoDoc doc)
+        {
+            double tolerance = doc.ModelAbsoluteTolerance;
+
+            for (int i = 0; i < cores.Count; i++)
+            {
+                for (int j= 0; j < columns.Count; j++)
+                {
+                    columns[j].ToNurbsCurve().Domain = new Interval(0, 1);
+                    Point3d midPt = new Point3d(columns[i].PointAt(0.5));
+
+                    if (cores[i].IsPointInside(columns[j].PointAt(0.5), tolerance, false))
+                    {
+                        columns.Remove(columns[j]);
+                    }
+                }
+            }
+        }
+
+        public static bool ColumnNotInCore(Brep core, Line column, RhinoDoc doc)
+        {
+            double tolerance = doc.ModelAbsoluteTolerance;
+
+            column.ToNurbsCurve().Domain = new Interval(0, 1);
+            Point3d midPt = new Point3d(column.PointAt(0.5));
+
+            if (!core.IsPointInside(column.PointAt(0.5), tolerance, false))
+                return true;
+            else
+                return false;
+        }
+
+
+
 
     }
 }

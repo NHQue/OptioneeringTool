@@ -87,12 +87,13 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\2DGrid.cs" />
+    <Compile Include="Classes\StructGrid.cs" />
     <Compile Include="Classes\Beam.cs" />
     <Compile Include="Classes\BuildingGeometry.cs" />
     <Compile Include="Classes\Column.cs" />
     <Compile Include="Classes\Core.cs" />
     <Compile Include="Classes\ExportToDlubal.cs" />
+    <Compile Include="Classes\PreDim.cs" />
     <Compile Include="Classes\Slab.cs" />
     <Compile Include="Commands\BGOpt_DefaultCommand.cs" />
     <Compile Include="BGOptPlugIn.cs" />
