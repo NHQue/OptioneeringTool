@@ -384,7 +384,6 @@ namespace B_GOpt.Forms
 
 
 
-
                 //Creates the Grid 2D for all slabs
                 //Iteration variable i corresponds to the storey
                 //-------------------------------------------------------------------------------------------
@@ -405,27 +404,44 @@ namespace B_GOpt.Forms
                         List<Line> xBeamsIt = StructGrid.YBeams(xIntLines, yIntLines, docform);
                         for (int j = 0; j < xBeamsIt.Count; j++)
                         {
-                            LineCurve lineCurve = new LineCurve(xBeamsIt[j]);
-                            Beam xBeam = new Beam(lineCurve, "Primary", i, 5, actXSpac, actYSpac);
-                            beamsInXDir.Add(xBeam);
 
-                            xBeams.Add(xBeamsIt[j]);
+                            RhinoList<Line> intersectedLines = MyFunctions.SplitLineWithBreps(cores, xBeamsIt[j], docform);
+
+                            for (int k = 0; k < intersectedLines.Count; k++)
+                            {
+                                if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
+                                {
+                                    LineCurve lineCurve = new LineCurve(xBeamsIt[j]);
+                                    Beam xBeam = new Beam(lineCurve, "Primary", i, 5, actXSpac, actYSpac);
+                                    beamsInXDir.Add(xBeam);
+
+                                    xBeams.Add(intersectedLines[k]);
+                                }
+                            }
                         }
 
                         for (int j = 0; j < yIntLines.Count; j++)
                         {
-                            LineCurve lineCurve = new LineCurve(yIntLines[j]);
-                            Beam yBeam = new Beam(lineCurve, "Secondary", i, 5, actXSpac, actYSpac);
-                            beamsInYDir.Add(yBeam);
+                            RhinoList<Line> intersectedLines = MyFunctions.SplitLineWithBreps(cores, yIntLines[j], docform);
 
-                            yBeams.Add(yIntLines[j]);
+                            for (int k = 0; k < intersectedLines.Count; k++)
+                            {
+                                if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
+                                {
+                                    LineCurve lineCurve = new LineCurve(yIntLines[j]);
+                                    Beam yBeam = new Beam(lineCurve, "Secondary", i, 5, actXSpac, actYSpac);
+                                    beamsInYDir.Add(yBeam);
+
+                                    yBeams.Add(intersectedLines[k]);
+                                }
+                            }
                         }
 
                         //InnerColumns
                         List<Line> innerColumnsIt = StructGrid.InnerColumns(xIntLines, yIntLines, actFloorHeight, docform);
                         for (int j = 0; j < innerColumnsIt.Count; j++)
                         {
-                            if (!StructGrid.IsColumnInsideBreps(cores, innerColumnsIt[j], docform))
+                            if (!MyFunctions.IsLineInsideBreps(cores, innerColumnsIt[j], docform))
                             {
                                 LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
                                 Column col = new Column(lineCurve, i, 5, actXSpac, actYSpac);
@@ -433,16 +449,8 @@ namespace B_GOpt.Forms
 
                                 innerColumns.Add(innerColumnsIt[j]);
                             }
-
-                            ////Without Core
-                            //LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
-                            //Column col = new Column(lineCurve, i, 5, actXSpac, actYSpac);
-                            //innerCol.Add(col);
-
-                            //innerColumns.Add(innerColumnsIt[j]);
                         }
                     }
-
 
 
                     //xBeams as ContinousBeams, yBeams as SingleSpanBeams
@@ -450,21 +458,38 @@ namespace B_GOpt.Forms
                     {
                         for (int j = 0; j < xIntLines.Count; j++)
                         {
-                            LineCurve lineCurve = new LineCurve(xIntLines[j]);
-                            Beam xBeam = new Beam(lineCurve, "Secondary", i, 5, actXSpac, actYSpac);
-                            beamsInXDir.Add(xBeam);
+                            RhinoList<Line> intersectedLines = MyFunctions.SplitLineWithBreps(cores, xIntLines[j], docform);
 
-                            xBeams.Add(xIntLines[j]);
+                            for (int k = 0; k < intersectedLines.Count; k++)
+                            {
+                                if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
+                                {
+                                    LineCurve lineCurve = new LineCurve(intersectedLines[k]);
+                                    Beam xBeam = new Beam(lineCurve, "Secondary", i, 5, actXSpac, actYSpac);
+                                    beamsInXDir.Add(xBeam);
+
+                                    xBeams.Add(intersectedLines[k]);
+                                }
+                            }
                         }
+
 
                         List<Line> yBeamsIt = StructGrid.YBeams(yIntLines, xIntLines, docform);
                         for (int j = 0; j < yBeamsIt.Count; j++)
                         {
-                            LineCurve lineCurve = new LineCurve(yBeamsIt[j]);
-                            Beam yBeam = new Beam(lineCurve, "Primary", i, 5, actXSpac, actYSpac);
-                            beamsInYDir.Add(yBeam);
+                            RhinoList<Line> intersectedLines = MyFunctions.SplitLineWithBreps(cores, yBeamsIt[j], docform);
 
-                            yBeams.Add(yBeamsIt[j]);
+                            for (int k = 0; k < intersectedLines.Count; k++)
+                            {
+                                if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
+                                {
+                                    LineCurve lineCurve = new LineCurve(yBeamsIt[j]);
+                                    Beam yBeam = new Beam(lineCurve, "Primary", i, 5, actXSpac, actYSpac);
+                                    beamsInYDir.Add(yBeam);
+
+                                    yBeams.Add(intersectedLines[k]);
+                                }
+                            }
                         }
                         
 
@@ -472,7 +497,7 @@ namespace B_GOpt.Forms
                         List<Line> innerColumnsIt = StructGrid.InnerColumns(yIntLines, xIntLines, actFloorHeight, docform);
                         for (int j = 0; j < innerColumnsIt.Count; j++)
                         {
-                            if (!StructGrid.IsColumnInsideBreps(cores, innerColumnsIt[j], docform))
+                            if (!MyFunctions.IsLineInsideBreps(cores, innerColumnsIt[j], docform))
                             {
                                 LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
                                 Column col = new Column(lineCurve, i, 5, actXSpac, actYSpac);
@@ -480,13 +505,6 @@ namespace B_GOpt.Forms
 
                                 innerColumns.Add(innerColumnsIt[j]);
                             }
-
-                            //Without Core
-                            //LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
-                            //Column col = new Column(lineCurve, i, 5, actXSpac, actYSpac);
-                            //innerCol.Add(col);
-
-                            //innerColumns.Add(innerColumnsIt[j]);
                         }
                     }
 
@@ -526,20 +544,17 @@ namespace B_GOpt.Forms
 
 
 
-
-                //Core member intersection
-
                 //Adds the elements to the Rhino Document
 
-                //for (int i = 0; i < xBeams.Count; i++)
-                //{
-                //    docform.Objects.AddLine(xBeams[i]);
-                //}
+                for (int i = 0; i < xBeams.Count; i++)
+                {
+                    docform.Objects.AddLine(xBeams[i]);
+                }
 
-                //for (int i = 0; i < yBeams.Count; i++)
-                //{
-                //    docform.Objects.AddLine(yBeams[i]);
-                //}
+                for (int i = 0; i < yBeams.Count; i++)
+                {
+                    docform.Objects.AddLine(yBeams[i]);
+                }
 
                 //for (int i = 0; i < edgeBeams.Count; i++)
                 //{
@@ -556,10 +571,10 @@ namespace B_GOpt.Forms
                     docform.Objects.AddLine(innerColumns[i]);
                 }
 
-                for (int i = 0; i < edgeColumns.Count; i++)
-                {
-                    docform.Objects.AddLine(edgeColumns[i]);
-                }
+                //for (int i = 0; i < edgeColumns.Count; i++)
+                //{
+                //    docform.Objects.AddLine(edgeColumns[i]);
+                //}
 
                 //for (int i = 0; i < slabs.Count; i++)
                 //{

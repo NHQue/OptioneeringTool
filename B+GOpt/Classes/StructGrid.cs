@@ -325,76 +325,80 @@ namespace B_GOpt.Classes
         }
 
 
-        public static void CoreBeamInt(List<Brep> cores, List<Line> columns, RhinoDoc doc)
-        {
-
-
-
-        }
-
-
-        public static bool IsColumnInsideBreps(RhinoList<Brep> breps, Line column, RhinoDoc doc)
+        public static void CoreBeamInt(Brep core, List<Curve> beamsX, List<Curve>  beamsY, RhinoDoc doc)
         {
             double tolerance = doc.ModelAbsoluteTolerance;
-            bool strictlyIn = false;
 
-            column.ToNurbsCurve().Domain = new Interval(0, 1);
-            Point3d midPt = new Point3d(column.PointAt(0.5));
-
-            List<bool> boolValues = new List<bool>();
-
-            for (int i = 0; i < breps.Count; i++)
+            //Intersection beams in x-direction with core geometry
+            RhinoList<Rhino.Geometry.Curve> beamsXint = new RhinoList<Rhino.Geometry.Curve>();
+            for (int i = 0; i < beamsX.Count; i++)   //Gets all the beams in x-direction that interesect with the core
             {
-                if (breps[i].IsPointInside(midPt, tolerance, strictlyIn))
-                    boolValues.Add(true);
-                else
-                    boolValues.Add(false);
+                beamsX[i].Domain = new Interval(0, 1);
+
+                if (core.IsPointInside(beamsX[i].PointAt(0), tolerance, false)
+                    || core.IsPointInside(beamsX[i].PointAt(0.25), tolerance, false)
+                    || core.IsPointInside(beamsX[i].PointAt(0.5), tolerance, false)
+                    || core.IsPointInside(beamsX[i].PointAt(0.75), tolerance, false)
+                    || core.IsPointInside(beamsX[i].PointAt(1), tolerance, false))
+                {
+                    beamsXint.Add(beamsX[i]);
+                    beamsX.Remove(beamsX[i]);
+                }
             }
 
-            if (boolValues.Contains(true))
-                return true;
-            else
-                return false;
-        }
-
-
-
-
-
-        public static void CoreColumnsInt(RhinoList<Brep> cores, List<Line> columns, RhinoDoc doc)
-        {
-            double tolerance = doc.ModelAbsoluteTolerance;
-
-            for (int i = 0; i < cores.Count; i++)
+            RhinoList<Rhino.Geometry.Curve> beamsXintSegments = new RhinoList<Rhino.Geometry.Curve>();
+            for (int i = 0; i < beamsXint.Count; i++)
             {
-                for (int j= 0; j < columns.Count; j++)
+                Curve[] crvs = beamsXint[i].Split(core, tolerance, tolerance);
+                for (int j = 0; j < crvs.Length; j++)
                 {
-                    columns[j].ToNurbsCurve().Domain = new Interval(0, 1);
-                    Point3d midPt = new Point3d(columns[i].PointAt(0.5));
+                    crvs[j].Domain = new Interval(0, 1);
+                    Point3d midPt = crvs[j].PointAt(0.5);
+                    //doc.Objects.AddPoint(midPt);
 
-                    if (cores[i].IsPointInside(columns[j].PointAt(0.5), tolerance, false))
+                    if (!core.IsPointInside(midPt, tolerance, false))
                     {
-                        columns.Remove(columns[j]);
+                        beamsXintSegments.Add(crvs[j]);
+                        //doc.Objects.AddCurve(crvs[j]);
+                    }
+                }
+            }
+
+
+            //Intersection beams in y-direction with core geometry
+            RhinoList<Rhino.Geometry.Curve> beamsYint = new RhinoList<Rhino.Geometry.Curve>();
+            for (int i = 0; i < beamsY.Count; i++)   //Gets all the beams in y-direction that interesect with the core
+            {
+                beamsY[i].Domain = new Interval(0, 1);
+
+                if (core.IsPointInside(beamsY[i].PointAt(0), tolerance, false)
+                    || core.IsPointInside(beamsY[i].PointAt(0.25), tolerance, false)
+                    || core.IsPointInside(beamsY[i].PointAt(0.5), tolerance, false)
+                    || core.IsPointInside(beamsY[i].PointAt(0.75), tolerance, false)
+                    || core.IsPointInside(beamsY[i].PointAt(1), tolerance, false))
+                {
+                    beamsYint.Add(beamsY[i]);
+                    beamsY.Remove(beamsY[i]);
+                }
+            }
+
+            RhinoList<Rhino.Geometry.Curve> beamsYintSegments = new RhinoList<Rhino.Geometry.Curve>();
+            for (int i = 0; i < beamsYint.Count; i++)
+            {
+                Curve[] crvs = beamsYint[i].Split(core, tolerance, tolerance);
+                for (int j = 0; j < crvs.Length; j++)
+                {
+                    crvs[j].Domain = new Interval(0, 1);
+                    Point3d midPt = crvs[j].PointAt(0.5);
+                    //doc.Objects.AddPoint(midPt);
+
+                    if (!core.IsPointInside(midPt, tolerance, false))
+                    {
+                        beamsYintSegments.Add(crvs[j]);
+                        //doc.Objects.AddCurve(crvs[j]);
                     }
                 }
             }
         }
-
-        public static bool ColumnNotInCore(Brep core, Line column, RhinoDoc doc)
-        {
-            double tolerance = doc.ModelAbsoluteTolerance;
-
-            column.ToNurbsCurve().Domain = new Interval(0, 1);
-            Point3d midPt = new Point3d(column.PointAt(0.5));
-
-            if (!core.IsPointInside(column.PointAt(0.5), tolerance, false))
-                return true;
-            else
-                return false;
-        }
-
-
-
-
     }
 }

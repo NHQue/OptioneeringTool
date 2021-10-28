@@ -88,36 +88,6 @@ namespace B_GOpt
             return null;
         }
 
-        public static bool IsColumnInsideBreps(RhinoList<Brep> breps, Line column, RhinoDoc doc)
-        {
-            double tolerance = doc.ModelAbsoluteTolerance;
-            bool strictlyIn = false;
-
-            column.ToNurbsCurve().Domain = new Interval(0, 1);
-            Point3d midPt = new Point3d(column.PointAt(0.5));
-
-            List<bool> boolValues = new List<bool>();
-
-            for (int i = 0; i < breps.Count; i++)
-            {
-                if (breps[i].IsPointInside(midPt, tolerance, strictlyIn))
-                    boolValues.Add(true);
-                else
-                    boolValues.Add(false);
-            }
-
-            if (boolValues.Contains(true))
-                return true;
-            else
-                return false;
-        }
-
-
-
-
-
-
-
         public static Beam SelectMember(Beam lineCurve)
         {
             GetObject gb = new GetObject();
@@ -364,7 +334,7 @@ namespace B_GOpt
             {
                 NurbsCurve lineToSplitToCrv = linesToSplit[i].ToNurbsCurve();
                 lineToSplitToCrv.Domain = new Interval(0, 1);
-                var intParams = new List<double>();
+                List<double> intParams = new List<double>();
 
                 for (int j = 0; j < linesSplit.Count; j++)
                 {
@@ -389,6 +359,115 @@ namespace B_GOpt
 
             return lineSegments;
         }
+
+
+        public static RhinoList<Line> SplitLineWithBreps(RhinoList<Brep> breps, Line line, RhinoDoc doc)
+        {
+            //Basic intersection parameters
+            double tolerance = doc.ModelAbsoluteTolerance;
+
+            RhinoList<Line> lineSegments = new RhinoList<Line>();
+            NurbsCurve lineSplitToCrv = line.ToNurbsCurve();
+            lineSplitToCrv.Domain = new Interval(0, 1);
+            List<double> intParams = new List<double>();
+
+            for (int i = 0; i < breps.Count; i++)
+            {
+                bool intersection = Rhino.Geometry.Intersect.Intersection.CurveBrep(lineSplitToCrv, breps[i], tolerance, tolerance, out double[] t);
+
+                for (int j = 0; j < t.Length; j++)
+                {
+                    intParams.Add(t[j]);
+                }
+            }
+
+            if (intParams.Count == 0)
+            {
+                lineSegments.Add(line);
+            }
+            else 
+            {
+                Curve[] curveSeg = lineSplitToCrv.Split(intParams);
+
+                for (int i = 0; i < curveSeg.Length; i++)
+                {
+                    Line tempLine = new Line(curveSeg[i].PointAtStart, curveSeg[i].PointAtEnd);
+
+                    lineSegments.Add(tempLine);
+                    //doc.Objects.AddCurve(curveSeg[j]);
+                }
+            }
+
+            return lineSegments;
+        }
+
+
+        public static bool IsLineInsideBreps(RhinoList<Brep> breps, Line line, RhinoDoc doc)
+        {
+            double tolerance = doc.ModelAbsoluteTolerance;
+            bool strictlyIn = false;
+
+            line.ToNurbsCurve().Domain = new Interval(0, 1);
+            Point3d midPt = new Point3d(line.PointAt(0.5));
+
+            List<bool> boolValues = new List<bool>();
+
+            for (int i = 0; i < breps.Count; i++)
+            {
+                if (breps[i].IsPointInside(midPt, tolerance, strictlyIn))
+                    boolValues.Add(true);
+                else
+                    boolValues.Add(false);
+            }
+
+            if (boolValues.Contains(true))
+                return true;
+            else
+                return false;
+        }
+
+
+
+
+
+
+
+        public static bool LineInBrep(Line line, Brep brep, RhinoDoc doc)
+        {
+            double tolerance = doc.ModelAbsoluteTolerance;
+            bool strictlyIn = false;
+
+            line.ToNurbsCurve().Domain = new Interval(0, 1);
+            Point3d midPt = new Point3d(line.PointAt(0.5));
+
+            if (brep.IsPointInside(midPt, tolerance, strictlyIn))
+                return true;
+            else
+                return false;
+
+
+            //double tolerance = doc.ModelAbsoluteTolerance;
+            //bool strictlyIn = false;
+            //column.ToNurbsCurve().Domain = new Interval(0, 1);
+            //Point3d midPt = new Point3d(column.PointAt(0.5));
+            //List<bool> boolValues = new List<bool>();
+            //for (int i = 0; i < breps.Count; i++)
+            //{
+            //    if (breps[i].IsPointInside(midPt, tolerance, strictlyIn))
+            //        boolValues.Add(true);
+            //    else
+            //        boolValues.Add(false);
+            //}
+            //if (boolValues.Contains(true))
+            //    return true;
+            //else
+            //    return false;
+        }
+
+
+
+
+
 
 
 
