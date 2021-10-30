@@ -60,32 +60,29 @@ namespace B_GOpt.Forms
             this.chartCO2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.lblFAR = new System.Windows.Forms.Label();
             this.lblCosts = new System.Windows.Forms.Label();
-            this.lblProgramm = new System.Windows.Forms.Label();
+            this.lblLiveLoad = new System.Windows.Forms.Label();
             this.lblStructSystem = new System.Windows.Forms.Label();
             this.lblUI = new System.Windows.Forms.Label();
             this.lblFarValue = new System.Windows.Forms.Label();
             this.lblSurfaceValue = new System.Windows.Forms.Label();
             this.lblCostsValue = new System.Windows.Forms.Label();
             this.lblCO2Value = new System.Windows.Forms.Label();
-            this.panelProgramm = new System.Windows.Forms.Panel();
-            this.rbtnIndustrial = new B_GOpt.CustomControls.CustomRadioButton();
-            this.rbtnOffice = new B_GOpt.CustomControls.CustomRadioButton();
-            this.rbtnResidential = new B_GOpt.CustomControls.CustomRadioButton();
             this.panelStructSystem = new System.Windows.Forms.Panel();
-            this.rbtnSlabSystem = new B_GOpt.CustomControls.CustomRadioButton();
-            this.rbtnGirderSystem = new B_GOpt.CustomControls.CustomRadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lblWeight = new System.Windows.Forms.Label();
+            this.lblWeightValue = new System.Windows.Forms.Label();
+            this.tbarLiveLoad = new ComponentFactory.Krypton.Toolkit.KryptonTrackBar();
+            this.lblLiveLoadValue = new System.Windows.Forms.Label();
+            this.btnEvaluateObj = new B_GOpt.CustomControls.CustomButton();
+            this.btnTestGrid = new B_GOpt.CustomControls.CustomButton();
             this.rbtnTimberMat = new B_GOpt.CustomControls.CustomRadioButton();
             this.rbtnConcreteMat = new B_GOpt.CustomControls.CustomRadioButton();
             this.rbtnSteelMat = new B_GOpt.CustomControls.CustomRadioButton();
-            this.lblWeight = new System.Windows.Forms.Label();
-            this.lblWeightValue = new System.Windows.Forms.Label();
-            this.btnEvaluateObj = new B_GOpt.CustomControls.CustomButton();
-            this.btnTestGrid = new B_GOpt.CustomControls.CustomButton();
             this.btnStructGrid3D = new B_GOpt.CustomControls.CustomButton();
+            this.rbtnSlabSystem = new B_GOpt.CustomControls.CustomRadioButton();
+            this.rbtnGirderSystem = new B_GOpt.CustomControls.CustomRadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.picBG)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCO2)).BeginInit();
-            this.panelProgramm.SuspendLayout();
             this.panelStructSystem.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -536,15 +533,15 @@ namespace B_GOpt.Forms
             this.lblCosts.TabIndex = 36;
             this.lblCosts.Text = "Construction Costs";
             // 
-            // lblProgramm
+            // lblLiveLoad
             // 
-            this.lblProgramm.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblProgramm.ForeColor = System.Drawing.Color.Black;
-            this.lblProgramm.Location = new System.Drawing.Point(2, 238);
-            this.lblProgramm.Name = "lblProgramm";
-            this.lblProgramm.Size = new System.Drawing.Size(117, 26);
-            this.lblProgramm.TabIndex = 37;
-            this.lblProgramm.Text = "Programm";
+            this.lblLiveLoad.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLiveLoad.ForeColor = System.Drawing.Color.Black;
+            this.lblLiveLoad.Location = new System.Drawing.Point(2, 238);
+            this.lblLiveLoad.Name = "lblLiveLoad";
+            this.lblLiveLoad.Size = new System.Drawing.Size(117, 26);
+            this.lblLiveLoad.TabIndex = 37;
+            this.lblLiveLoad.Text = "Live Load";
             // 
             // lblStructSystem
             // 
@@ -606,85 +603,6 @@ namespace B_GOpt.Forms
             this.lblCO2Value.TabIndex = 43;
             this.lblCO2Value.Text = "-";
             // 
-            // panelProgramm
-            // 
-            this.panelProgramm.Controls.Add(this.rbtnIndustrial);
-            this.panelProgramm.Controls.Add(this.rbtnOffice);
-            this.panelProgramm.Controls.Add(this.rbtnResidential);
-            this.panelProgramm.Location = new System.Drawing.Point(219, 227);
-            this.panelProgramm.Name = "panelProgramm";
-            this.panelProgramm.Size = new System.Drawing.Size(244, 38);
-            this.panelProgramm.TabIndex = 44;
-            // 
-            // rbtnIndustrial
-            // 
-            this.rbtnIndustrial.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbtnIndustrial.AutoSize = true;
-            this.rbtnIndustrial.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnIndustrial.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnIndustrial.BorderColor = System.Drawing.Color.White;
-            this.rbtnIndustrial.BorderRadius = 20;
-            this.rbtnIndustrial.BorderSize = 0;
-            this.rbtnIndustrial.FlatAppearance.BorderSize = 0;
-            this.rbtnIndustrial.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnIndustrial.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtnIndustrial.ForeColor = System.Drawing.Color.Black;
-            this.rbtnIndustrial.Location = new System.Drawing.Point(162, 5);
-            this.rbtnIndustrial.Name = "rbtnIndustrial";
-            this.rbtnIndustrial.Size = new System.Drawing.Size(78, 27);
-            this.rbtnIndustrial.TabIndex = 2;
-            this.rbtnIndustrial.TabStop = true;
-            this.rbtnIndustrial.Text = "Industrial";
-            this.rbtnIndustrial.TextColor = System.Drawing.Color.Black;
-            this.rbtnIndustrial.UseVisualStyleBackColor = false;
-            this.rbtnIndustrial.CheckedChanged += new System.EventHandler(this.rbtnIndustrial_CheckedChanged);
-            // 
-            // rbtnOffice
-            // 
-            this.rbtnOffice.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbtnOffice.AutoSize = true;
-            this.rbtnOffice.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnOffice.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnOffice.BorderColor = System.Drawing.Color.White;
-            this.rbtnOffice.BorderRadius = 20;
-            this.rbtnOffice.BorderSize = 0;
-            this.rbtnOffice.FlatAppearance.BorderSize = 0;
-            this.rbtnOffice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnOffice.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtnOffice.ForeColor = System.Drawing.Color.Black;
-            this.rbtnOffice.Location = new System.Drawing.Point(99, 5);
-            this.rbtnOffice.Name = "rbtnOffice";
-            this.rbtnOffice.Size = new System.Drawing.Size(56, 27);
-            this.rbtnOffice.TabIndex = 1;
-            this.rbtnOffice.TabStop = true;
-            this.rbtnOffice.Text = "Office";
-            this.rbtnOffice.TextColor = System.Drawing.Color.Black;
-            this.rbtnOffice.UseVisualStyleBackColor = false;
-            this.rbtnOffice.CheckedChanged += new System.EventHandler(this.rbtnOffice_CheckedChanged);
-            // 
-            // rbtnResidential
-            // 
-            this.rbtnResidential.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbtnResidential.AutoSize = true;
-            this.rbtnResidential.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnResidential.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnResidential.BorderColor = System.Drawing.Color.White;
-            this.rbtnResidential.BorderRadius = 20;
-            this.rbtnResidential.BorderSize = 0;
-            this.rbtnResidential.FlatAppearance.BorderSize = 0;
-            this.rbtnResidential.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnResidential.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtnResidential.ForeColor = System.Drawing.Color.Black;
-            this.rbtnResidential.Location = new System.Drawing.Point(3, 4);
-            this.rbtnResidential.Name = "rbtnResidential";
-            this.rbtnResidential.Size = new System.Drawing.Size(87, 27);
-            this.rbtnResidential.TabIndex = 0;
-            this.rbtnResidential.TabStop = true;
-            this.rbtnResidential.Text = "Residential";
-            this.rbtnResidential.TextColor = System.Drawing.Color.Black;
-            this.rbtnResidential.UseVisualStyleBackColor = false;
-            this.rbtnResidential.CheckedChanged += new System.EventHandler(this.rbtnResidential_CheckedChanged);
-            // 
             // panelStructSystem
             // 
             this.panelStructSystem.Controls.Add(this.rbtnSlabSystem);
@@ -693,50 +611,6 @@ namespace B_GOpt.Forms
             this.panelStructSystem.Name = "panelStructSystem";
             this.panelStructSystem.Size = new System.Drawing.Size(244, 38);
             this.panelStructSystem.TabIndex = 45;
-            // 
-            // rbtnSlabSystem
-            // 
-            this.rbtnSlabSystem.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbtnSlabSystem.AutoSize = true;
-            this.rbtnSlabSystem.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnSlabSystem.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnSlabSystem.BorderColor = System.Drawing.Color.White;
-            this.rbtnSlabSystem.BorderRadius = 20;
-            this.rbtnSlabSystem.BorderSize = 0;
-            this.rbtnSlabSystem.FlatAppearance.BorderSize = 0;
-            this.rbtnSlabSystem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnSlabSystem.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtnSlabSystem.ForeColor = System.Drawing.Color.Black;
-            this.rbtnSlabSystem.Location = new System.Drawing.Point(146, 5);
-            this.rbtnSlabSystem.Name = "rbtnSlabSystem";
-            this.rbtnSlabSystem.Size = new System.Drawing.Size(91, 27);
-            this.rbtnSlabSystem.TabIndex = 2;
-            this.rbtnSlabSystem.TabStop = true;
-            this.rbtnSlabSystem.Text = "Slab System";
-            this.rbtnSlabSystem.TextColor = System.Drawing.Color.Black;
-            this.rbtnSlabSystem.UseVisualStyleBackColor = false;
-            // 
-            // rbtnGirderSystem
-            // 
-            this.rbtnGirderSystem.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbtnGirderSystem.AutoSize = true;
-            this.rbtnGirderSystem.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnGirderSystem.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnGirderSystem.BorderColor = System.Drawing.Color.White;
-            this.rbtnGirderSystem.BorderRadius = 20;
-            this.rbtnGirderSystem.BorderSize = 0;
-            this.rbtnGirderSystem.FlatAppearance.BorderSize = 0;
-            this.rbtnGirderSystem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnGirderSystem.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtnGirderSystem.ForeColor = System.Drawing.Color.Black;
-            this.rbtnGirderSystem.Location = new System.Drawing.Point(3, 4);
-            this.rbtnGirderSystem.Name = "rbtnGirderSystem";
-            this.rbtnGirderSystem.Size = new System.Drawing.Size(106, 27);
-            this.rbtnGirderSystem.TabIndex = 0;
-            this.rbtnGirderSystem.TabStop = true;
-            this.rbtnGirderSystem.Text = "Girder System";
-            this.rbtnGirderSystem.TextColor = System.Drawing.Color.Black;
-            this.rbtnGirderSystem.UseVisualStyleBackColor = false;
             // 
             // panel1
             // 
@@ -747,6 +621,112 @@ namespace B_GOpt.Forms
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(242, 38);
             this.panel1.TabIndex = 47;
+            // 
+            // lblWeight
+            // 
+            this.lblWeight.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWeight.ForeColor = System.Drawing.Color.Black;
+            this.lblWeight.Location = new System.Drawing.Point(4, 522);
+            this.lblWeight.Name = "lblWeight";
+            this.lblWeight.Size = new System.Drawing.Size(117, 26);
+            this.lblWeight.TabIndex = 49;
+            this.lblWeight.Text = "Weight";
+            // 
+            // lblWeightValue
+            // 
+            this.lblWeightValue.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWeightValue.ForeColor = System.Drawing.Color.Black;
+            this.lblWeightValue.Location = new System.Drawing.Point(199, 522);
+            this.lblWeightValue.Name = "lblWeightValue";
+            this.lblWeightValue.Size = new System.Drawing.Size(117, 26);
+            this.lblWeightValue.TabIndex = 50;
+            this.lblWeightValue.Text = "-";
+            // 
+            // tbarLiveLoad
+            // 
+            this.tbarLiveLoad.AutoSize = false;
+            this.tbarLiveLoad.BackStyle = ComponentFactory.Krypton.Toolkit.PaletteBackStyle.ControlClient;
+            this.tbarLiveLoad.Cursor = System.Windows.Forms.Cursors.Default;
+            this.tbarLiveLoad.DrawBackground = true;
+            this.tbarLiveLoad.LargeChange = 10;
+            this.tbarLiveLoad.Location = new System.Drawing.Point(315, 252);
+            this.tbarLiveLoad.Maximum = 50;
+            this.tbarLiveLoad.Minimum = 10;
+            this.tbarLiveLoad.Name = "tbarLiveLoad";
+            this.tbarLiveLoad.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.ProfessionalSystem;
+            this.tbarLiveLoad.Size = new System.Drawing.Size(144, 26);
+            this.tbarLiveLoad.StateCommon.Position.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tbarLiveLoad.StateCommon.Position.Color3 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tbarLiveLoad.StateCommon.Position.Color4 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tbarLiveLoad.StateCommon.Position.Color5 = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.tbarLiveLoad.StateCommon.Tick.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tbarLiveLoad.StateCommon.Tick.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tbarLiveLoad.StateCommon.Tick.Color3 = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tbarLiveLoad.StateCommon.Tick.Color4 = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tbarLiveLoad.StateCommon.Tick.Color5 = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tbarLiveLoad.StateCommon.Track.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tbarLiveLoad.StateCommon.Track.Color2 = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tbarLiveLoad.StateCommon.Track.Color3 = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tbarLiveLoad.StateCommon.Track.Color4 = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tbarLiveLoad.StateCommon.Track.Color5 = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tbarLiveLoad.TabIndex = 52;
+            this.tbarLiveLoad.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.tbarLiveLoad.TrackBarSize = ComponentFactory.Krypton.Toolkit.PaletteTrackBarSize.Small;
+            this.tbarLiveLoad.Value = 15;
+            this.tbarLiveLoad.ValueChanged += new System.EventHandler(this.tbarLiveLoad_ValueChanged);
+            // 
+            // lblLiveLoadValue
+            // 
+            this.lblLiveLoadValue.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLiveLoadValue.ForeColor = System.Drawing.Color.Black;
+            this.lblLiveLoadValue.Location = new System.Drawing.Point(194, 238);
+            this.lblLiveLoadValue.Name = "lblLiveLoadValue";
+            this.lblLiveLoadValue.Size = new System.Drawing.Size(98, 26);
+            this.lblLiveLoadValue.TabIndex = 53;
+            this.lblLiveLoadValue.Text = "1,5 kN/m²";
+            this.lblLiveLoadValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // btnEvaluateObj
+            // 
+            this.btnEvaluateObj.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnEvaluateObj.BackColor = System.Drawing.Color.Transparent;
+            this.btnEvaluateObj.BackgorundColor = System.Drawing.Color.Transparent;
+            this.btnEvaluateObj.BorderColor = System.Drawing.Color.Black;
+            this.btnEvaluateObj.BorderRadius = 32;
+            this.btnEvaluateObj.BorderSize = 2;
+            this.btnEvaluateObj.FlatAppearance.BorderSize = 0;
+            this.btnEvaluateObj.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEvaluateObj.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnEvaluateObj.ForeColor = System.Drawing.Color.Black;
+            this.btnEvaluateObj.Location = new System.Drawing.Point(394, 787);
+            this.btnEvaluateObj.Name = "btnEvaluateObj";
+            this.btnEvaluateObj.Size = new System.Drawing.Size(121, 40);
+            this.btnEvaluateObj.TabIndex = 51;
+            this.btnEvaluateObj.Text = "Ev Obj";
+            this.btnEvaluateObj.TextColor = System.Drawing.Color.Black;
+            this.btnEvaluateObj.UseVisualStyleBackColor = false;
+            this.btnEvaluateObj.Click += new System.EventHandler(this.btnEvaluateObj_Click);
+            // 
+            // btnTestGrid
+            // 
+            this.btnTestGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnTestGrid.BackColor = System.Drawing.Color.Transparent;
+            this.btnTestGrid.BackgorundColor = System.Drawing.Color.Transparent;
+            this.btnTestGrid.BorderColor = System.Drawing.Color.Black;
+            this.btnTestGrid.BorderRadius = 32;
+            this.btnTestGrid.BorderSize = 2;
+            this.btnTestGrid.FlatAppearance.BorderSize = 0;
+            this.btnTestGrid.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTestGrid.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTestGrid.ForeColor = System.Drawing.Color.Black;
+            this.btnTestGrid.Location = new System.Drawing.Point(250, 787);
+            this.btnTestGrid.Name = "btnTestGrid";
+            this.btnTestGrid.Size = new System.Drawing.Size(121, 40);
+            this.btnTestGrid.TabIndex = 48;
+            this.btnTestGrid.Text = "testGrid";
+            this.btnTestGrid.TextColor = System.Drawing.Color.Black;
+            this.btnTestGrid.UseVisualStyleBackColor = false;
+            this.btnTestGrid.Click += new System.EventHandler(this.btnTestGrid_Click);
             // 
             // rbtnTimberMat
             // 
@@ -817,68 +797,6 @@ namespace B_GOpt.Forms
             this.rbtnSteelMat.UseVisualStyleBackColor = false;
             this.rbtnSteelMat.CheckedChanged += new System.EventHandler(this.rbtnSteelMat_CheckedChanged);
             // 
-            // lblWeight
-            // 
-            this.lblWeight.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblWeight.ForeColor = System.Drawing.Color.Black;
-            this.lblWeight.Location = new System.Drawing.Point(4, 522);
-            this.lblWeight.Name = "lblWeight";
-            this.lblWeight.Size = new System.Drawing.Size(117, 26);
-            this.lblWeight.TabIndex = 49;
-            this.lblWeight.Text = "Weight";
-            // 
-            // lblWeightValue
-            // 
-            this.lblWeightValue.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblWeightValue.ForeColor = System.Drawing.Color.Black;
-            this.lblWeightValue.Location = new System.Drawing.Point(199, 522);
-            this.lblWeightValue.Name = "lblWeightValue";
-            this.lblWeightValue.Size = new System.Drawing.Size(117, 26);
-            this.lblWeightValue.TabIndex = 50;
-            this.lblWeightValue.Text = "-";
-            // 
-            // btnEvaluateObj
-            // 
-            this.btnEvaluateObj.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnEvaluateObj.BackColor = System.Drawing.Color.Transparent;
-            this.btnEvaluateObj.BackgorundColor = System.Drawing.Color.Transparent;
-            this.btnEvaluateObj.BorderColor = System.Drawing.Color.Black;
-            this.btnEvaluateObj.BorderRadius = 32;
-            this.btnEvaluateObj.BorderSize = 2;
-            this.btnEvaluateObj.FlatAppearance.BorderSize = 0;
-            this.btnEvaluateObj.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnEvaluateObj.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEvaluateObj.ForeColor = System.Drawing.Color.Black;
-            this.btnEvaluateObj.Location = new System.Drawing.Point(394, 787);
-            this.btnEvaluateObj.Name = "btnEvaluateObj";
-            this.btnEvaluateObj.Size = new System.Drawing.Size(121, 40);
-            this.btnEvaluateObj.TabIndex = 51;
-            this.btnEvaluateObj.Text = "Ev Obj";
-            this.btnEvaluateObj.TextColor = System.Drawing.Color.Black;
-            this.btnEvaluateObj.UseVisualStyleBackColor = false;
-            this.btnEvaluateObj.Click += new System.EventHandler(this.btnEvaluateObj_Click);
-            // 
-            // btnTestGrid
-            // 
-            this.btnTestGrid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnTestGrid.BackColor = System.Drawing.Color.Transparent;
-            this.btnTestGrid.BackgorundColor = System.Drawing.Color.Transparent;
-            this.btnTestGrid.BorderColor = System.Drawing.Color.Black;
-            this.btnTestGrid.BorderRadius = 32;
-            this.btnTestGrid.BorderSize = 2;
-            this.btnTestGrid.FlatAppearance.BorderSize = 0;
-            this.btnTestGrid.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTestGrid.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTestGrid.ForeColor = System.Drawing.Color.Black;
-            this.btnTestGrid.Location = new System.Drawing.Point(250, 787);
-            this.btnTestGrid.Name = "btnTestGrid";
-            this.btnTestGrid.Size = new System.Drawing.Size(121, 40);
-            this.btnTestGrid.TabIndex = 48;
-            this.btnTestGrid.Text = "testGrid";
-            this.btnTestGrid.TextColor = System.Drawing.Color.Black;
-            this.btnTestGrid.UseVisualStyleBackColor = false;
-            this.btnTestGrid.Click += new System.EventHandler(this.btnTestGrid_Click);
-            // 
             // btnStructGrid3D
             // 
             this.btnStructGrid3D.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -900,6 +818,50 @@ namespace B_GOpt.Forms
             this.btnStructGrid3D.UseVisualStyleBackColor = false;
             this.btnStructGrid3D.Click += new System.EventHandler(this.btnStructGrid3D_Click);
             // 
+            // rbtnSlabSystem
+            // 
+            this.rbtnSlabSystem.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbtnSlabSystem.AutoSize = true;
+            this.rbtnSlabSystem.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnSlabSystem.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnSlabSystem.BorderColor = System.Drawing.Color.White;
+            this.rbtnSlabSystem.BorderRadius = 20;
+            this.rbtnSlabSystem.BorderSize = 0;
+            this.rbtnSlabSystem.FlatAppearance.BorderSize = 0;
+            this.rbtnSlabSystem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnSlabSystem.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtnSlabSystem.ForeColor = System.Drawing.Color.Black;
+            this.rbtnSlabSystem.Location = new System.Drawing.Point(146, 5);
+            this.rbtnSlabSystem.Name = "rbtnSlabSystem";
+            this.rbtnSlabSystem.Size = new System.Drawing.Size(91, 27);
+            this.rbtnSlabSystem.TabIndex = 2;
+            this.rbtnSlabSystem.TabStop = true;
+            this.rbtnSlabSystem.Text = "Slab System";
+            this.rbtnSlabSystem.TextColor = System.Drawing.Color.Black;
+            this.rbtnSlabSystem.UseVisualStyleBackColor = false;
+            // 
+            // rbtnGirderSystem
+            // 
+            this.rbtnGirderSystem.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbtnGirderSystem.AutoSize = true;
+            this.rbtnGirderSystem.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnGirderSystem.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnGirderSystem.BorderColor = System.Drawing.Color.White;
+            this.rbtnGirderSystem.BorderRadius = 20;
+            this.rbtnGirderSystem.BorderSize = 0;
+            this.rbtnGirderSystem.FlatAppearance.BorderSize = 0;
+            this.rbtnGirderSystem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnGirderSystem.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtnGirderSystem.ForeColor = System.Drawing.Color.Black;
+            this.rbtnGirderSystem.Location = new System.Drawing.Point(3, 4);
+            this.rbtnGirderSystem.Name = "rbtnGirderSystem";
+            this.rbtnGirderSystem.Size = new System.Drawing.Size(106, 27);
+            this.rbtnGirderSystem.TabIndex = 0;
+            this.rbtnGirderSystem.TabStop = true;
+            this.rbtnGirderSystem.Text = "Girder System";
+            this.rbtnGirderSystem.TextColor = System.Drawing.Color.Black;
+            this.rbtnGirderSystem.UseVisualStyleBackColor = false;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -907,6 +869,8 @@ namespace B_GOpt.Forms
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
             this.ClientSize = new System.Drawing.Size(570, 834);
+            this.Controls.Add(this.lblLiveLoadValue);
+            this.Controls.Add(this.tbarLiveLoad);
             this.Controls.Add(this.btnEvaluateObj);
             this.Controls.Add(this.lblWeightValue);
             this.Controls.Add(this.lblWeight);
@@ -914,14 +878,13 @@ namespace B_GOpt.Forms
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnStructGrid3D);
             this.Controls.Add(this.panelStructSystem);
-            this.Controls.Add(this.panelProgramm);
             this.Controls.Add(this.lblCO2Value);
             this.Controls.Add(this.lblCostsValue);
             this.Controls.Add(this.lblSurfaceValue);
             this.Controls.Add(this.lblFarValue);
             this.Controls.Add(this.lblUI);
             this.Controls.Add(this.lblStructSystem);
-            this.Controls.Add(this.lblProgramm);
+            this.Controls.Add(this.lblLiveLoad);
             this.Controls.Add(this.lblCosts);
             this.Controls.Add(this.lblFAR);
             this.Controls.Add(this.chartCO2);
@@ -950,8 +913,6 @@ namespace B_GOpt.Forms
             this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picBG)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCO2)).EndInit();
-            this.panelProgramm.ResumeLayout(false);
-            this.panelProgramm.PerformLayout();
             this.panelStructSystem.ResumeLayout(false);
             this.panelStructSystem.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -983,17 +944,13 @@ namespace B_GOpt.Forms
         private System.Windows.Forms.DataVisualization.Charting.Chart chartCO2;
         private System.Windows.Forms.Label lblFAR;
         private System.Windows.Forms.Label lblCosts;
-        private System.Windows.Forms.Label lblProgramm;
+        private System.Windows.Forms.Label lblLiveLoad;
         private System.Windows.Forms.Label lblStructSystem;
         private System.Windows.Forms.Label lblUI;
         private System.Windows.Forms.Label lblFarValue;
         private System.Windows.Forms.Label lblSurfaceValue;
         private System.Windows.Forms.Label lblCostsValue;
         private System.Windows.Forms.Label lblCO2Value;
-        private System.Windows.Forms.Panel panelProgramm;
-        private CustomControls.CustomRadioButton rbtnIndustrial;
-        private CustomControls.CustomRadioButton rbtnOffice;
-        private CustomControls.CustomRadioButton rbtnResidential;
         private System.Windows.Forms.Panel panelStructSystem;
         private CustomControls.CustomRadioButton rbtnSlabSystem;
         private CustomControls.CustomRadioButton rbtnGirderSystem;
@@ -1006,5 +963,7 @@ namespace B_GOpt.Forms
         private System.Windows.Forms.Label lblWeight;
         private System.Windows.Forms.Label lblWeightValue;
         private CustomControls.CustomButton btnEvaluateObj;
+        private ComponentFactory.Krypton.Toolkit.KryptonTrackBar tbarLiveLoad;
+        private System.Windows.Forms.Label lblLiveLoadValue;
     }
 }

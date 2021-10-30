@@ -69,6 +69,12 @@ namespace B_GOpt.Forms
             lblSpacYValue.Text = value.ToString() + "  m";
         }
 
+        private void tbarLiveLoad_ValueChanged(object sender, EventArgs e)
+        {
+            float value = tbarLiveLoad.Value / 10f;
+            lblLiveLoadValue.Text = value.ToString() + "  kN/m" + ("\u00B2");
+        }
+
         private void tbarFloorHeight_ValueChanged(object sender, EventArgs e)
         {
             float value = tbarFloorHeight.Value / 100f;
@@ -540,36 +546,37 @@ namespace B_GOpt.Forms
                 }
 
 
-
+                //Intersect slabs with core
+                RhinoList<Brep> floorSlabs = StructGrid.SplitSlabsWithCores(cores, slabEdgeCurves, docform); 
 
 
 
                 //Adds the elements to the Rhino Document
 
-                for (int i = 0; i < xBeams.Count; i++)
-                {
-                    docform.Objects.AddLine(xBeams[i]);
-                }
+                //for (int i = 0; i < xBeams.Count; i++)
+                //{
+                //    docform.Objects.AddLine(xBeams[i]);
+                //}
 
-                for (int i = 0; i < yBeams.Count; i++)
-                {
-                    docform.Objects.AddLine(yBeams[i]);
-                }
+                //for (int i = 0; i < yBeams.Count; i++)
+                //{
+                //    docform.Objects.AddLine(yBeams[i]);
+                //}
 
                 //for (int i = 0; i < edgeBeams.Count; i++)
                 //{
                 //    docform.Objects.AddCurve(edgeBeams[i]);
                 //}
 
-                for (int i = 0; i < outerColumns.Count; i++)
-                {
-                    docform.Objects.AddLine(outerColumns[i]);
-                }
+                //for (int i = 0; i < outerColumns.Count; i++)
+                //{
+                //    docform.Objects.AddLine(outerColumns[i]);
+                //}
 
-                for (int i = 0; i < innerColumns.Count; i++)
-                {
-                    docform.Objects.AddLine(innerColumns[i]);
-                }
+                //for (int i = 0; i < innerColumns.Count; i++)
+                //{
+                //    docform.Objects.AddLine(innerColumns[i]);
+                //}
 
                 //for (int i = 0; i < edgeColumns.Count; i++)
                 //{
@@ -584,6 +591,11 @@ namespace B_GOpt.Forms
                 for (int i = 0; i < slabEdgeCurves.Count; i++)
                 {
                     docform.Objects.AddCurve(slabEdgeCurves[i]);
+                }
+
+                for (int i = 0; i < floorSlabs.Count; i++)
+                {
+                    docform.Objects.AddBrep(floorSlabs[i]);
                 }
 
 
@@ -623,9 +635,9 @@ namespace B_GOpt.Forms
 
                 //Prompting the results to the dashboard
                 //-------------------------------------------------------------------------------------------
-                for (int i = 0; i < slabs.Count; i++)
+                for (int i = 0; i < floorSlabs.Count; i++)
                 {
-                    double area = slabs[i].GetArea();
+                    double area = floorSlabs[i].GetArea();
                     surfaceArea = surfaceArea + area;
                 }
 

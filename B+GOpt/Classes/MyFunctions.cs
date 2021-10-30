@@ -402,6 +402,8 @@ namespace B_GOpt
         }
 
 
+
+
         public static bool IsLineInsideBreps(RhinoList<Brep> breps, Line line, RhinoDoc doc)
         {
             double tolerance = doc.ModelAbsoluteTolerance;

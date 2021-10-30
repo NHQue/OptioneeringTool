@@ -400,5 +400,100 @@ namespace B_GOpt.Classes
                 }
             }
         }
+
+
+
+
+        public static RhinoList<Brep> SplitSlabsWithCores(RhinoList<Brep> cores, CurveList outerEdgeCurves, RhinoDoc doc)
+        {
+            //Basic intersection parameters
+            double tolerance = doc.ModelAbsoluteTolerance;
+            RhinoList<Brep> floorSlabs = new RhinoList<Brep>();
+
+            //Calculate the intersections from core and planes
+            for (int i = 0; i < outerEdgeCurves.Count; i++)
+            {
+                RhinoList<Curve> planarCurves = new RhinoList<Curve>();
+                planarCurves.Add(outerEdgeCurves[i]);
+                List<Curve> innerEdgeCurves = new List<Curve>();
+                Plane cuttingPlane = new Plane(outerEdgeCurves[i].PointAtStart, new Vector3d(0, 0, 1));
+
+                for (int j = 0; j < cores.Count; j++)
+                {
+                    bool res = Rhino.Geometry.Intersect.Intersection.BrepPlane(cores[j], cuttingPlane, tolerance, out Curve[] intCurves, out Point3d[] intPoints);
+
+                    for (int k = 0; k < intCurves.Length; k++)
+                    {
+                        innerEdgeCurves.Add(intCurves[k]);
+                        doc.Objects.AddCurve(intCurves[k]);
+                    }
+                }
+
+                for (int j = 0; j < innerEdgeCurves.Count; j++)
+                {
+                    planarCurves.Add(innerEdgeCurves[j]);
+                }
+
+                Brep[] floorSlab = Brep.CreatePlanarBreps(planarCurves, tolerance);
+
+                for (int j = 0; j < floorSlab.Length; j++)
+                {
+                    floorSlabs.Add(floorSlab[j]);
+                    //doc.Objects.AddBrep(floorSlabCore[j]);
+                }
+                planarCurves.Clear();
+            }
+
+            return floorSlabs; 
+        }
+
+
+
+        public static RhinoList<Brep> SplitSlabsWithCore(RhinoList<Brep> cores, CurveList outerEdgeCurves, RhinoDoc doc)
+        {
+            //Basic intersection parameters
+            double tolerance = doc.ModelAbsoluteTolerance;
+
+            List<Curve> innerEdgeCurves = new List<Curve>();
+            Brep core = cores[0];
+            RhinoList<Brep> floorSlabs = new RhinoList<Brep>();
+
+            //Calculate the intersections from core and planes
+            for (int i = 0; i < outerEdgeCurves.Count; i++)
+            {
+                Plane cuttingPlane = new Plane(outerEdgeCurves[i].PointAtStart, new Vector3d(0, 0, 1));
+
+                bool res = Rhino.Geometry.Intersect.Intersection.BrepPlane(core, cuttingPlane, tolerance, out Curve[] intCurves, out Point3d[] intPoints);
+
+                for (int j = 0; j < intCurves.Length; j++)
+                {
+                    innerEdgeCurves.Add(intCurves[j]);
+                    //doc.Objects.AddCurve(intCurves[j]);
+                }
+            }
+
+            //Creates the floor slabs
+            for (int i = 0; i < outerEdgeCurves.Count; i++)
+            {
+                RhinoList<Curve> crvs = new RhinoList<Curve>();
+
+                crvs.Add(outerEdgeCurves[i]);
+                crvs.Add(innerEdgeCurves[i]);
+
+                Brep[] floorSlab = Brep.CreatePlanarBreps(crvs, tolerance);
+
+                for (int j = 0; j < floorSlab.Length; j++)
+                {
+                    floorSlabs.Add(floorSlab[j]);
+                    //doc.Objects.AddBrep(floorSlabCore[j]);
+                }
+                crvs.Clear();
+            }
+
+            return floorSlabs;
+        }
+
+
+
     }
 }
