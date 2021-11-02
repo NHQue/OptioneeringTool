@@ -7,16 +7,13 @@ using Rhino.Geometry;
 
 namespace B_GOpt.Classes
 {
-    public class Beam : LineCurve
+    public class Column
     {
-
         //Properties with getter and setter
 
         public LineCurve LineCurve { get; set; }
 
-        public string Type { get; set; }
-
-        public double Length { get; set; }              
+        public double Length { get; set; }
 
         public double Height { get; set; }
 
@@ -24,25 +21,24 @@ namespace B_GOpt.Classes
 
         public int Storey { get; set; }
 
-        private double Load { get; set; }
+        public double Load { get; set; }
 
-        private string CrossSection { get; set; }
+        public string CrossSection { get; set; }
 
 
         //Constructors
 
-        public Beam()
+        public Column()
         {
 
         }
 
-        public Beam(LineCurve lineCurve, string type, int storey, double load, double xSpac, double ySpac)
+        public Column(LineCurve lineCurve, int storey, int storeyCount, double load, double xSpac, double ySpac)
         {
             LineCurve = lineCurve;
             Length = lineCurve.GetLength();
-            Type = type;
             Storey = storey;
-            Load = load * xSpac;
+            Load = load * xSpac * ySpac * (storeyCount - storey + 1);
         }
 
 
@@ -50,14 +46,8 @@ namespace B_GOpt.Classes
         //----------------------------------------------------------------------------------------------------------
         public override string ToString()
         {
-            return String.Format($"Beam; Length: {Length} [m]; Storey: {Storey} [m]; Load: {Load} [kN/m]; CrossSection: {CrossSection}");
+            return String.Format($"Column; Length: {Length} [m]; Storey: {Storey} [m]; Load: {Load} [kN/m]; CrossSection: {CrossSection}");
         }
-
-        //public Line ToLine(Beam beam)
-        //{
-        //    Line beamLine = new Line(beam.PointAtStart, beam.PointAtEnd);
-        //    return beamLine; 
-        //}
 
     }
 }

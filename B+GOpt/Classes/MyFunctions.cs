@@ -467,6 +467,46 @@ namespace B_GOpt
         }
 
 
+        /// <summary>
+        /// /// This function sets or creates a new layer 
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="layerName"></param>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        /// Returns a layer
+        public static Rhino.DocObjects.Layer SetLayer(RhinoDoc doc, string layerName, System.Drawing.Color color)
+        {
+            if (string.IsNullOrEmpty(layerName) || !Rhino.DocObjects.Layer.IsValidName(layerName))
+                return null;
+
+            //Checking if the layer already exists
+            Rhino.DocObjects.Layer layer = doc.Layers.FindName(layerName);
+
+            if (layer != null)
+            {
+                //The layer already exists -> one accesses its index and sets it to current
+                if (layer.Index >= 0)
+                    doc.Layers.SetCurrentLayerIndex(layer.Index, false);
+            }
+            else
+            {
+                layer = new Rhino.DocObjects.Layer();
+
+                layer.Name = layerName;
+                layer.Color = color;
+
+                //Creating a new layer
+                int layerIndex = doc.Layers.Add(layerName, color);
+                if (layerIndex >= 0)
+                    doc.Layers.SetCurrentLayerIndex(layerIndex, false);
+
+                doc.Layers.Add(layerName, color);
+            }
+            return doc.Layers[layer.Index]; ;
+        }
+
+
 
 
 

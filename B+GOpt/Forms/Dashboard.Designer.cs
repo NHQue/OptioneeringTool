@@ -68,19 +68,19 @@ namespace B_GOpt.Forms
             this.lblCostsValue = new System.Windows.Forms.Label();
             this.lblCO2Value = new System.Windows.Forms.Label();
             this.panelStructSystem = new System.Windows.Forms.Panel();
+            this.rbtnSlabSystem = new B_GOpt.CustomControls.CustomRadioButton();
+            this.rbtnGirderSystem = new B_GOpt.CustomControls.CustomRadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.rbtnTimberMat = new B_GOpt.CustomControls.CustomRadioButton();
+            this.rbtnConcreteMat = new B_GOpt.CustomControls.CustomRadioButton();
+            this.rbtnSteelMat = new B_GOpt.CustomControls.CustomRadioButton();
             this.lblWeight = new System.Windows.Forms.Label();
             this.lblWeightValue = new System.Windows.Forms.Label();
             this.tbarLiveLoad = new ComponentFactory.Krypton.Toolkit.KryptonTrackBar();
             this.lblLiveLoadValue = new System.Windows.Forms.Label();
             this.btnEvaluateObj = new B_GOpt.CustomControls.CustomButton();
             this.btnTestGrid = new B_GOpt.CustomControls.CustomButton();
-            this.rbtnTimberMat = new B_GOpt.CustomControls.CustomRadioButton();
-            this.rbtnConcreteMat = new B_GOpt.CustomControls.CustomRadioButton();
-            this.rbtnSteelMat = new B_GOpt.CustomControls.CustomRadioButton();
             this.btnStructGrid3D = new B_GOpt.CustomControls.CustomButton();
-            this.rbtnSlabSystem = new B_GOpt.CustomControls.CustomRadioButton();
-            this.rbtnGirderSystem = new B_GOpt.CustomControls.CustomRadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.picBG)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartCO2)).BeginInit();
             this.panelStructSystem.SuspendLayout();
@@ -274,7 +274,7 @@ namespace B_GOpt.Forms
             this.tbarFloorHeight.DrawBackground = true;
             this.tbarFloorHeight.LargeChange = 100;
             this.tbarFloorHeight.Location = new System.Drawing.Point(317, 284);
-            this.tbarFloorHeight.Maximum = 800;
+            this.tbarFloorHeight.Maximum = 600;
             this.tbarFloorHeight.Minimum = 200;
             this.tbarFloorHeight.Name = "tbarFloorHeight";
             this.tbarFloorHeight.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.ProfessionalSystem;
@@ -502,14 +502,14 @@ namespace B_GOpt.Forms
             this.chartCO2.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chartCO2.Legends.Add(legend1);
-            this.chartCO2.Location = new System.Drawing.Point(219, 586);
+            this.chartCO2.Location = new System.Drawing.Point(277, 585);
             this.chartCO2.Name = "chartCO2";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
             series1.Legend = "Legend1";
             series1.Name = "CO2";
             this.chartCO2.Series.Add(series1);
-            this.chartCO2.Size = new System.Drawing.Size(346, 194);
+            this.chartCO2.Size = new System.Drawing.Size(288, 195);
             this.chartCO2.TabIndex = 34;
             this.chartCO2.Text = "chart1";
             // 
@@ -612,6 +612,50 @@ namespace B_GOpt.Forms
             this.panelStructSystem.Size = new System.Drawing.Size(244, 38);
             this.panelStructSystem.TabIndex = 45;
             // 
+            // rbtnSlabSystem
+            // 
+            this.rbtnSlabSystem.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbtnSlabSystem.AutoSize = true;
+            this.rbtnSlabSystem.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnSlabSystem.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnSlabSystem.BorderColor = System.Drawing.Color.White;
+            this.rbtnSlabSystem.BorderRadius = 20;
+            this.rbtnSlabSystem.BorderSize = 0;
+            this.rbtnSlabSystem.FlatAppearance.BorderSize = 0;
+            this.rbtnSlabSystem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnSlabSystem.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtnSlabSystem.ForeColor = System.Drawing.Color.Black;
+            this.rbtnSlabSystem.Location = new System.Drawing.Point(146, 5);
+            this.rbtnSlabSystem.Name = "rbtnSlabSystem";
+            this.rbtnSlabSystem.Size = new System.Drawing.Size(91, 27);
+            this.rbtnSlabSystem.TabIndex = 2;
+            this.rbtnSlabSystem.TabStop = true;
+            this.rbtnSlabSystem.Text = "Slab System";
+            this.rbtnSlabSystem.TextColor = System.Drawing.Color.Black;
+            this.rbtnSlabSystem.UseVisualStyleBackColor = false;
+            // 
+            // rbtnGirderSystem
+            // 
+            this.rbtnGirderSystem.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbtnGirderSystem.AutoSize = true;
+            this.rbtnGirderSystem.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnGirderSystem.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnGirderSystem.BorderColor = System.Drawing.Color.White;
+            this.rbtnGirderSystem.BorderRadius = 20;
+            this.rbtnGirderSystem.BorderSize = 0;
+            this.rbtnGirderSystem.FlatAppearance.BorderSize = 0;
+            this.rbtnGirderSystem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnGirderSystem.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtnGirderSystem.ForeColor = System.Drawing.Color.Black;
+            this.rbtnGirderSystem.Location = new System.Drawing.Point(3, 4);
+            this.rbtnGirderSystem.Name = "rbtnGirderSystem";
+            this.rbtnGirderSystem.Size = new System.Drawing.Size(106, 27);
+            this.rbtnGirderSystem.TabIndex = 0;
+            this.rbtnGirderSystem.TabStop = true;
+            this.rbtnGirderSystem.Text = "Girder System";
+            this.rbtnGirderSystem.TextColor = System.Drawing.Color.Black;
+            this.rbtnGirderSystem.UseVisualStyleBackColor = false;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.rbtnTimberMat);
@@ -621,6 +665,75 @@ namespace B_GOpt.Forms
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(242, 38);
             this.panel1.TabIndex = 47;
+            // 
+            // rbtnTimberMat
+            // 
+            this.rbtnTimberMat.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbtnTimberMat.AutoSize = true;
+            this.rbtnTimberMat.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnTimberMat.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnTimberMat.BorderColor = System.Drawing.Color.White;
+            this.rbtnTimberMat.BorderRadius = 20;
+            this.rbtnTimberMat.BorderSize = 0;
+            this.rbtnTimberMat.FlatAppearance.BorderSize = 0;
+            this.rbtnTimberMat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnTimberMat.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtnTimberMat.ForeColor = System.Drawing.Color.Black;
+            this.rbtnTimberMat.Location = new System.Drawing.Point(175, 5);
+            this.rbtnTimberMat.Name = "rbtnTimberMat";
+            this.rbtnTimberMat.Size = new System.Drawing.Size(63, 27);
+            this.rbtnTimberMat.TabIndex = 5;
+            this.rbtnTimberMat.TabStop = true;
+            this.rbtnTimberMat.Text = "Timber";
+            this.rbtnTimberMat.TextColor = System.Drawing.Color.Black;
+            this.rbtnTimberMat.UseVisualStyleBackColor = false;
+            this.rbtnTimberMat.CheckedChanged += new System.EventHandler(this.rbtnTimberMat_CheckedChanged);
+            // 
+            // rbtnConcreteMat
+            // 
+            this.rbtnConcreteMat.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbtnConcreteMat.AutoSize = true;
+            this.rbtnConcreteMat.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnConcreteMat.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnConcreteMat.BorderColor = System.Drawing.Color.White;
+            this.rbtnConcreteMat.BorderRadius = 25;
+            this.rbtnConcreteMat.BorderSize = 0;
+            this.rbtnConcreteMat.FlatAppearance.BorderSize = 0;
+            this.rbtnConcreteMat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnConcreteMat.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtnConcreteMat.ForeColor = System.Drawing.Color.Black;
+            this.rbtnConcreteMat.Location = new System.Drawing.Point(76, 5);
+            this.rbtnConcreteMat.Name = "rbtnConcreteMat";
+            this.rbtnConcreteMat.Size = new System.Drawing.Size(76, 27);
+            this.rbtnConcreteMat.TabIndex = 4;
+            this.rbtnConcreteMat.TabStop = true;
+            this.rbtnConcreteMat.Text = "Concrete";
+            this.rbtnConcreteMat.TextColor = System.Drawing.Color.Black;
+            this.rbtnConcreteMat.UseVisualStyleBackColor = false;
+            this.rbtnConcreteMat.CheckedChanged += new System.EventHandler(this.rbtnConcreteMat_CheckedChanged);
+            // 
+            // rbtnSteelMat
+            // 
+            this.rbtnSteelMat.Appearance = System.Windows.Forms.Appearance.Button;
+            this.rbtnSteelMat.AutoSize = true;
+            this.rbtnSteelMat.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnSteelMat.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
+            this.rbtnSteelMat.BorderColor = System.Drawing.Color.White;
+            this.rbtnSteelMat.BorderRadius = 25;
+            this.rbtnSteelMat.BorderSize = 0;
+            this.rbtnSteelMat.FlatAppearance.BorderSize = 0;
+            this.rbtnSteelMat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbtnSteelMat.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbtnSteelMat.ForeColor = System.Drawing.Color.Black;
+            this.rbtnSteelMat.Location = new System.Drawing.Point(4, 5);
+            this.rbtnSteelMat.Name = "rbtnSteelMat";
+            this.rbtnSteelMat.Size = new System.Drawing.Size(48, 27);
+            this.rbtnSteelMat.TabIndex = 3;
+            this.rbtnSteelMat.TabStop = true;
+            this.rbtnSteelMat.Text = "Steel";
+            this.rbtnSteelMat.TextColor = System.Drawing.Color.Black;
+            this.rbtnSteelMat.UseVisualStyleBackColor = false;
+            this.rbtnSteelMat.CheckedChanged += new System.EventHandler(this.rbtnSteelMat_CheckedChanged);
             // 
             // lblWeight
             // 
@@ -728,75 +841,6 @@ namespace B_GOpt.Forms
             this.btnTestGrid.UseVisualStyleBackColor = false;
             this.btnTestGrid.Click += new System.EventHandler(this.btnTestGrid_Click);
             // 
-            // rbtnTimberMat
-            // 
-            this.rbtnTimberMat.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbtnTimberMat.AutoSize = true;
-            this.rbtnTimberMat.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnTimberMat.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnTimberMat.BorderColor = System.Drawing.Color.White;
-            this.rbtnTimberMat.BorderRadius = 20;
-            this.rbtnTimberMat.BorderSize = 0;
-            this.rbtnTimberMat.FlatAppearance.BorderSize = 0;
-            this.rbtnTimberMat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnTimberMat.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtnTimberMat.ForeColor = System.Drawing.Color.Black;
-            this.rbtnTimberMat.Location = new System.Drawing.Point(175, 5);
-            this.rbtnTimberMat.Name = "rbtnTimberMat";
-            this.rbtnTimberMat.Size = new System.Drawing.Size(63, 27);
-            this.rbtnTimberMat.TabIndex = 5;
-            this.rbtnTimberMat.TabStop = true;
-            this.rbtnTimberMat.Text = "Timber";
-            this.rbtnTimberMat.TextColor = System.Drawing.Color.Black;
-            this.rbtnTimberMat.UseVisualStyleBackColor = false;
-            this.rbtnTimberMat.CheckedChanged += new System.EventHandler(this.rbtnTimberMat_CheckedChanged);
-            // 
-            // rbtnConcreteMat
-            // 
-            this.rbtnConcreteMat.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbtnConcreteMat.AutoSize = true;
-            this.rbtnConcreteMat.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnConcreteMat.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnConcreteMat.BorderColor = System.Drawing.Color.White;
-            this.rbtnConcreteMat.BorderRadius = 25;
-            this.rbtnConcreteMat.BorderSize = 0;
-            this.rbtnConcreteMat.FlatAppearance.BorderSize = 0;
-            this.rbtnConcreteMat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnConcreteMat.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtnConcreteMat.ForeColor = System.Drawing.Color.Black;
-            this.rbtnConcreteMat.Location = new System.Drawing.Point(76, 5);
-            this.rbtnConcreteMat.Name = "rbtnConcreteMat";
-            this.rbtnConcreteMat.Size = new System.Drawing.Size(76, 27);
-            this.rbtnConcreteMat.TabIndex = 4;
-            this.rbtnConcreteMat.TabStop = true;
-            this.rbtnConcreteMat.Text = "Concrete";
-            this.rbtnConcreteMat.TextColor = System.Drawing.Color.Black;
-            this.rbtnConcreteMat.UseVisualStyleBackColor = false;
-            this.rbtnConcreteMat.CheckedChanged += new System.EventHandler(this.rbtnConcreteMat_CheckedChanged);
-            // 
-            // rbtnSteelMat
-            // 
-            this.rbtnSteelMat.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbtnSteelMat.AutoSize = true;
-            this.rbtnSteelMat.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnSteelMat.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnSteelMat.BorderColor = System.Drawing.Color.White;
-            this.rbtnSteelMat.BorderRadius = 25;
-            this.rbtnSteelMat.BorderSize = 0;
-            this.rbtnSteelMat.FlatAppearance.BorderSize = 0;
-            this.rbtnSteelMat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnSteelMat.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtnSteelMat.ForeColor = System.Drawing.Color.Black;
-            this.rbtnSteelMat.Location = new System.Drawing.Point(4, 5);
-            this.rbtnSteelMat.Name = "rbtnSteelMat";
-            this.rbtnSteelMat.Size = new System.Drawing.Size(48, 27);
-            this.rbtnSteelMat.TabIndex = 3;
-            this.rbtnSteelMat.TabStop = true;
-            this.rbtnSteelMat.Text = "Steel";
-            this.rbtnSteelMat.TextColor = System.Drawing.Color.Black;
-            this.rbtnSteelMat.UseVisualStyleBackColor = false;
-            this.rbtnSteelMat.CheckedChanged += new System.EventHandler(this.rbtnSteelMat_CheckedChanged);
-            // 
             // btnStructGrid3D
             // 
             this.btnStructGrid3D.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -817,50 +861,6 @@ namespace B_GOpt.Forms
             this.btnStructGrid3D.TextColor = System.Drawing.Color.Black;
             this.btnStructGrid3D.UseVisualStyleBackColor = false;
             this.btnStructGrid3D.Click += new System.EventHandler(this.btnStructGrid3D_Click);
-            // 
-            // rbtnSlabSystem
-            // 
-            this.rbtnSlabSystem.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbtnSlabSystem.AutoSize = true;
-            this.rbtnSlabSystem.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnSlabSystem.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnSlabSystem.BorderColor = System.Drawing.Color.White;
-            this.rbtnSlabSystem.BorderRadius = 20;
-            this.rbtnSlabSystem.BorderSize = 0;
-            this.rbtnSlabSystem.FlatAppearance.BorderSize = 0;
-            this.rbtnSlabSystem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnSlabSystem.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtnSlabSystem.ForeColor = System.Drawing.Color.Black;
-            this.rbtnSlabSystem.Location = new System.Drawing.Point(146, 5);
-            this.rbtnSlabSystem.Name = "rbtnSlabSystem";
-            this.rbtnSlabSystem.Size = new System.Drawing.Size(91, 27);
-            this.rbtnSlabSystem.TabIndex = 2;
-            this.rbtnSlabSystem.TabStop = true;
-            this.rbtnSlabSystem.Text = "Slab System";
-            this.rbtnSlabSystem.TextColor = System.Drawing.Color.Black;
-            this.rbtnSlabSystem.UseVisualStyleBackColor = false;
-            // 
-            // rbtnGirderSystem
-            // 
-            this.rbtnGirderSystem.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rbtnGirderSystem.AutoSize = true;
-            this.rbtnGirderSystem.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnGirderSystem.BackgorundColor = System.Drawing.SystemColors.InactiveCaption;
-            this.rbtnGirderSystem.BorderColor = System.Drawing.Color.White;
-            this.rbtnGirderSystem.BorderRadius = 20;
-            this.rbtnGirderSystem.BorderSize = 0;
-            this.rbtnGirderSystem.FlatAppearance.BorderSize = 0;
-            this.rbtnGirderSystem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbtnGirderSystem.Font = new System.Drawing.Font("Lato", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbtnGirderSystem.ForeColor = System.Drawing.Color.Black;
-            this.rbtnGirderSystem.Location = new System.Drawing.Point(3, 4);
-            this.rbtnGirderSystem.Name = "rbtnGirderSystem";
-            this.rbtnGirderSystem.Size = new System.Drawing.Size(106, 27);
-            this.rbtnGirderSystem.TabIndex = 0;
-            this.rbtnGirderSystem.TabStop = true;
-            this.rbtnGirderSystem.Text = "Girder System";
-            this.rbtnGirderSystem.TextColor = System.Drawing.Color.Black;
-            this.rbtnGirderSystem.UseVisualStyleBackColor = false;
             // 
             // Form2
             // 

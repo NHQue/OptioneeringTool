@@ -28,7 +28,9 @@ namespace B_GOpt.Forms
         RhinoList<Brep> cores = new RhinoList<Brep>();
         private double surfaceArea;
         double far;
-        double loadPerSquareMeter;
+        double liveLoad = 1.5;
+        double addDeadLoad = 1.5;
+        double deadLoadSlab;
         string material;
 
         //public string documentName = RhinoDoc.ActiveDoc.Name;
@@ -73,6 +75,8 @@ namespace B_GOpt.Forms
         {
             float value = tbarLiveLoad.Value / 10f;
             lblLiveLoadValue.Text = value.ToString() + "  kN/m" + ("\u00B2");
+
+            liveLoad = value; 
         }
 
         private void tbarFloorHeight_ValueChanged(object sender, EventArgs e)
@@ -418,7 +422,7 @@ namespace B_GOpt.Forms
                                 if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(xBeamsIt[j]);
-                                    Beam xBeam = new Beam(lineCurve, "Primary", i, 5, actXSpac, actYSpac);
+                                    Beam xBeam = new Beam(lineCurve, "Secondary", i, liveLoad, actYSpac);
                                     beamsInXDir.Add(xBeam);
 
                                     xBeams.Add(intersectedLines[k]);
@@ -435,7 +439,7 @@ namespace B_GOpt.Forms
                                 if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(yIntLines[j]);
-                                    Beam yBeam = new Beam(lineCurve, "Secondary", i, 5, actXSpac, actYSpac);
+                                    Beam yBeam = new Beam(lineCurve, "Primary", i, liveLoad, actXSpac);
                                     beamsInYDir.Add(yBeam);
 
                                     yBeams.Add(intersectedLines[k]);
@@ -450,7 +454,7 @@ namespace B_GOpt.Forms
                             if (!MyFunctions.IsLineInsideBreps(cores, innerColumnsIt[j], docform))
                             {
                                 LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
-                                Column col = new Column(lineCurve, i, 5, actXSpac, actYSpac);
+                                Column col = new Column(lineCurve, i, nStorey, liveLoad, actXSpac, actYSpac);
                                 innerCol.Add(col);
 
                                 innerColumns.Add(innerColumnsIt[j]);
@@ -471,7 +475,7 @@ namespace B_GOpt.Forms
                                 if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(intersectedLines[k]);
-                                    Beam xBeam = new Beam(lineCurve, "Secondary", i, 5, actXSpac, actYSpac);
+                                    Beam xBeam = new Beam(lineCurve, "Primary", i, liveLoad, actXSpac);
                                     beamsInXDir.Add(xBeam);
 
                                     xBeams.Add(intersectedLines[k]);
@@ -490,7 +494,7 @@ namespace B_GOpt.Forms
                                 if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(yBeamsIt[j]);
-                                    Beam yBeam = new Beam(lineCurve, "Primary", i, 5, actXSpac, actYSpac);
+                                    Beam yBeam = new Beam(lineCurve, "Secondary", i, liveLoad, actYSpac);
                                     beamsInYDir.Add(yBeam);
 
                                     yBeams.Add(intersectedLines[k]);
@@ -506,7 +510,7 @@ namespace B_GOpt.Forms
                             if (!MyFunctions.IsLineInsideBreps(cores, innerColumnsIt[j], docform))
                             {
                                 LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
-                                Column col = new Column(lineCurve, i, 5, actXSpac, actYSpac);
+                                Column col = new Column(lineCurve, i, nStorey, liveLoad + addDeadLoad, actXSpac, actYSpac);
                                 innerCol.Add(col);
 
                                 innerColumns.Add(innerColumnsIt[j]);
@@ -520,7 +524,7 @@ namespace B_GOpt.Forms
                     for (int j = 0; j < outerColumnsIt.Count; j++)
                     {
                         LineCurve lineCurve = new LineCurve(outerColumnsIt[j]);
-                        Column col = new Column(lineCurve, i, 5, actXSpac, actYSpac);
+                        Column col = new Column(lineCurve, i, nStorey, liveLoad, actXSpac, actYSpac);
                         outerCol.Add(col);
 
                         outerColumns.Add(outerColumnsIt[j]);
@@ -531,7 +535,7 @@ namespace B_GOpt.Forms
                     for (int j = 0; j < edgeColumnsIt.Count; j++)
                     {
                         LineCurve lineCurve = new LineCurve(edgeColumnsIt[j]);
-                        Column col = new Column(lineCurve, i, 5, actXSpac, actYSpac);
+                        Column col = new Column(lineCurve, i, nStorey, liveLoad, actXSpac, actYSpac);
                         edgeCol.Add(col);
 
                         edgeColumns.Add(edgeColumnsIt[j]);
@@ -547,8 +551,12 @@ namespace B_GOpt.Forms
 
 
                 //Intersect slabs with core
-                RhinoList<Brep> floorSlabs = StructGrid.SplitSlabsWithCores(cores, slabEdgeCurves, docform); 
+                RhinoList<Brep> floorSlabs = StructGrid.SplitSlabsWithCores(cores, slabEdgeCurves, docform);
 
+                for (int i = 0; i < floorSlabs.Count; i++)
+                {
+                    Slab slab = new Slab(floorSlabs[i], i, liveLoad, actXSpac, actYSpac);
+                }
 
 
                 //Adds the elements to the Rhino Document
@@ -573,10 +581,10 @@ namespace B_GOpt.Forms
                 //    docform.Objects.AddLine(outerColumns[i]);
                 //}
 
-                //for (int i = 0; i < innerColumns.Count; i++)
-                //{
-                //    docform.Objects.AddLine(innerColumns[i]);
-                //}
+                for (int i = 0; i < innerColumns.Count; i++)
+                {
+                    docform.Objects.AddLine(innerColumns[i]);
+                }
 
                 //for (int i = 0; i < edgeColumns.Count; i++)
                 //{
@@ -599,9 +607,6 @@ namespace B_GOpt.Forms
                 }
 
 
-
-
-
                 //for (int i = 0; i < beamsInXDir.Count; i++)
                 //{
                 //    docform.Objects.AddCurve(beamsInXDir[i].ToNurbsCurve());
@@ -620,6 +625,25 @@ namespace B_GOpt.Forms
                 docform.Views.Redraw();
 
 
+
+
+
+                //Creating TextDots with some member data
+                MyFunctions.SetLayer(docform, "InnerColumnLoad", System.Drawing.Color.Beige);
+
+                for (int i = 0; i < innerCol.Count; i++)
+                {
+                    var textDot = new TextDot(Convert.ToInt32(innerCol[i].Load).ToString(), innerCol[i].LineCurve.PointAt(0.5));
+                    docform.Objects.AddTextDot(textDot);
+                }
+
+
+
+
+
+
+
+
                 //Deleting all outer members
 
 
@@ -629,6 +653,12 @@ namespace B_GOpt.Forms
 
 
                 //Predimensioning
+
+
+
+
+
+
 
 
 
@@ -740,30 +770,6 @@ namespace B_GOpt.Forms
             material = "Timber";
             string infoMat = String.Format($"Selected {material} as structural material");
             RhinoApp.WriteLine(infoMat);
-        }
-
-        private void rbtnResidential_CheckedChanged(object sender, EventArgs e)
-        {
-            string programm = "Residential";
-            loadPerSquareMeter = 1.5;
-            string infoProg = String.Format($"Programm: {programm}; Load: {loadPerSquareMeter}");
-            RhinoApp.WriteLine(infoProg);
-        }
-
-        private void rbtnOffice_CheckedChanged(object sender, EventArgs e)
-        {
-            string programm = "Office";
-            loadPerSquareMeter = 2.5;
-            string infoProg = String.Format($"Programm: {programm}; Load: {loadPerSquareMeter}");
-            RhinoApp.WriteLine(infoProg);
-        }
-
-        private void rbtnIndustrial_CheckedChanged(object sender, EventArgs e)
-        {
-            string programm = "Industrial";
-            loadPerSquareMeter = 5.0;
-            string infoProg = String.Format($"Programm: {programm}; Load: {loadPerSquareMeter}");
-            RhinoApp.WriteLine(infoProg);
         }
     }
 }
