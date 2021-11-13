@@ -8,7 +8,7 @@
   ResizeMode="NoResize"
   WindowStartupLocation="CenterOwner" 
   ShowInTaskbar="False"
-  Height="600" Width="920"
+  Height="600" Width="820"
   WindowStyle="None"
   Background="Transparent"
   AllowsTransparency="True"
@@ -47,12 +47,84 @@
             </Style.Triggers>
 
         </Style>
-        
-        
+
+        <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border  BorderThickness="0" BorderBrush="DarkGray" Background="DarkGray" Height="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border SnapsToDevicePixels="True" Background="Black"  BorderThickness="0" BorderBrush="Black" Height="2" Opacity="0.8"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SliderThumb" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Ellipse Height="10" Width="10" Fill="Black"></Ellipse>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <ControlTemplate x:Key="Slider"  TargetType="Slider">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Track Grid.Row="1" x:Name="PART_Track"   >
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumb}"  />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton}" Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+
+        <Style x:Key="Horizontal_Slider" TargetType="Slider">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="MinHeight" Value="21" />
+                    <Setter Property="MinWidth" Value="60" />
+                    <Setter Property="Template" Value="{StaticResource Slider}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
 
         <Style 
            TargetType="{x:Type Button}"
-           x:Key="CustomButtonTheme">
+           x:Key="CustomButtonTransparentTheme">
             <Style.Setters>
                 <Setter Property="Template">
                     <Setter.Value>
@@ -80,6 +152,39 @@
             </Style.Triggers>
         </Style>
 
+        <Style 
+           TargetType="{x:Type Button}"
+           x:Key="CustomButtonPlainTheme">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border         CornerRadius="12"
+                                            BorderThickness="0"
+                                            BorderBrush="White"
+                                            Margin="0,0,0,0"
+                                            Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Background" Value="LightSlateGray"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="SlateGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+
+
         <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
            TargetType="{x:Type RadioButton}"
            x:Key="MaterialButtonTheme">
@@ -89,12 +194,12 @@
                         <ControlTemplate TargetType="RadioButton">
                             <Grid   VerticalAlignment="Stretch"
                                     HorizontalAlignment="Stretch"
-                                    Background="Black"
+                                    Background="Transparent"
                                     >
                                 <Border>
-                                    <Image Source="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\concrete.png"/>
+                                    <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
                                 </Border>
-                                    
+
                             </Grid>
                         </ControlTemplate>
                     </Setter.Value>
@@ -111,8 +216,6 @@
             </Style.Triggers>
 
         </Style>
-
-
     </Window.Resources>
     
     
@@ -126,8 +229,8 @@
                 <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="400"/>
                 <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="370"/>
-                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="280"/>
+                <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -143,7 +246,7 @@
                         Grid.Row="0"
                         Grid.RowSpan="5"
                         CornerRadius="20" 
-                        Width="50">
+                        Width="70">
                 <Border.Background>
                     <SolidColorBrush Color="Black" Opacity="0.9"/>
 
@@ -151,22 +254,64 @@
 
                 <StackPanel Orientation="Vertical">
                     <RadioButton
-                             Content="Home"
-                             Height="50"
+                             
+                             Height="30" Width="30"
                              Foreground="White"
+                             HorizontalAlignment="Left"
                              FontSize="14"
                              Style="{StaticResource MaterialButtonTheme}"
+                             Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\steel.png"
                              IsChecked="True"
+                             Margin="10,200,0,0"
+                        />
+
+                    <RadioButton
+                             
+                             Height="30" Width="30"
+                             Foreground="White"
+                             HorizontalAlignment="Left"
+                             FontSize="14"
+                             Style="{StaticResource MaterialButtonTheme}"
+                             Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\concrete.png"
+                             IsChecked="True"
+                             Margin="10,30,0,0"
+                        />
+
+                    <RadioButton
+                             
+                             Height="30" Width="30"
+                             Foreground="White"
+                             HorizontalAlignment="Left"
+                             FontSize="14"
+                             Style="{StaticResource MaterialButtonTheme}"
+                             Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\timber.png"
+                             IsChecked="True"
+                             Margin="10,30,0,0"
+                        />
+
+                    <RadioButton
+                             
+                             Height="30" Width="30"
+                             Foreground="White"
+                             HorizontalAlignment="Left"
+                             FontSize="14"
+                             Style="{StaticResource MaterialButtonTheme}"
+                             Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\composite.png"
+                             IsChecked="True"
+                             Margin="10,30,0,0"
                         />
 
                 </StackPanel>
                 
             </Border>
 
-            <StackPanel Grid.Column="2"
+            <Grid Grid.Column="2"
+                        Grid.Row="1">
+
+                <StackPanel Grid.Column="2"
                         Grid.Row="1"
                         Orientation="Vertical">
-                <TextBlock  Text="Optioneering Tool"
+                    <TextBlock  Text="Optioneering Tool"
                         Grid.Column="2"
                         Grid.Row="1"
                         VerticalAlignment="Top"
@@ -176,7 +321,7 @@
                         FontSize="20"
                         Margin="0,0,0,0"
                         FontFamily="/Fonts/#Poppins"/>
-                <TextBlock  Text="This tool allows you to make data based decisions on your building project.&#x0a;Select your building in the Rhino viewport and get LCA and construction costs feddback in real time."
+                    <TextBlock  Text="This tool allows you to make data based decisions on your building project.&#x0a;Select your building in the Rhino viewport and get LCA and construction costs feddback in real time."
                             
                         Grid.Column="2"
                         Grid.Row="1"
@@ -187,8 +332,39 @@
                         FontSize="8"
                         Margin="0,3,0,0"
                         FontFamily="/Fonts/#Poppins"/>
+
+                </StackPanel>
                 
-            </StackPanel>
+                
+
+                <Border VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Height="40"
+                        Width="40"
+                        Opacity=".9">
+                    <Image Source="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\bg.jpg"/>
+                    <Border.Clip>
+                        <RectangleGeometry RadiusX="10"
+                                           RadiusY="10"
+                                           Rect="0,0,40,40"/>
+                    </Border.Clip>
+                    
+                </Border>
+
+                <Border VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        BorderThickness="1"
+                        BorderBrush="DarkGray"
+                        CornerRadius="10"
+                        Height="40"
+                        Width="40">
+                </Border>
+
+
+
+            </Grid>
+
+            
             
             <Grid Grid.Column="2"
                         Grid.Row="2">
@@ -239,9 +415,8 @@
                                 Height="25" Width="100"
                                 FontSize="10"
                                 Foreground="White" 
-                                Style="{StaticResource CustomButtonTheme}"
+                                Style="{StaticResource CustomButtonTransparentTheme}"
                                 Margin="0,0,15,0">
-
                         </Button>
 
 
@@ -250,7 +425,7 @@
                                 Height="25" Width="70"
                                 FontSize="10"
                                 Foreground="White" 
-                                Style="{StaticResource CustomButtonTheme}">
+                                Style="{StaticResource CustomButtonTransparentTheme}">
                             
                         </Button>
 
@@ -276,45 +451,248 @@
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
                 </StackPanel>
+                
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock  Text="Load"
+                                Width="200"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
+
+                    <Slider 
+                        Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Center" 
+                         Value="1.5" Width="80" Margin="0,0,0,0"
+                        Minimum="1.5" Maximum="5"
+                        x:Name="sliderLoad" ValueChanged="sliderLoad_ValueChanged">
+                    </Slider>
+
+                    <TextBlock  x:Name="sliderLoadValue"
+                                Foreground="Black"
+                                FontSize="12"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Margin="30,0,0,0"
+                                > 
+                                1.5 kN/m<Run BaselineAlignment="Superscript" FontSize="8">2</Run>
+                    </TextBlock>
+                    
+                    
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock  Text="Floor Height"
+                    <TextBlock  Text="Floor Height" Width="200"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
+
+                    <Slider 
+                        Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Center" 
+                         Value="2.5" Width="80" Margin="0,0,0,0"
+                        Minimum="2.0" Maximum="5"
+                        x:Name="sliderFloorHeight" ValueChanged="sliderFloorHeight_ValueChanged">
+                    </Slider>
+
+                    <TextBlock  x:Name="sliderFloorHeightValue"
+                                Foreground="Black"
+                                FontSize="12"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Margin="30,0,0,0"
+                                Text="2.5 m">
+                    </TextBlock>
+
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock  Text="Spacing in x-Direction"
+                    <TextBlock  Text="Spacing in x-Direction" Width="200"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
+
+
+                    <Slider 
+                        Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Center" 
+                         Value="5.5" Width="80" Margin="0,0,0,0"
+                        Minimum="2.5" Maximum="8.1"
+                        x:Name="sliderXSpac" ValueChanged="sliderXSpac_ValueChanged">
+                    </Slider>
+
+                    <TextBlock  x:Name="sliderXSpacValue"
+                                Foreground="Black"
+                                FontSize="12"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Margin="30,0,0,0"
+                                Text="5.5 m">
+                    </TextBlock>
+
+
+
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock  Text="Spacing in y-Direction"
+                    <TextBlock  Text="Spacing in y-Direction" Width="200"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
+
+                    <Slider 
+                        Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Center" 
+                         Value="3.5" Width="80" Margin="0,0,0,0"
+                        Minimum="2.5" Maximum="8.1"
+                        x:Name="sliderYSpac" ValueChanged="sliderYSpac_ValueChanged">
+                    </Slider>
+
+                    <TextBlock  x:Name="sliderYSpacValue"
+                                Foreground="Black"
+                                FontSize="12"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Margin="30,0,0,0"
+                                Text="3.5 m">
+                    </TextBlock>
+
+
                 </StackPanel>
 
 
             </StackPanel>
 
 
-          
+            <Border Grid.Column="4" Grid.Row="1" CornerRadius="10" 
+                    Grid.RowSpan="2"
+                    HorizontalAlignment="Stretch"
+                    >
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0"
+                                             EndPoint="1,2">
+                        <GradientStop Color="#5bc3ff" Offset="-0.5"/>
+                        <GradientStop Color="#f083da" Offset="1"/>
+                    </LinearGradientBrush>
 
+                </Border.Background>
+
+                <Border.Clip>
+                    <RectangleGeometry RadiusX="10"
+                                           RadiusY="10"
+                                           Rect="0,0,280,220"/>
+                </Border.Clip>
+
+                <Image Source="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\antwerpen.jpg"
+                       Margin="-185,-75,-245,-264.2"
+                       Opacity="0.8"/>
+
+
+            </Border>
+
+
+            <Grid Grid.Column="4" Grid.Row="3">
+                <StackPanel  Grid.Column="2"
+                         Grid.Row="3">
+                    <TextBlock  Text="Results"
+                            Foreground="Black"
+                            FontSize="16"
+                            FontWeight="Normal"
+                            Margin="0,20,10,0"/>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Surface Area"
+                            Foreground="Black"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Margin="0,10,10,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="FAR"
+                            Foreground="Black"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Margin="0,10,10,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Ceiling"
+                            Foreground="Black"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Margin="0,10,10,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Clear room height"
+                            Foreground="Black"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Margin="0,10,10,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Building Category"
+                            Foreground="Black"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Margin="0,10,10,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Weight"
+                            Foreground="Black"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Margin="0,10,10,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Text="Construction Costs"
+                            Foreground="Black"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Margin="0,10,10,0"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock  Foreground="Black"
+                                    FontSize="12"
+                                    FontWeight="Normal"
+                                    Margin="0,10,10,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Center"> 
+                                    Embodied CO<Run BaselineAlignment="Subscript" FontSize="10">2</Run>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Left"
+                                Margin="0,30,0,0">
+
+                        <Button Content="Save Variant"
+                                Height="25" Width="90"
+                                FontSize="10"
+                                Style="{StaticResource CustomButtonPlainTheme}"
+                                Margin="0,0,0,0"
+                                >
+                        </Button>
+
+                        <Button Content="Compare variants"
+                                Height="25" Width="100"
+                                FontSize="10"
+                                Style="{StaticResource CustomButtonPlainTheme}"
+                                Margin="40,0,0,0"
+                                >
+                        </Button>
+
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
+            
         </Grid>
     </Border>
 </Window>

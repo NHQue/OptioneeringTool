@@ -168,8 +168,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="EmbeddedResources\Images\antwerpen.jpg" />
+    <Content Include="EmbeddedResources\Images\bg.jpg" />
+    <Content Include="EmbeddedResources\Images\bollingergrohmann.jpg" />
     <Content Include="EmbeddedResources\Images\composite.png" />
     <Content Include="EmbeddedResources\Images\concrete.png" />
+    <Content Include="EmbeddedResources\Images\db.jpg" />
+    <Content Include="EmbeddedResources\Images\gallery.jpg" />
     <Content Include="EmbeddedResources\Images\steel.png" />
     <Content Include="EmbeddedResources\Images\timber.png" />
   </ItemGroup>

@@ -29,5 +29,40 @@ namespace B_GOpt.Views
         {
 
         }
+
+
+        private void sliderLoad_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (sliderLoadValue != null)
+            {
+                sliderLoadValue.Text = Math.Round(sliderLoad.Value, 2).ToString() + " kN/m²";
+            }
+        }
+
+        private void sliderFloorHeight_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (sliderFloorHeightValue != null)
+            {
+                sliderFloorHeightValue.Text = Math.Round(sliderFloorHeight.Value, 2).ToString() + " m";
+            }
+        }
+
+        private void sliderXSpac_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (sliderXSpacValue != null)
+            {
+                sliderXSpacValue.Text = Math.Round(sliderXSpac.Value, 2).ToString() + " m";
+            }
+        }
+
+        private void sliderYSpac_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (sliderYSpacValue != null)
+            {
+                sliderYSpacValue.Text = Math.Round(sliderYSpac.Value, 2).ToString() + " m";
+            }
+        }
+
+
     }
 }
