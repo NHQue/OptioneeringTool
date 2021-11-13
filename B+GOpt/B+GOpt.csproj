@@ -61,6 +61,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="RhinoCommon">
@@ -87,7 +88,9 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\LCACalculation.cs" />
     <Compile Include="Classes\Members\Slab.cs" />
+    <Compile Include="Classes\PreDimTest.cs" />
     <Compile Include="Classes\StructGrid.cs" />
     <Compile Include="Classes\Members\Beam.cs" />
     <Compile Include="Classes\BuildingGeometry.cs" />
@@ -98,6 +101,7 @@
     <Compile Include="Commands\BGOpt_DefaultCommand.cs" />
     <Compile Include="BGOptPlugIn.cs" />
     <Compile Include="Commands\OptPanel.cs" />
+    <Compile Include="Commands\OptPanelWPF.cs" />
     <Compile Include="CustomControls\CustomButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -120,19 +124,24 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Views\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EmbeddedResources\plugin-utility.ico" />
+    <EmbeddedResource Include="EmbeddedResources\Images\plugin-utility.ico" />
     <EmbeddedResource Include="Forms\Dashboard.resx">
       <DependentUpon>Dashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="EmbeddedResources\B+G.jpg" />
+    <None Include="EmbeddedResources\Fonts\Poppins-Light.ttf" />
+    <None Include="EmbeddedResources\Fonts\Poppins-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="EmbeddedResources\Krypton_Resources\mc-red.png" />
@@ -151,6 +160,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="EmbeddedResources\Krypton_Resources\sign-add-icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Views\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="EmbeddedResources\Images\composite.png" />
+    <Content Include="EmbeddedResources\Images\concrete.png" />
+    <Content Include="EmbeddedResources\Images\steel.png" />
+    <Content Include="EmbeddedResources\Images\timber.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

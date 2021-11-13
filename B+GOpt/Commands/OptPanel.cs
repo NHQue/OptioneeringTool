@@ -18,9 +18,7 @@ namespace B_GOpt.Commands
 {
     public class OptPanel : Command
     {
-        
         private Forms.Form2 Panelform { get; set; }     //Keeps track on the state of the form (if it is open or not)
-
 
         static OptPanel _instance;
         public OptPanel()
@@ -41,8 +39,6 @@ namespace B_GOpt.Commands
 
         protected override Result RunCommand(RhinoDoc doc, RunMode mode)
         {
-            
-
             //Creates a new Dashboard if there is none
             if(null == Panelform)
             {
@@ -50,8 +46,6 @@ namespace B_GOpt.Commands
                 Panelform.FormClosed += OnFormClosed;       //Event handler (associating the event with one's own function): when the form closed it calls the function "OnFormClosed" (in this case withou argument)
                 Panelform.Show(RhinoWinApp.MainWindow);
             }
-
-
             /*
             var form = new Forms.Dashboard { StartPosition = FormStartPosition.CenterParent };          // curly brackets -> Object initialize syntax: instanciate a class by immediately initialzing some of its fields or properties
             var formRes = form.ShowDialog(RhinoWinApp.MainWindow);
@@ -66,11 +60,8 @@ namespace B_GOpt.Commands
                 RhinoApp.WriteLine("The dialog closed with the OK-button");
                 return Result.Success;
             }*/
-
-
             return Result.Success;
         }
-
 
         private void OnFormClosed(object sender, FormClosedEventArgs e) //object sender: refers to the instance that raises the event; FormClosedEventArgs: holds the event data
         {

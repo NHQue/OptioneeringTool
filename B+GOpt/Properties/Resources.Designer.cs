@@ -63,16 +63,6 @@ namespace B_GOpt.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap B_G {
-            get {
-                object obj = ResourceManager.GetObject("B+G", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap mc_green {
             get {
                 object obj = ResourceManager.GetObject("mc-green", resourceCulture);

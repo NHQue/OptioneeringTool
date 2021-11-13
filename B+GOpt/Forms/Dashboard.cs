@@ -31,6 +31,7 @@ namespace B_GOpt.Forms
         double liveLoad = 1.5;
         double addDeadLoad = 1.5;
         double deadLoadSlab;
+        double totalLoad;
         string material;
 
         //public string documentName = RhinoDoc.ActiveDoc.Name;
@@ -392,6 +393,52 @@ namespace B_GOpt.Forms
                 List<Column> innerCol = new List<Column>();
                 List<Column> edgeCol = new List<Column>();
 
+                List<Slab> slabs1 = new List<Slab>();
+
+
+
+
+                //Intersect slabs with core
+                RhinoList<Brep> floorSlabs = StructGrid.SplitSlabsWithCores(cores, slabEdgeCurves, docform);
+
+                for (int i = 0; i < floorSlabs.Count; i++)
+                {
+                    Slab slab = new Slab(floorSlabs[i], actXSpac, actYSpac, i, liveLoad, 0);
+                    slabs1.Add(slab);
+                }
+
+
+
+
+
+                //Predimensioning slabs
+                double cs;
+                if (material == "Concrete")
+                {
+                    cs = PreDim.ConcreteSlab(actXSpac, actYSpac);
+
+                    for (int i = 0; i < floorSlabs.Count; i++)
+                    {
+                        slabs1[i].Height = cs;
+                    }
+
+                    deadLoadSlab = cs * 25;
+                }
+                else
+                {
+                    cs = 1;
+                }
+
+                RhinoApp.WriteLine("SlabHeight: " + cs);
+
+
+
+                //Calculating total load
+                totalLoad = liveLoad + deadLoadSlab + addDeadLoad; 
+
+
+
+
 
 
                 //Creates the Grid 2D for all slabs
@@ -422,7 +469,7 @@ namespace B_GOpt.Forms
                                 if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(xBeamsIt[j]);
-                                    Beam xBeam = new Beam(lineCurve, "Secondary", i, liveLoad, actYSpac);
+                                    Beam xBeam = new Beam(lineCurve, "Secondary", i, totalLoad, actYSpac);
                                     beamsInXDir.Add(xBeam);
 
                                     xBeams.Add(intersectedLines[k]);
@@ -439,7 +486,7 @@ namespace B_GOpt.Forms
                                 if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(yIntLines[j]);
-                                    Beam yBeam = new Beam(lineCurve, "Primary", i, liveLoad, actXSpac);
+                                    Beam yBeam = new Beam(lineCurve, "Primary", i, totalLoad, actXSpac);
                                     beamsInYDir.Add(yBeam);
 
                                     yBeams.Add(intersectedLines[k]);
@@ -454,7 +501,8 @@ namespace B_GOpt.Forms
                             if (!MyFunctions.IsLineInsideBreps(cores, innerColumnsIt[j], docform))
                             {
                                 LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
-                                Column col = new Column(lineCurve, i, nStorey, liveLoad, actXSpac, actYSpac);
+                                Column col = new Column(lineCurve, i, nStorey, totalLoad, actXSpac, actYSpac, 0);
+                                col.Area = PreDim.ConcreteColumn(col.Load);
                                 innerCol.Add(col);
 
                                 innerColumns.Add(innerColumnsIt[j]);
@@ -475,7 +523,7 @@ namespace B_GOpt.Forms
                                 if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(intersectedLines[k]);
-                                    Beam xBeam = new Beam(lineCurve, "Primary", i, liveLoad, actXSpac);
+                                    Beam xBeam = new Beam(lineCurve, "Primary", i, totalLoad, actXSpac);
                                     beamsInXDir.Add(xBeam);
 
                                     xBeams.Add(intersectedLines[k]);
@@ -494,7 +542,7 @@ namespace B_GOpt.Forms
                                 if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(yBeamsIt[j]);
-                                    Beam yBeam = new Beam(lineCurve, "Secondary", i, liveLoad, actYSpac);
+                                    Beam yBeam = new Beam(lineCurve, "Secondary", i, totalLoad, actYSpac);
                                     beamsInYDir.Add(yBeam);
 
                                     yBeams.Add(intersectedLines[k]);
@@ -510,7 +558,9 @@ namespace B_GOpt.Forms
                             if (!MyFunctions.IsLineInsideBreps(cores, innerColumnsIt[j], docform))
                             {
                                 LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
-                                Column col = new Column(lineCurve, i, nStorey, liveLoad + addDeadLoad, actXSpac, actYSpac);
+                                Column col = new Column(lineCurve, i, nStorey, totalLoad, actXSpac, actYSpac, 0);
+                                col.Area = PreDim.ConcreteColumn(col.Load); 
+
                                 innerCol.Add(col);
 
                                 innerColumns.Add(innerColumnsIt[j]);
@@ -524,7 +574,7 @@ namespace B_GOpt.Forms
                     for (int j = 0; j < outerColumnsIt.Count; j++)
                     {
                         LineCurve lineCurve = new LineCurve(outerColumnsIt[j]);
-                        Column col = new Column(lineCurve, i, nStorey, liveLoad, actXSpac, actYSpac);
+                        Column col = new Column(lineCurve, i, nStorey, totalLoad, actXSpac, actYSpac, 0);
                         outerCol.Add(col);
 
                         outerColumns.Add(outerColumnsIt[j]);
@@ -535,7 +585,7 @@ namespace B_GOpt.Forms
                     for (int j = 0; j < edgeColumnsIt.Count; j++)
                     {
                         LineCurve lineCurve = new LineCurve(edgeColumnsIt[j]);
-                        Column col = new Column(lineCurve, i, nStorey, liveLoad, actXSpac, actYSpac);
+                        Column col = new Column(lineCurve, i, nStorey, totalLoad, actXSpac, actYSpac, 0);
                         edgeCol.Add(col);
 
                         edgeColumns.Add(edgeColumnsIt[j]);
@@ -550,13 +600,7 @@ namespace B_GOpt.Forms
                 }
 
 
-                //Intersect slabs with core
-                RhinoList<Brep> floorSlabs = StructGrid.SplitSlabsWithCores(cores, slabEdgeCurves, docform);
 
-                for (int i = 0; i < floorSlabs.Count; i++)
-                {
-                    Slab slab = new Slab(floorSlabs[i], i, liveLoad, actXSpac, actYSpac);
-                }
 
 
                 //Adds the elements to the Rhino Document
@@ -619,16 +663,13 @@ namespace B_GOpt.Forms
 
 
 
-                RhinoApp.WriteLine(beamsInXDir.Count.ToString());
-                RhinoApp.WriteLine(beamsInYDir.Count.ToString());
-
-                docform.Views.Redraw();
 
 
 
 
 
                 //Creating TextDots with some member data
+                //Innercolumn
                 MyFunctions.SetLayer(docform, "InnerColumnLoad", System.Drawing.Color.Beige);
 
                 for (int i = 0; i < innerCol.Count; i++)
@@ -636,6 +677,28 @@ namespace B_GOpt.Forms
                     var textDot = new TextDot(Convert.ToInt32(innerCol[i].Load).ToString(), innerCol[i].LineCurve.PointAt(0.5));
                     docform.Objects.AddTextDot(textDot);
                 }
+
+                MyFunctions.SetLayer(docform, "InnerColumnArea", System.Drawing.Color.Beige);
+
+                for (int i = 0; i < innerCol.Count; i++)
+                {
+                    var textDot = new TextDot(Math.Round(innerCol[i].Area, 2).ToString(), innerCol[i].LineCurve.PointAt(0.5));
+                    docform.Objects.AddTextDot(textDot);
+                }
+
+
+
+
+                //Slabs
+                MyFunctions.SetLayer(docform, "SlabCrossSection", System.Drawing.Color.Beige);
+
+                for (int i = 0; i < slabs1.Count; i++)
+                {
+                    var textDot = new TextDot(Math.Round(slabs1[i].Height, 2).ToString(), slabs1[i].GetBoundingBox(true).Center);
+                    docform.Objects.AddTextDot(textDot);
+                }
+
+
 
 
 
@@ -649,10 +712,6 @@ namespace B_GOpt.Forms
 
 
 
-
-
-
-                //Predimensioning
 
 
 
@@ -673,14 +732,7 @@ namespace B_GOpt.Forms
 
                 lblSurfaceValue.Text = Math.Round(surfaceArea, 0).ToString() + "  m" + ("\u00B2");
                 lblFarValue.Text = Math.Round(baseSrf.GetArea() / surfaceArea, 2).ToString();
-
-
-
-                //RhinoApp.WriteLine(beamsInXDir[10].ToString());
             }
-
-
-
         }
 
         private void btnEvaluateObj_Click(object sender, EventArgs e)
@@ -771,5 +823,7 @@ namespace B_GOpt.Forms
             string infoMat = String.Format($"Selected {material} as structural material");
             RhinoApp.WriteLine(infoMat);
         }
+
+
     }
 }

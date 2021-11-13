@@ -18,9 +18,9 @@ namespace B_GOpt.Classes
 
         public int Storey { get; set; }
 
-        private double Load { get; set; }
+        public double Load { get; set; }
 
-        private double Height { get; set; }
+        public double Height { get; set; }
 
         //Constructor
         public Slab(Brep brep)
@@ -28,13 +28,14 @@ namespace B_GOpt.Classes
             Brep = brep;
         }
 
-        public Slab(Brep brep, int storey, double load, double xSpan, double ySpan)
+        public Slab(Brep brep, double xSpan, double ySpan, int storey, double load, double height)
         {
             Brep = brep;
+            XSpan = xSpan;
+            YSpan = ySpan;
             Storey = storey;
             Load = load;
-            XSpan = xSpan;
-            YSpan = xSpan;
+            Height = height; 
         }
 
 

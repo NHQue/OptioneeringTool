@@ -78,6 +78,12 @@ namespace B_GOpt.Forms
             this.lblWeightValue = new System.Windows.Forms.Label();
             this.tbarLiveLoad = new ComponentFactory.Krypton.Toolkit.KryptonTrackBar();
             this.lblLiveLoadValue = new System.Windows.Forms.Label();
+            this.lblCeiling = new System.Windows.Forms.Label();
+            this.lblCeilingValue = new System.Windows.Forms.Label();
+            this.lblClearRoomHeightValue = new System.Windows.Forms.Label();
+            this.lblClearRoomHeight = new System.Windows.Forms.Label();
+            this.lblBuildingClassValue = new System.Windows.Forms.Label();
+            this.lblBuildingClass = new System.Windows.Forms.Label();
             this.btnEvaluateObj = new B_GOpt.CustomControls.CustomButton();
             this.btnTestGrid = new B_GOpt.CustomControls.CustomButton();
             this.btnStructGrid3D = new B_GOpt.CustomControls.CustomButton();
@@ -206,7 +212,7 @@ namespace B_GOpt.Forms
             this.tbarSpacX.DrawBackground = true;
             this.tbarSpacX.LargeChange = 100;
             this.tbarSpacX.Location = new System.Drawing.Point(317, 316);
-            this.tbarSpacX.Maximum = 1400;
+            this.tbarSpacX.Maximum = 850;
             this.tbarSpacX.Minimum = 200;
             this.tbarSpacX.Name = "tbarSpacX";
             this.tbarSpacX.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.ProfessionalSystem;
@@ -229,7 +235,7 @@ namespace B_GOpt.Forms
             this.tbarSpacX.TabIndex = 15;
             this.tbarSpacX.TickStyle = System.Windows.Forms.TickStyle.None;
             this.tbarSpacX.TrackBarSize = ComponentFactory.Krypton.Toolkit.PaletteTrackBarSize.Small;
-            this.tbarSpacX.Value = 600;
+            this.tbarSpacX.Value = 650;
             this.tbarSpacX.ValueChanged += new System.EventHandler(this.tbarSpacX_ValueChanged);
             // 
             // tbarSpacY
@@ -240,7 +246,7 @@ namespace B_GOpt.Forms
             this.tbarSpacY.DrawBackground = true;
             this.tbarSpacY.LargeChange = 100;
             this.tbarSpacY.Location = new System.Drawing.Point(317, 350);
-            this.tbarSpacY.Maximum = 1400;
+            this.tbarSpacY.Maximum = 850;
             this.tbarSpacY.Minimum = 200;
             this.tbarSpacY.Name = "tbarSpacY";
             this.tbarSpacY.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.ProfessionalSystem;
@@ -263,7 +269,7 @@ namespace B_GOpt.Forms
             this.tbarSpacY.TabIndex = 18;
             this.tbarSpacY.TickStyle = System.Windows.Forms.TickStyle.None;
             this.tbarSpacY.TrackBarSize = ComponentFactory.Krypton.Toolkit.PaletteTrackBarSize.Small;
-            this.tbarSpacY.Value = 600;
+            this.tbarSpacY.Value = 550;
             this.tbarSpacY.ValueChanged += new System.EventHandler(this.tbarSpacY_ValueChanged);
             // 
             // tbarFloorHeight
@@ -307,7 +313,7 @@ namespace B_GOpt.Forms
             this.lblSpacYValue.Name = "lblSpacYValue";
             this.lblSpacYValue.Size = new System.Drawing.Size(93, 26);
             this.lblSpacYValue.TabIndex = 20;
-            this.lblSpacYValue.Text = "6,00  m";
+            this.lblSpacYValue.Text = "5,50  m";
             this.lblSpacYValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // lblMat
@@ -444,16 +450,6 @@ namespace B_GOpt.Forms
             this.btnSelectCore.Values.Text = "Select the Building Core";
             this.btnSelectCore.Click += new System.EventHandler(this.btnSelectCore_Click);
             // 
-            // picBG
-            // 
-            this.picBG.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.picBG.Image = global::B_GOpt.Properties.Resources.B_G;
-            this.picBG.Location = new System.Drawing.Point(492, 9);
-            this.picBG.Name = "picBG";
-            this.picBG.Size = new System.Drawing.Size(66, 60);
-            this.picBG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picBG.TabIndex = 2;
-            this.picBG.TabStop = false;
             // 
             // lblRes
             // 
@@ -479,7 +475,7 @@ namespace B_GOpt.Forms
             // 
             this.lblCO2.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCO2.ForeColor = System.Drawing.Color.Black;
-            this.lblCO2.Location = new System.Drawing.Point(4, 588);
+            this.lblCO2.Location = new System.Drawing.Point(4, 698);
             this.lblCO2.Name = "lblCO2";
             this.lblCO2.Size = new System.Drawing.Size(135, 26);
             this.lblCO2.TabIndex = 33;
@@ -493,7 +489,7 @@ namespace B_GOpt.Forms
             this.lblSpacXValue.Name = "lblSpacXValue";
             this.lblSpacXValue.Size = new System.Drawing.Size(97, 26);
             this.lblSpacXValue.TabIndex = 16;
-            this.lblSpacXValue.Text = "6,00  m";
+            this.lblSpacXValue.Text = "6,50  m";
             this.lblSpacXValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // chartCO2
@@ -502,14 +498,14 @@ namespace B_GOpt.Forms
             this.chartCO2.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chartCO2.Legends.Add(legend1);
-            this.chartCO2.Location = new System.Drawing.Point(277, 585);
+            this.chartCO2.Location = new System.Drawing.Point(315, 653);
             this.chartCO2.Name = "chartCO2";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Doughnut;
             series1.Legend = "Legend1";
             series1.Name = "CO2";
             this.chartCO2.Series.Add(series1);
-            this.chartCO2.Size = new System.Drawing.Size(288, 195);
+            this.chartCO2.Size = new System.Drawing.Size(250, 127);
             this.chartCO2.TabIndex = 34;
             this.chartCO2.Text = "chart1";
             // 
@@ -527,7 +523,7 @@ namespace B_GOpt.Forms
             // 
             this.lblCosts.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCosts.ForeColor = System.Drawing.Color.Black;
-            this.lblCosts.Location = new System.Drawing.Point(3, 556);
+            this.lblCosts.Location = new System.Drawing.Point(3, 664);
             this.lblCosts.Name = "lblCosts";
             this.lblCosts.Size = new System.Drawing.Size(169, 26);
             this.lblCosts.TabIndex = 36;
@@ -587,7 +583,7 @@ namespace B_GOpt.Forms
             // 
             this.lblCostsValue.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCostsValue.ForeColor = System.Drawing.Color.Black;
-            this.lblCostsValue.Location = new System.Drawing.Point(199, 556);
+            this.lblCostsValue.Location = new System.Drawing.Point(199, 664);
             this.lblCostsValue.Name = "lblCostsValue";
             this.lblCostsValue.Size = new System.Drawing.Size(117, 26);
             this.lblCostsValue.TabIndex = 42;
@@ -597,7 +593,7 @@ namespace B_GOpt.Forms
             // 
             this.lblCO2Value.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCO2Value.ForeColor = System.Drawing.Color.Black;
-            this.lblCO2Value.Location = new System.Drawing.Point(199, 588);
+            this.lblCO2Value.Location = new System.Drawing.Point(199, 698);
             this.lblCO2Value.Name = "lblCO2Value";
             this.lblCO2Value.Size = new System.Drawing.Size(72, 26);
             this.lblCO2Value.TabIndex = 43;
@@ -799,6 +795,66 @@ namespace B_GOpt.Forms
             this.lblLiveLoadValue.Text = "1,5 kN/m²";
             this.lblLiveLoadValue.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // lblCeiling
+            // 
+            this.lblCeiling.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCeiling.ForeColor = System.Drawing.Color.Black;
+            this.lblCeiling.Location = new System.Drawing.Point(4, 559);
+            this.lblCeiling.Name = "lblCeiling";
+            this.lblCeiling.Size = new System.Drawing.Size(117, 26);
+            this.lblCeiling.TabIndex = 54;
+            this.lblCeiling.Text = "Ceiling";
+            // 
+            // lblCeilingValue
+            // 
+            this.lblCeilingValue.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCeilingValue.ForeColor = System.Drawing.Color.Black;
+            this.lblCeilingValue.Location = new System.Drawing.Point(199, 559);
+            this.lblCeilingValue.Name = "lblCeilingValue";
+            this.lblCeilingValue.Size = new System.Drawing.Size(117, 26);
+            this.lblCeilingValue.TabIndex = 55;
+            this.lblCeilingValue.Text = "-";
+            // 
+            // lblClearRoomHeightValue
+            // 
+            this.lblClearRoomHeightValue.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblClearRoomHeightValue.ForeColor = System.Drawing.Color.Black;
+            this.lblClearRoomHeightValue.Location = new System.Drawing.Point(199, 595);
+            this.lblClearRoomHeightValue.Name = "lblClearRoomHeightValue";
+            this.lblClearRoomHeightValue.Size = new System.Drawing.Size(117, 26);
+            this.lblClearRoomHeightValue.TabIndex = 57;
+            this.lblClearRoomHeightValue.Text = "-";
+            // 
+            // lblClearRoomHeight
+            // 
+            this.lblClearRoomHeight.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblClearRoomHeight.ForeColor = System.Drawing.Color.Black;
+            this.lblClearRoomHeight.Location = new System.Drawing.Point(4, 595);
+            this.lblClearRoomHeight.Name = "lblClearRoomHeight";
+            this.lblClearRoomHeight.Size = new System.Drawing.Size(117, 26);
+            this.lblClearRoomHeight.TabIndex = 56;
+            this.lblClearRoomHeight.Text = "Clear Room Height";
+            // 
+            // lblBuildingClassValue
+            // 
+            this.lblBuildingClassValue.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBuildingClassValue.ForeColor = System.Drawing.Color.Black;
+            this.lblBuildingClassValue.Location = new System.Drawing.Point(199, 629);
+            this.lblBuildingClassValue.Name = "lblBuildingClassValue";
+            this.lblBuildingClassValue.Size = new System.Drawing.Size(117, 26);
+            this.lblBuildingClassValue.TabIndex = 59;
+            this.lblBuildingClassValue.Text = "-";
+            // 
+            // lblBuildingClass
+            // 
+            this.lblBuildingClass.Font = new System.Drawing.Font("Lato", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBuildingClass.ForeColor = System.Drawing.Color.Black;
+            this.lblBuildingClass.Location = new System.Drawing.Point(4, 629);
+            this.lblBuildingClass.Name = "lblBuildingClass";
+            this.lblBuildingClass.Size = new System.Drawing.Size(117, 26);
+            this.lblBuildingClass.TabIndex = 58;
+            this.lblBuildingClass.Text = "Building Class";
+            // 
             // btnEvaluateObj
             // 
             this.btnEvaluateObj.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -869,6 +925,12 @@ namespace B_GOpt.Forms
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
             this.ClientSize = new System.Drawing.Size(570, 834);
+            this.Controls.Add(this.lblBuildingClassValue);
+            this.Controls.Add(this.lblBuildingClass);
+            this.Controls.Add(this.lblClearRoomHeightValue);
+            this.Controls.Add(this.lblClearRoomHeight);
+            this.Controls.Add(this.lblCeilingValue);
+            this.Controls.Add(this.lblCeiling);
             this.Controls.Add(this.lblLiveLoadValue);
             this.Controls.Add(this.tbarLiveLoad);
             this.Controls.Add(this.btnEvaluateObj);
@@ -965,5 +1027,11 @@ namespace B_GOpt.Forms
         private CustomControls.CustomButton btnEvaluateObj;
         private ComponentFactory.Krypton.Toolkit.KryptonTrackBar tbarLiveLoad;
         private System.Windows.Forms.Label lblLiveLoadValue;
+        private System.Windows.Forms.Label lblCeiling;
+        private System.Windows.Forms.Label lblCeilingValue;
+        private System.Windows.Forms.Label lblClearRoomHeightValue;
+        private System.Windows.Forms.Label lblClearRoomHeight;
+        private System.Windows.Forms.Label lblBuildingClassValue;
+        private System.Windows.Forms.Label lblBuildingClass;
     }
 }

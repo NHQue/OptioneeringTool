@@ -25,6 +25,8 @@ namespace B_GOpt.Classes
 
         public string CrossSection { get; set; }
 
+        public double Area { get; set; }
+
 
         //Constructors
 
@@ -33,12 +35,13 @@ namespace B_GOpt.Classes
 
         }
 
-        public Column(LineCurve lineCurve, int storey, int storeyCount, double load, double xSpac, double ySpac)
+        public Column(LineCurve lineCurve, int storey, int storeyCount, double load, double xSpac, double ySpac, double area)
         {
             LineCurve = lineCurve;
             Length = lineCurve.GetLength();
             Storey = storey;
             Load = load * xSpac * ySpac * (storeyCount - storey + 1);
+            Area = area; 
         }
 
 
