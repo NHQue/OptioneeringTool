@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Rhino;
+using Rhino.Commands;
+using RhinoWindows;
+using System.Windows.Interop;
 
 namespace B_GOpt.Views 
 {
@@ -63,6 +67,41 @@ namespace B_GOpt.Views
             }
         }
 
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
 
+        private void ButtonMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+
+
+        private void ButtonCompareVariants_Click(object sender, RoutedEventArgs e)
+        {
+            //var dialog = new Views.SampleCsWpfDialog();
+            //dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
+            //dialog.ShowDialog();
+
+            var dialog = new Views.CompareVariantsView();
+            //dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
+            //dialog.ShowDialog();
+
+            new System.Windows.Interop.WindowInteropHelper(dialog).Owner = Rhino.RhinoApp.MainWindowHandle();
+            WindowInteropHelper wih = new WindowInteropHelper(dialog);
+            wih.Owner = Rhino.RhinoApp.MainWindowHandle();
+            dialog.Show();
+
+        }
     }
 }

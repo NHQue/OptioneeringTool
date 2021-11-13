@@ -159,7 +159,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
-                            <Border         CornerRadius="12"
+                            <Border         CornerRadius="10"
                                             BorderThickness="0"
                                             BorderBrush="White"
                                             Margin="0,0,0,0"
@@ -171,7 +171,8 @@
                     </Setter.Value>
                 </Setter>
 
-                <Setter Property="Background" Value="LightSlateGray"/>
+                <Setter Property="Background" Value="AliceBlue"/>
+                
                 <Setter Property="BorderThickness" Value="0"/>
             </Style.Setters>
 
@@ -242,11 +243,61 @@
             </Grid.RowDefinitions>
 
 
+            <Grid   Grid.Column="4"
+                    Grid.Row="0"
+                    Grid.ColumnSpan="2">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+
+
+                    <Border BorderThickness="1"
+                            BorderBrush="DarkGray"
+                            Opacity=".7"
+                            CornerRadius="5"
+                            Height="18" Width="18"
+                            Margin="0,0,5,0">
+                        <Button 
+                            BorderThickness="0"
+                            Content="🗕"
+                            FontSize="8"
+                            Background="Transparent"
+                            Foreground="DarkGray"
+                            Click="ButtonMinimize_Click">
+                        </Button>
+                    </Border>
+
+                    <Border BorderThickness="1"
+                            BorderBrush="DarkGray"
+                            Opacity=".7"
+                            CornerRadius="5"
+                            Height="18" Width="18"
+                            Margin="0,0,30,0">
+                        <Button 
+                            BorderThickness="0"
+                            Content="✕"
+                            FontSize="8"
+                            Background="Transparent"
+                            Foreground="DarkGray"
+                            Click="ButtonClose_Click">
+                        </Button>
+                    </Border>
+
+
+
+
+
+
+                </StackPanel>
+                
+            </Grid>
+
+
             <Border Grid.Column="0"
                         Grid.Row="0"
                         Grid.RowSpan="5"
                         CornerRadius="20" 
-                        Width="70">
+                        Width="70"
+                        MouseDown="Border_MouseDown">
                 <Border.Background>
                     <SolidColorBrush Color="Black" Opacity="0.9"/>
 
@@ -670,21 +721,40 @@
                     <StackPanel Orientation="Horizontal"
                                 VerticalAlignment="Bottom"
                                 HorizontalAlignment="Left"
-                                Margin="0,30,0,0">
+                                Margin="0,45,0,0">
 
                         <Button Content="Save Variant"
-                                Height="25" Width="90"
-                                FontSize="10"
+                                Height="20" Width="70"
+                                FontSize="9"
+                                FontWeight="Normal"
+                                Background="PaleTurquoise"
+                                Opacity=".8"
                                 Style="{StaticResource CustomButtonPlainTheme}"
                                 Margin="0,0,0,0"
                                 >
                         </Button>
 
                         <Button Content="Compare variants"
-                                Height="25" Width="100"
-                                FontSize="10"
+                                Height="20" Width="90"
+                                FontSize="9"
+                                FontWeight="Normal"
+                                Background="PaleTurquoise"
+                                Opacity=".8"
                                 Style="{StaticResource CustomButtonPlainTheme}"
-                                Margin="40,0,0,0"
+                                Margin="15,0,0,0" 
+                                Click="ButtonCompareVariants_Click"
+                                >
+                        </Button>
+
+                        <Button Content="Iterate solutions"
+                                Height="20" Width="90"
+                                FontSize="9"
+                                FontWeight="Normal"
+                                Background="PaleTurquoise"
+                                Opacity=".8"
+                                Style="{StaticResource CustomButtonPlainTheme}"
+                                Margin="15,0,0,0" 
+                                Click="ButtonCompareVariants_Click"
                                 >
                         </Button>
 

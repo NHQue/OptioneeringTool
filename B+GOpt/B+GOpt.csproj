@@ -124,6 +124,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Views\CompareVariantsView.xaml.cs">
+      <DependentUpon>CompareVariantsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -162,6 +165,10 @@
     <None Include="EmbeddedResources\Krypton_Resources\sign-add-icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\CompareVariantsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
