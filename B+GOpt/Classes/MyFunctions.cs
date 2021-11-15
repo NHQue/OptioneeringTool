@@ -52,7 +52,7 @@ namespace B_GOpt
         public static RhinoList<Brep> SelectCores()
         {
             GetObject gb = new GetObject();
-            gb.SetCommandPrompt("Select the buildin's cores");
+            gb.SetCommandPrompt("Select the building's cores");
             gb.EnablePreSelect(false, true);
             gb.GeometryFilter = ObjectType.Brep;
             gb.GetMultiple(1, 0);

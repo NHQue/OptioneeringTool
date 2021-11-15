@@ -8,14 +8,13 @@ namespace B_GOpt.Commands
     public class OptPanelWPF : Command
     {
         public override string EnglishName => "OptPanelWPF";
-
         protected override Result RunCommand(RhinoDoc doc, RunMode mode)
         {
             //var dialog = new Views.SampleCsWpfDialog();
             //dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
             //dialog.ShowDialog();
 
-            var dialog = new Views.MainWindow();
+            var dialog = new Views.MainWindow(doc);
             //dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
             //dialog.ShowDialog();
 

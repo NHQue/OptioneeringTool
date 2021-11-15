@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
@@ -24,6 +25,7 @@ namespace B_GOpt.Views
         {
             InitializeComponent();
         }
+        
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -35,12 +37,44 @@ namespace B_GOpt.Views
 
         private void ButtonMinimize_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+            this.WindowState = WindowState.Minimized;
         }
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            Window curWindpw = Window.GetWindow(this);                  //Passing current window context
+            curWindpw?.Close();
+        }
+
+        private void ButtonUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            //ResultsCase1.Text = variants[1].ToString();  
+        }
+
+        private void ButtonExportPDF_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void InstructionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            //var dialog = new Views.SampleCsWpfDialog();
+            //dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
+            //dialog.ShowDialog();
+
+            var dialogInstructions = new Views.InstructionsView();
+            //dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
+            //dialog.ShowDialog();
+
+            new System.Windows.Interop.WindowInteropHelper(dialogInstructions).Owner = Rhino.RhinoApp.MainWindowHandle();
+            WindowInteropHelper wih = new WindowInteropHelper(dialogInstructions);
+            wih.Owner = Rhino.RhinoApp.MainWindowHandle();
+            dialogInstructions.Show();
+        }
+
+        private void ButtonClearValues_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

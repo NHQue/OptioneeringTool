@@ -4,19 +4,28 @@
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+  xmlns:local="clr-namespace:B_GOpt.Views"
+  xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+  d:DesignHeight="300" d:DesignWidth="300"
+  d:DataContext="{d:DesignInstance local:MainWindow}"
   mc:Ignorable="d" 
+    
   ResizeMode="NoResize"
-  WindowStartupLocation="CenterOwner" 
+  WindowStartupLocation="Manual" 
+  Top="200" Left="0"
   ShowInTaskbar="False"
-  Height="600" Width="820"
+  Height="620" Width="770"
   WindowStyle="None"
   Background="Transparent"
   AllowsTransparency="True"
-  FontFamily="/Fonts/#Poppins-Regular" FontWeight="Light"
+  FontFamily="/Fonts/#Poppins-Regular" 
+  FontWeight="Light"
+  
   >
 
     <Window.Resources>
         
+        <!--MenuButtonTheme-->
         <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
            TargetType="{x:Type RadioButton}"
            x:Key="MenuButtonTheme">
@@ -48,80 +57,7 @@
 
         </Style>
 
-        <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
-            <Setter Property="SnapsToDevicePixels" Value="true" />
-            <Setter Property="OverridesDefaultStyle" Value="true" />
-            <Setter Property="IsTabStop" Value="false" />
-            <Setter Property="Focusable" Value="false" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="RepeatButton">
-                        <Border  BorderThickness="0" BorderBrush="DarkGray" Background="DarkGray" Height="1"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
-            <Setter Property="SnapsToDevicePixels" Value="true" />
-            <Setter Property="OverridesDefaultStyle" Value="true" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="RepeatButton">
-                        <Border SnapsToDevicePixels="True" Background="Black"  BorderThickness="0" BorderBrush="Black" Height="2" Opacity="0.8"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="SliderThumb" TargetType="Thumb">
-            <Setter Property="SnapsToDevicePixels" Value="true" />
-            <Setter Property="OverridesDefaultStyle" Value="true" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Thumb">
-                        <Ellipse Height="10" Width="10" Fill="Black"></Ellipse>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <ControlTemplate x:Key="Slider"  TargetType="Slider">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Track Grid.Row="1" x:Name="PART_Track"   >
-                    <Track.DecreaseRepeatButton>
-                        <RepeatButton Style="{StaticResource SliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
-                    </Track.DecreaseRepeatButton>
-                    <Track.Thumb>
-                        <Thumb Style="{StaticResource SliderThumb}"  />
-                    </Track.Thumb>
-                    <Track.IncreaseRepeatButton>
-                        <RepeatButton Style="{StaticResource SliderRepeatButton}" Command="Slider.IncreaseLarge" />
-                    </Track.IncreaseRepeatButton>
-                </Track>
-            </Grid>
-        </ControlTemplate>
-
-        <Style x:Key="Horizontal_Slider" TargetType="Slider">
-            <Setter Property="Focusable" Value="False"/>
-            <Setter Property="SnapsToDevicePixels" Value="true" />
-            <Setter Property="OverridesDefaultStyle" Value="true" />
-            <Style.Triggers>
-                <Trigger Property="Orientation" Value="Horizontal">
-                    <Setter Property="MinHeight" Value="21" />
-                    <Setter Property="MinWidth" Value="60" />
-                    <Setter Property="Template" Value="{StaticResource Slider}" />
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-
-
+        <!--PlainButtonTheme-->
         <Style 
            TargetType="{x:Type Button}"
            x:Key="CustomButtonTransparentTheme">
@@ -130,8 +66,8 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border         CornerRadius="12"
-                                            BorderThickness="1"
-                                            BorderBrush="White"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
                                             Margin="0,0,0,0"
                                             Background="{TemplateBinding Background}">
                                 <ContentPresenter VerticalAlignment="Center"
@@ -142,16 +78,21 @@
                 </Setter>
 
                 <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="BorderBrush" Value="White"/>
+                <Setter Property="BorderThickness" Value="1"/>
             </Style.Setters>
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="BorderThickness" Value="2"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="White"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
-
+        
+        <!--TransparentButtonTheme-->
         <Style 
            TargetType="{x:Type Button}"
            x:Key="CustomButtonPlainTheme">
@@ -161,7 +102,7 @@
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border         CornerRadius="10"
                                             BorderThickness="0"
-                                            BorderBrush="White"
+                                            BorderBrush="Black"
                                             Margin="0,0,0,0"
                                             Background="{TemplateBinding Background}">
                                 <ContentPresenter VerticalAlignment="Center"
@@ -183,9 +124,7 @@
             </Style.Triggers>
         </Style>
 
-
-
-
+        <!--MaterialButtonTheme-->
         <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
            TargetType="{x:Type RadioButton}"
            x:Key="MaterialButtonTheme">
@@ -195,7 +134,43 @@
                         <ControlTemplate TargetType="RadioButton">
                             <Grid   VerticalAlignment="Stretch"
                                     HorizontalAlignment="Stretch"
-                                    Background="Transparent"
+                                    Background="{TemplateBinding Background}"
+                                    >
+                                <Border>
+                                    <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </Border>
+
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Opacity" Value=".3"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value=".8"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Opacity" Value=".6"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--GearButtonTheme-->
+        <Style BasedOn="{StaticResource {x:Type Button}}"
+           TargetType="{x:Type Button}"
+           x:Key="GearButtonTheme">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid   VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"
+                                    Background="{TemplateBinding Background}"
                                     >
                                 <Border>
                                     <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
@@ -211,12 +186,84 @@
             </Style.Setters>
 
             <Style.Triggers>
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="#22202f"/>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value=".6"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Opacity" Value=".3"/>
                 </Trigger>
             </Style.Triggers>
-
         </Style>
+
+        <!--SliderTheme-->
+        <Style x:Key="SliderRepeatButton" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="IsTabStop" Value="false" />
+            <Setter Property="Focusable" Value="false" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border  BorderThickness="0" BorderBrush="DarkGray" Background="DarkGray" Height="1"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SliderRepeatButton1" TargetType="RepeatButton">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RepeatButton">
+                        <Border SnapsToDevicePixels="True" Background="Black"  BorderThickness="0" BorderBrush="Black" Height="2" Opacity="0.8"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="SliderThumb" TargetType="Thumb">
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Thumb">
+                        <Ellipse Height="10" Width="10" Fill="Black"></Ellipse>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <ControlTemplate x:Key="Slider"  TargetType="Slider">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Track Grid.Row="1" x:Name="PART_Track"   >
+                    <Track.DecreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton1}"  Command="Slider.DecreaseLarge" />
+                    </Track.DecreaseRepeatButton>
+                    <Track.Thumb>
+                        <Thumb Style="{StaticResource SliderThumb}"  />
+                    </Track.Thumb>
+                    <Track.IncreaseRepeatButton>
+                        <RepeatButton Style="{StaticResource SliderRepeatButton}" Command="Slider.IncreaseLarge" />
+                    </Track.IncreaseRepeatButton>
+                </Track>
+            </Grid>
+        </ControlTemplate>
+        <Style x:Key="Horizontal_Slider" TargetType="Slider">
+            <Setter Property="Focusable" Value="False"/>
+            <Setter Property="SnapsToDevicePixels" Value="true" />
+            <Setter Property="OverridesDefaultStyle" Value="true" />
+            <Style.Triggers>
+                <Trigger Property="Orientation" Value="Horizontal">
+                    <Setter Property="MinHeight" Value="21" />
+                    <Setter Property="MinWidth" Value="60" />
+                    <Setter Property="Template" Value="{StaticResource Slider}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </Window.Resources>
     
     
@@ -228,17 +275,17 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="350"/>
                 <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="280"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="70"/>
                 <RowDefinition Height="150"/>
-                <RowDefinition Height="300"/>
+                <RowDefinition Height="330"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -281,13 +328,13 @@
                             Click="ButtonClose_Click">
                         </Button>
                     </Border>
-
-
-
-
-
-
                 </StackPanel>
+                
+                
+                
+                
+
+                
                 
             </Grid>
 
@@ -305,7 +352,7 @@
 
                 <StackPanel Orientation="Vertical">
                     <RadioButton
-                             
+                             x:Name="RadioButtonSteelMat"
                              Height="30" Width="30"
                              Foreground="White"
                              HorizontalAlignment="Left"
@@ -313,44 +360,61 @@
                              Style="{StaticResource MaterialButtonTheme}"
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\steel.png"
                              IsChecked="True"
-                             Margin="10,200,0,0"
+                             Margin="10,200,0,0" Checked="RadioButtonSteelMat_Checked"
                         />
 
                     <RadioButton
-                             
+                             x:Name="RadioButtonConcreteMat"
                              Height="30" Width="30"
                              Foreground="White"
                              HorizontalAlignment="Left"
                              FontSize="14"
                              Style="{StaticResource MaterialButtonTheme}"
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\concrete.png"
-                             IsChecked="True"
-                             Margin="10,30,0,0"
+                             IsChecked="False"
+                             Margin="10,30,0,0" Checked="RadioButtonConcreteMat_Checked"
                         />
 
                     <RadioButton
-                             
+                             x:Name="RadioButtonTimberMat"
                              Height="30" Width="30"
                              Foreground="White"
                              HorizontalAlignment="Left"
                              FontSize="14"
                              Style="{StaticResource MaterialButtonTheme}"
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\timber.png"
-                             IsChecked="True"
-                             Margin="10,30,0,0"
+                             IsChecked="False"
+                             Margin="10,30,0,0" Checked="RadioButtonTimberMat_Checked"
                         />
 
                     <RadioButton
-                             
+                             x:Name="RadioButtonCompositeMat"
                              Height="30" Width="30"
                              Foreground="White"
                              HorizontalAlignment="Left"
                              FontSize="14"
                              Style="{StaticResource MaterialButtonTheme}"
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\composite.png"
-                             IsChecked="True"
-                             Margin="10,30,0,0"
+                             IsChecked="False"
+                             Margin="10,30,0,0" Checked="RadioButtonCompositeMat_Checked"
                         />
+
+                    <Button
+                             
+                             Height="15" Width="15"
+                             Foreground="White"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Bottom"
+                             FontSize="14"
+                             Opacity=".3"
+                             Style="{StaticResource GearButtonTheme}"
+                             Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\gear.png"
+                             Margin="18,170,0,0"
+                             Click="InstructionsButton_Click"
+                        />
+
+
+
 
                 </StackPanel>
                 
@@ -372,7 +436,7 @@
                         FontSize="20"
                         Margin="0,0,0,0"
                         FontFamily="/Fonts/#Poppins"/>
-                    <TextBlock  Text="This tool allows you to make data based decisions on your building project.&#x0a;Select your building in the Rhino viewport and get LCA and construction costs feddback in real time."
+                    <TextBlock  Text="This tool allows you to make data based decisions on your building project.&#x0a;Select your building in the Rhino viewport and get LCA and construction costs &#x0a;feedback in real time."
                             
                         Grid.Column="2"
                         Grid.Row="1"
@@ -432,7 +496,7 @@
                     </Border.Background>
                 </Border>
 
-                <Border Width ="175" CornerRadius="10"
+                <Border Width ="125" CornerRadius="10"
                         HorizontalAlignment="Right">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0"
@@ -442,6 +506,11 @@
                         </LinearGradientBrush>
 
                     </Border.Background>
+                    <TextBlock   x:Name="TextBlockBuildingProps"
+                                 Foreground="White"
+                                 FontSize="14"
+                               
+                                 Margin="10,10,10,0"/>
                 </Border>
 
                 <Grid>
@@ -467,7 +536,8 @@
                                 FontSize="10"
                                 Foreground="White" 
                                 Style="{StaticResource CustomButtonTransparentTheme}"
-                                Margin="0,0,15,0">
+                                Margin="0,0,15,0"
+                                Click="ButtonSelectBuilding_Click">
                         </Button>
 
 
@@ -476,7 +546,8 @@
                                 Height="25" Width="70"
                                 FontSize="10"
                                 Foreground="White" 
-                                Style="{StaticResource CustomButtonTransparentTheme}">
+                                Style="{StaticResource CustomButtonTransparentTheme}"
+                                Click="ButtonSelectCores_Click">
                             
                         </Button>
 
@@ -488,7 +559,8 @@
             </Grid>
 
             <StackPanel  Grid.Column="2"
-                         Grid.Row="3">
+                         Grid.Row="3"
+                         Grid.RowSpan="2">
                 <TextBlock  Text="User Input"
                             Foreground="Black"
                             FontSize="16"
@@ -506,7 +578,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock  Text="Load"
-                                Width="200"
+                                Width="120"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
@@ -514,7 +586,7 @@
 
                     <Slider 
                         Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Center" 
-                         Value="1.5" Width="80" Margin="0,0,0,0"
+                         Value="1.5" Width="60" Margin="0,0,0,0"
                         Minimum="1.5" Maximum="5"
                         x:Name="sliderLoad" ValueChanged="sliderLoad_ValueChanged">
                     </Slider>
@@ -524,7 +596,7 @@
                                 FontSize="12"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                Margin="30,0,0,0"
+                                Margin="20,0,0,0"
                                 > 
                                 1.5 kN/m<Run BaselineAlignment="Superscript" FontSize="8">2</Run>
                     </TextBlock>
@@ -533,7 +605,7 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock  Text="Floor Height" Width="200"
+                    <TextBlock  Text="Floor Height" Width="120"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
@@ -541,7 +613,7 @@
 
                     <Slider 
                         Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Center" 
-                         Value="2.5" Width="80" Margin="0,0,0,0"
+                         Value="2.5" Width="60" Margin="0,0,0,0"
                         Minimum="2.0" Maximum="5"
                         x:Name="sliderFloorHeight" ValueChanged="sliderFloorHeight_ValueChanged">
                     </Slider>
@@ -551,14 +623,14 @@
                                 FontSize="12"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                Margin="30,0,0,0"
+                                Margin="20,0,0,0"
                                 Text="2.5 m">
                     </TextBlock>
 
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock  Text="Spacing in x-Direction" Width="200"
+                    <TextBlock  Text="Spacing in x-Direction" Width="120"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
@@ -566,8 +638,8 @@
 
 
                     <Slider 
-                        Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Center" 
-                         Value="5.5" Width="80" Margin="0,0,0,0"
+                        Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Bottom" 
+                         Value="5.5" Width="60" Margin="0,0,0,0"
                         Minimum="2.5" Maximum="8.1"
                         x:Name="sliderXSpac" ValueChanged="sliderXSpac_ValueChanged">
                     </Slider>
@@ -577,7 +649,7 @@
                                 FontSize="12"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                Margin="30,0,0,0"
+                                Margin="20,0,0,0"
                                 Text="5.5 m">
                     </TextBlock>
 
@@ -586,15 +658,15 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock  Text="Spacing in y-Direction" Width="200"
+                    <TextBlock  Text="Spacing in y-Direction" Width="120"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
 
                     <Slider 
-                        Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Center" 
-                         Value="3.5" Width="80" Margin="0,0,0,0"
+                        Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Bottom" 
+                         Value="3.5" Width="60" Margin="0,0,0,0"
                         Minimum="2.5" Maximum="8.1"
                         x:Name="sliderYSpac" ValueChanged="sliderYSpac_ValueChanged">
                     </Slider>
@@ -604,13 +676,95 @@
                                 FontSize="12"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                Margin="30,0,0,0"
+                                Margin="20,0,0,0"
                                 Text="3.5 m">
                     </TextBlock>
 
 
                 </StackPanel>
 
+                <StackPanel Orientation="Horizontal" Margin="0,160,0,0">
+                    
+                    <Button Content="Calculate"
+                                FontSize="10"
+                                Foreground="Black" 
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Left"
+                                Click="ButtonCalculate_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="BorderThickness" Value="2"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="LightGray"/>
+                                    </Trigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="70" Height="25"
+                                    CornerRadius="12" 
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background ="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center">
+                                    </ContentPresenter>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <Button Content="Export to RFEM"
+                                FontSize="10"
+                                Margin="10,0,0,0"
+                                Foreground="Black" 
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Left"
+                                Click="ButtonRFEM_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="BorderThickness" Value="2"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="LightGray"/>
+                                    </Trigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="80" Height="25"
+                                    CornerRadius="12" 
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background ="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center">
+                                    </ContentPresenter>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                </StackPanel>
 
             </StackPanel>
 
@@ -634,17 +788,17 @@
                                            Rect="0,0,280,220"/>
                 </Border.Clip>
 
-                <Image Source="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\antwerpen.jpg"
-                       Margin="-185,-75,-245,-264.2"
+                <Image Source="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\antwerpen1.png"
+                       Margin="-40,-32,-39,-0.2"
                        Opacity="0.8"/>
 
 
             </Border>
 
 
-            <Grid Grid.Column="4" Grid.Row="3">
-                <StackPanel  Grid.Column="2"
-                         Grid.Row="3">
+            <Grid Grid.Column="4" Grid.Row="3" Grid.RowSpan="2" >
+                
+                <StackPanel>
                     <TextBlock  Text="Results"
                             Foreground="Black"
                             FontSize="16"
@@ -653,62 +807,83 @@
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock  Text="Surface Area"
+                                    Width="140"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
+                        <TextBlock  x:Name="surfaceAreaValue"
+                            Text="-"
+                            Foreground="Black"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Margin="0,10,0,0"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock  Text="FAR"
+                                    Width="140"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
+                        <TextBlock  x:Name="farValue"
+                            Text="-"
+                            Foreground="Black"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Margin="0,10,0,0"/>
                     </StackPanel>
 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock  Text="Ceiling"
-                            Foreground="Black"
-                            FontSize="12"
-                            FontWeight="Normal"
-                            Margin="0,10,10,0"/>
-                    </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock  Text="Clear room height"
+                        <TextBlock  Text="Clear Floor Height"
+                                    Width="140"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
-                    </StackPanel>
-
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock  Text="Building Category"
+                        <TextBlock  x:Name="clearFloorHeightValue"
+                            Text="-"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
-                            Margin="0,10,10,0"/>
+                            Margin="0,10,0,0"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock  Text="Weight"
+                                    Width="140"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
+                        <TextBlock  x:Name="weightValue"
+                            Text="-"
+                            Foreground="Black"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Margin="0,10,0,0"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock  Text="Construction Costs"
+                                    Width="140"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
+                        <TextBlock  x:Name="costsValue"
+                            Text="-"
+                            Foreground="Black"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Margin="0,10,0,0"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock  Foreground="Black"
+                                    Width="140"
                                     FontSize="12"
                                     FontWeight="Normal"
                                     Margin="0,10,10,0"
@@ -716,49 +891,180 @@
                                     VerticalAlignment="Center"> 
                                     Embodied CO<Run BaselineAlignment="Subscript" FontSize="10">2</Run>
                         </TextBlock>
+                        <TextBlock  x:Name="CO2Value"
+                            Text="-"
+                            Foreground="Black"
+                            FontSize="12"
+                            FontWeight="Normal"
+                            Margin="0,10,0,0"/>
+
                     </StackPanel>
+
+
+
+
+                    <Grid Height="110">
+
+                        <Grid>
+
+                            <lvc:PieChart LegendLocation="Bottom" Series="{Binding SeriesCollection}" DataClick="PieChart_DataClick" Hoverable="True" InnerRadius="20" Margin="10">
+                                <lvc:PieChart.ChartLegend>
+                                    <lvc:DefaultLegend BulletSize="15" TextBlock.FontSize="8">
+                                    </lvc:DefaultLegend>
+                                </lvc:PieChart.ChartLegend>
+                                <lvc:PieChart.DataTooltip>
+                                    <lvc:DefaultTooltip BulletSize="20">
+                                    </lvc:DefaultTooltip>
+                                </lvc:PieChart.DataTooltip>
+                            </lvc:PieChart>
+
+                        </Grid>
+
+
+                    </Grid>
+
+
+
+
+
+
+
+
 
                     <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Bottom"
+                                
                                 HorizontalAlignment="Left"
-                                Margin="0,45,0,0">
+                                VerticalAlignment="Bottom"
+                                Margin="0,25,0,0">
+
 
                         <Button Content="Save Variant"
-                                Height="20" Width="70"
-                                FontSize="9"
-                                FontWeight="Normal"
-                                Background="PaleTurquoise"
-                                Opacity=".8"
-                                Style="{StaticResource CustomButtonPlainTheme}"
                                 Margin="0,0,0,0"
+                                FontSize="10"
+                                Foreground="Black" 
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Left"
+                                Click="ButtonSaveVariant_Click"
                                 >
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="BorderBrush" Value="Black"/>
+
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="LightGray"/>
+                                        </Trigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="70" Height="25"
+                                    CornerRadius="12" 
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background ="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center">
+                                        </ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
                         </Button>
 
-                        <Button Content="Compare variants"
-                                Height="20" Width="90"
-                                FontSize="9"
-                                FontWeight="Normal"
-                                Background="PaleTurquoise"
-                                Opacity=".8"
-                                Style="{StaticResource CustomButtonPlainTheme}"
-                                Margin="15,0,0,0" 
-                                Click="ButtonCompareVariants_Click"
+                        <Button Content="Compare Variants"
+                                Margin="10,0,0,0"
+                                FontSize="10"
+                                Foreground="Black" 
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Left"
+                                 Click="ButtonCompareVariants_Click"
                                 >
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="BorderBrush" Value="Black"/>
+
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="LightGray"/>
+                                        </Trigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="95" Height="25"
+                                    CornerRadius="12" 
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background ="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center">
+                                        </ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
                         </Button>
 
-                        <Button Content="Iterate solutions"
-                                Height="20" Width="90"
-                                FontSize="9"
-                                FontWeight="Normal"
-                                Background="PaleTurquoise"
-                                Opacity=".8"
-                                Style="{StaticResource CustomButtonPlainTheme}"
-                                Margin="15,0,0,0" 
-                                Click="ButtonCompareVariants_Click"
+                        <Button Content="Iterate Solutrions"
+                                Margin="10,0,0,0"
+                                FontSize="10"
+                                Foreground="Black" 
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Left"
                                 >
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="Transparent"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="BorderBrush" Value="Black"/>
+
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="BorderThickness" Value="2"/>
+                                        </Trigger>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="LightGray"/>
+                                        </Trigger>
+
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="90" Height="25"
+                                    CornerRadius="12" 
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background ="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center">
+                                        </ContentPresenter>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
                         </Button>
+
+
 
                     </StackPanel>
+
+
                 </StackPanel>
 
             </Grid>
