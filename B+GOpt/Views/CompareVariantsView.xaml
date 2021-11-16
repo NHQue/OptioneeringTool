@@ -4,13 +4,15 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
             xmlns:local="clr-namespace:B_GOpt.Views"
+            xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+            d:DataContext="{d:DesignInstance local:CompareVariantsView}"
             mc:Ignorable="d" 
             d:DesignHeight="450" d:DesignWidth="800"
             ResizeMode="NoResize"
             WindowStartupLocation="Manual" 
             Top="200" Left="30"
             ShowInTaskbar="False"
-            Height="600" Width="820"
+            Height="620" Width="770"
             WindowStyle="None"
             Background="Transparent"
             AllowsTransparency="True"
@@ -264,7 +266,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="350"/>
                 <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="280"/>
                 <ColumnDefinition/>
@@ -274,7 +276,7 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="70"/>
                 <RowDefinition Height="150"/>
-                <RowDefinition Height="300"/>
+                <RowDefinition Height="330"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
@@ -343,7 +345,7 @@
                              Opacity=".3"
                              Style="{StaticResource GearButtonTheme}"
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\gear.png"
-                             Margin="18,0,0,15"
+                             Margin="18,0,0,25"
                              Click="InstructionsButton_Click"
                         />
 
@@ -365,7 +367,7 @@
                         FontSize="20"
                         Margin="0,0,0,0"
                         FontFamily="/Fonts/#Poppins"/>
-                    <TextBlock  Text="This tool allows you to make data based decisions on your building project.&#x0a;Select your building in the Rhino viewport and get LCA and construction costs feddback in real time."
+                    <TextBlock  Text="This tool allows you to make data based decisions on your building project.&#x0a;Select your building in the Rhino viewport and get LCA and construction costs &#x0a;feedback in real time."
                             
                         Grid.Column="2"
                         Grid.Row="1"
@@ -410,11 +412,11 @@
                 <StackPanel Orientation="Vertical">
 
                     <Border 
-                            Height="50"
+                            Height="55" Width="260"
                             CornerRadius="10"
-                            Margin="0,0,80,0"
+                            Margin="0,0,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Left">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -432,11 +434,11 @@
                     </Border>
 
                     <Border 
-                            Height="50"
+                            Height="55" Width="260"
                             CornerRadius="10"
-                            Margin="0,5,80,0"
+                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Left">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -448,11 +450,11 @@
                     </Border>
 
                     <Border 
-                            Height="50"
+                            Height="55" Width="260"
                             CornerRadius="10"
-                            Margin="0,5,80,0"
+                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Left">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -464,11 +466,11 @@
                     </Border>
 
                     <Border 
-                            Height="50"
+                            Height="55" Width="260"
                             CornerRadius="10"
-                            Margin="0,5,80,0"
+                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Left">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -480,11 +482,11 @@
                     </Border>
 
                     <Border 
-                            Height="50"
+                            Height="55" Width="260"
                             CornerRadius="10"
-                            Margin="0,5,80,0"
+                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Left">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -496,11 +498,11 @@
                     </Border>
 
                     <Border 
-                            Height="50"
+                            Height="55" Width="260"
                             CornerRadius="10"
-                            Margin="0,5,80,0"
+                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Left">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -512,11 +514,11 @@
                     </Border>
 
                     <Border 
-                            Height="50"
+                            Height="55" Width="260"
                             CornerRadius="10"
-                            Margin="0,5,80,0"
+                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Left">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -528,11 +530,11 @@
                     </Border>
 
                     <Border 
-                            Height="50"
+                            Height="55" Width="260"
                             CornerRadius="10"
-                            Margin="0,5,80,0"
+                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Left">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -549,6 +551,28 @@
 
             </Grid>
 
+
+            <Grid Grid.Column="2" Grid.Row="2"
+                  Grid.RowSpan="2" Grid.ColumnSpan="3"
+                  Height="250"
+                  Width="370"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Top">
+
+                <Grid Margin="0,0,0,0">
+
+                    <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom">
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Sales" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Title="Month" Labels="{Binding Labels}"></lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                    </lvc:CartesianChart>
+
+                </Grid>
+
+            </Grid>
 
 
             <Grid Grid.Column="4" Grid.Row="3">

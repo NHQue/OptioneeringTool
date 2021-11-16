@@ -290,11 +290,23 @@
             </Grid.RowDefinitions>
 
 
-            <Grid   Grid.Column="4"
+            <Grid   Grid.Column="1"
                     Grid.Row="0"
-                    Grid.ColumnSpan="2">
+                    Grid.ColumnSpan="5">
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Right">
+
+                    <TextBlock  x:Name="TextBlockProject"
+                                Width="100" Height="20"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="Project:"
+                                Margin="0,5,517,0"
+                                Foreground="DarkGray"
+                                FontWeight="Normal"
+                                Opacity=".7"
+                               >
+                    </TextBlock>
 
 
                     <Border BorderThickness="1"
@@ -359,7 +371,7 @@
                              FontSize="14"
                              Style="{StaticResource MaterialButtonTheme}"
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\steel.png"
-                             IsChecked="True"
+                             IsChecked="False"
                              Margin="10,200,0,0" Checked="RadioButtonSteelMat_Checked"
                         />
 
@@ -371,7 +383,7 @@
                              FontSize="14"
                              Style="{StaticResource MaterialButtonTheme}"
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\concrete.png"
-                             IsChecked="False"
+                             IsChecked="True"
                              Margin="10,30,0,0" Checked="RadioButtonConcreteMat_Checked"
                         />
 
@@ -426,7 +438,7 @@
                 <StackPanel Grid.Column="2"
                         Grid.Row="1"
                         Orientation="Vertical">
-                    <TextBlock  Text="Optioneering Tool"
+                    <TextBlock  Text="B+G Optioneering Tool"
                         Grid.Column="2"
                         Grid.Row="1"
                         VerticalAlignment="Top"
@@ -506,11 +518,26 @@
                         </LinearGradientBrush>
 
                     </Border.Background>
-                    <TextBlock   x:Name="TextBlockBuildingProps"
-                                 Foreground="White"
-                                 FontSize="14"
-                               
-                                 Margin="10,10,10,0"/>
+
+                    <StackPanel Orientation="Vertical"
+                                Margin="10,10,10,0"
+                                >
+                        <TextBlock   x:Name="TextBlockBuildingPropsTitle"
+                                     Foreground="Black"
+                                     FontSize="12"
+                                     Opacity=".8"
+                                     FontWeight="Normal"/>
+
+                        <TextBlock   x:Name="TextBlockBuildingProps"
+                                     Foreground="Black"
+                                     FontSize="11"
+                                     />
+                    </StackPanel>
+                    
+                   
+                    
+                    
+                    
                 </Border>
 
                 <Grid>
@@ -542,7 +569,7 @@
 
 
 
-                        <Button Content="Select Core"
+                        <Button Content="Select Cores"
                                 Height="25" Width="70"
                                 FontSize="10"
                                 Foreground="White" 
@@ -568,7 +595,7 @@
                             Margin="0,20,10,0"/>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock  Text="Structural System"
+                    <TextBlock  Text="Slab System"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
@@ -630,7 +657,7 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock  Text="Spacing in x-Direction" Width="120"
+                    <TextBlock  Text="Span in x-Direction" Width="120"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
@@ -658,7 +685,7 @@
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock  Text="Spacing in y-Direction" Width="120"
+                    <TextBlock  Text="Span in y-Direction" Width="120"
                             Foreground="Black"
                             FontSize="12"
                             FontWeight="Normal"
@@ -712,6 +739,46 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border Width="70" Height="25"
+                                    CornerRadius="12" 
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    Background ="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center">
+                                    </ContentPresenter>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+
+                    <Button Content="Clear Values"
+                                FontSize="10"
+                                Margin="10,0,0,0"
+                                Foreground="Black" 
+                                VerticalAlignment="Bottom"
+                                HorizontalAlignment="Left"
+                                Click="ButtonClearValues_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="BorderBrush" Value="Black"/>
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="BorderThickness" Value="2"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed" Value="True">
+                                        <Setter Property="Background" Value="LightGray"/>
+                                    </Trigger>
+
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="80" Height="25"
                                     CornerRadius="12" 
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
@@ -812,7 +879,7 @@
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
-                        <TextBlock  x:Name="surfaceAreaValue"
+                        <TextBlock  x:Name="TextBlockSurfaceAreaValue"
                             Text="-"
                             Foreground="Black"
                             FontSize="12"
@@ -827,7 +894,7 @@
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
-                        <TextBlock  x:Name="farValue"
+                        <TextBlock  x:Name="TextBlockFarValue"
                             Text="-"
                             Foreground="Black"
                             FontSize="12"
@@ -843,7 +910,7 @@
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
-                        <TextBlock  x:Name="clearFloorHeightValue"
+                        <TextBlock  x:Name="TextBlockClearFloorHeightValue"
                             Text="-"
                             Foreground="Black"
                             FontSize="12"
@@ -858,7 +925,7 @@
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
-                        <TextBlock  x:Name="weightValue"
+                        <TextBlock  x:Name="TextBlockWeightValue"
                             Text="-"
                             Foreground="Black"
                             FontSize="12"
@@ -873,7 +940,7 @@
                             FontSize="12"
                             FontWeight="Normal"
                             Margin="0,10,10,0"/>
-                        <TextBlock  x:Name="costsValue"
+                        <TextBlock  x:Name="TextBlockCostsValue"
                             Text="-"
                             Foreground="Black"
                             FontSize="12"
@@ -891,7 +958,7 @@
                                     VerticalAlignment="Center"> 
                                     Embodied CO<Run BaselineAlignment="Subscript" FontSize="10">2</Run>
                         </TextBlock>
-                        <TextBlock  x:Name="CO2Value"
+                        <TextBlock  x:Name="TextBlockEmbodiedCO2Value"
                             Text="-"
                             Foreground="Black"
                             FontSize="12"
@@ -901,42 +968,43 @@
                     </StackPanel>
 
 
+                    <Grid Height="120">
 
+                        <Grid Margin="0,10,0,0">
 
-                    <Grid Height="110">
-
-                        <Grid>
-
-                            <lvc:PieChart LegendLocation="Bottom" Series="{Binding SeriesCollection}" DataClick="PieChart_DataClick" Hoverable="True" InnerRadius="20" Margin="10">
+                            <lvc:PieChart LegendLocation="Right" 
+                                          Series="{Binding SeriesCollection}" 
+                                          DataClick="PieChart_DataClick" 
+                                          Hoverable="True" InnerRadius="15" Margin="0"
+                                          BorderThickness="0"
+                                          
+                                          >
                                 <lvc:PieChart.ChartLegend>
-                                    <lvc:DefaultLegend BulletSize="15" TextBlock.FontSize="8">
+                                    <lvc:DefaultLegend BulletSize="12" 
+                                                       TextBlock.FontSize="12"
+                                                       TextBlock.FontFamily="Poppins">
                                     </lvc:DefaultLegend>
                                 </lvc:PieChart.ChartLegend>
-                                <lvc:PieChart.DataTooltip>
-                                    <lvc:DefaultTooltip BulletSize="20">
+                                
+
+                                <!--<lvc:PieChart.DataTooltip>
+                                    <lvc:DefaultTooltip BulletSize="0">
                                     </lvc:DefaultTooltip>
-                                </lvc:PieChart.DataTooltip>
+                                </lvc:PieChart.DataTooltip>-->
+
                             </lvc:PieChart>
 
                         </Grid>
 
-
                     </Grid>
 
-
-
-
-
-
-
-
+                    
 
                     <StackPanel Orientation="Horizontal"
                                 
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Bottom"
-                                Margin="0,25,0,0">
-
+                                Margin="0,13,0,0">
 
                         <Button Content="Save Variant"
                                 Margin="0,0,0,0"

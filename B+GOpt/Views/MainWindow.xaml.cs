@@ -59,41 +59,46 @@ namespace B_GOpt.Views
 
             docform = doc;
 
+            string projecName = RhinoDoc.ActiveDoc.Name;
 
-            SeriesCollection = new SeriesCollection
-            {
-                new PieSeries
-                {
-                    Title = "Concrete",
-                    Values = new ChartValues<ObservableValue> {new ObservableValue(10)},
-                    DataLabels = true,
-                    Fill = new SolidColorBrush(Colors.DarkSeaGreen)
-                },
-                new PieSeries
-                {
-                    Title = "Steel",
-                    Values = new ChartValues<ObservableValue> {new ObservableValue(20)},
-                    DataLabels = true,
-                    Fill = new SolidColorBrush(Colors.LightSkyBlue)
-                },
-                new PieSeries
-                {
-                    Title = "Reinforcement",
-                    Values = new ChartValues<ObservableValue> {new ObservableValue(30)},
-                    DataLabels = true,
-                    Fill = new SolidColorBrush(Colors.Lavender)
-                },
-                new PieSeries
-                {
-                    Title = "Timber",
-                    Values = new ChartValues<ObservableValue> {new ObservableValue(18)},
-                    DataLabels = true,
-                    Fill = new SolidColorBrush(Colors.Peru)
-                },
-            };
+            TextBlockProject.Text = "Project: " + projecName.Substring(projecName.Length - 3); 
 
 
-            DataContext = this;
+
+            //SeriesCollection = new SeriesCollection
+            //{
+            //    new PieSeries
+            //    {
+            //        Title = "Concrete",
+            //        Values = new ChartValues<ObservableValue> {new ObservableValue(10)},
+            //        DataLabels = true,
+            //        Fill = new SolidColorBrush(Colors.DarkSeaGreen)
+            //    },
+            //    new PieSeries
+            //    {
+            //        Title = "Steel",
+            //        Values = new ChartValues<ObservableValue> {new ObservableValue(20)},
+            //        DataLabels = true,
+            //        Fill = new SolidColorBrush(Colors.LightSkyBlue)
+            //    },
+            //    new PieSeries
+            //    {
+            //        Title = "Reinforcement",
+            //        Values = new ChartValues<ObservableValue> {new ObservableValue(30)},
+            //        DataLabels = true,
+            //        Fill = new SolidColorBrush(Colors.Lavender)
+            //    },
+            //    new PieSeries
+            //    {
+            //        Title = "Timber",
+            //        Values = new ChartValues<ObservableValue> {new ObservableValue(18)},
+            //        DataLabels = true,
+            //        Fill = new SolidColorBrush(Colors.Peru)
+            //    },
+            //};
+
+
+            //DataContext = this;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
@@ -207,12 +212,13 @@ namespace B_GOpt.Views
 
                 int coreCount = cores.Count;
 
-                TextBlockBuildingProps.Text = $"Cores: {coreCount}" + System.Environment.NewLine +
-                                                "Building dimensions" + System.Environment.NewLine +
-                                                $"Height: {buildingGeom.BuildingHeight(brep)} m" + System.Environment.NewLine +
+                TextBlockBuildingPropsTitle.Text = "Building Dimensions";
+
+                TextBlockBuildingProps.Text =   $"Height: {buildingGeom.BuildingHeight(brep)} m" + System.Environment.NewLine +
                                                 $"Length: {buildingGeom.BuildingLength(brep)} m" + System.Environment.NewLine +
                                                 $"Width: {buildingGeom.BuildingWidth(brep)} m" + System.Environment.NewLine +
-                                                $"Volume: {volume} m" + ("\u00B3");
+                                                $"Volume: {volume} m" + ("\u00B3") + System.Environment.NewLine +
+                                                $"Cores: {coreCount}";
 
 
                 //double valueFloorHeight = tbarFloorHeight.Value / 100f;
@@ -566,6 +572,7 @@ namespace B_GOpt.Views
 
 
                 //Creating TextDots with some member data
+                //-----------------------------------------------------------------------------------------------------------------
                 //Innercolumn
                 MyFunctions.SetLayer(docform, "InnerColumnLoad", System.Drawing.Color.Beige);
 
@@ -582,9 +589,6 @@ namespace B_GOpt.Views
                     var textDot = new TextDot(Math.Round(innerCol[i].Area, 2).ToString(), innerCol[i].LineCurve.PointAt(0.5));
                     docform.Objects.AddTextDot(textDot);
                 }
-
-
-
 
                 //Slabs
                 MyFunctions.SetLayer(docform, "SlabCrossSection", System.Drawing.Color.Beige);
@@ -627,16 +631,117 @@ namespace B_GOpt.Views
                     surfaceArea = surfaceArea + area;
                 }
 
-                surfaceAreaValue.Text = Math.Round(surfaceArea, 0).ToString() + "  m" + ("\u00B2");
-                farValue.Text = Math.Round(baseSrf.GetArea() / surfaceArea, 2).ToString();
+                TextBlockSurfaceAreaValue.Text = Math.Round(surfaceArea, 0).ToString() + "  m" + ("\u00B2");
+                TextBlockFarValue.Text = Math.Round(baseSrf.GetArea() / surfaceArea, 2).ToString();
+
+                TextBlockClearFloorHeightValue.Text = (actFloorHeight - slabs1[1].Height).ToString() + "  m";
 
                 
 
-                clearFloorHeightValue.Text = (actFloorHeight - Math.Round(slabs1[1].Height)).ToString(); 
+
+                //Massing
+                //-------------------------------------------------------------------------------------------
+                double innerColMass = 0;
+                double outerColMass = 0;
+                double slabsMass = 0;
+
+                for (int i = 0; i < innerCol.Count; i++)
+                {
+                    innerColMass =+ innerCol[i].Area * innerCol[i].Length; 
+                }
+
+                for (int i = 0; i < outerCol.Count; i++)
+                {
+                    outerColMass =+ outerCol[i].Area * outerCol[i].Length;
+                }
+
+                for (int i = 0; i < slabs.Count; i++)
+                {
+                    slabsMass =+ slabs1[i].Height * slabs[i].GetArea();
+                }
+
+                double embodiedCO2Col = Math.Round(LCACalculation.CalculateLCA(innerColMass, material) + LCACalculation.CalculateLCA(outerColMass, material), 0); 
+                double embodiedCO2Slabs = Math.Round(LCACalculation.CalculateLCA(slabsMass, material), 0);
+                double embodiedCO2Beams = 0;
+                double embodiedCO2Foundations = 0;
+                double embodiedCO2Core = 0; 
 
 
+                double embodiedCO2Total = embodiedCO2Col + embodiedCO2Slabs + embodiedCO2Beams + embodiedCO2Foundations + embodiedCO2Core;
+
+                TextBlockEmbodiedCO2Value.Text = embodiedCO2Total.ToString() + "  kg CO" + ("\u2082") + "e";
+
+
+
+                double totalWeight =    (BuildingResults.CalculateWeight(innerColMass, material) + BuildingResults.CalculateWeight(outerColMass, material) +
+                                        BuildingResults.CalculateWeight(slabsMass, material))/10;
+
+                TextBlockWeightValue.Text = Math.Round(totalWeight, 0).ToString() + " t";
+
+
+
+                //Defining the Pie Chart
+                //-------------------------------------------------------------------------------------------------------------------------------------------------
+                SeriesCollection = new SeriesCollection
+                {
+                    new PieSeries
+                    {
+                        Title = "Slabs",
+                        Values = new ChartValues<ObservableValue> {new ObservableValue(embodiedCO2Slabs) },
+                        DataLabels = true,
+                        Fill = new SolidColorBrush(Colors.DarkSeaGreen)
+                    },
+                    new PieSeries
+                    {
+                        Title = "Columns",
+                        Values = new ChartValues<ObservableValue> {new ObservableValue(embodiedCO2Col) },
+                        DataLabels = true,
+                        Fill = new SolidColorBrush(Colors.LightSkyBlue),
+                        Foreground = new SolidColorBrush(Colors.Transparent)
+                    },
+                    new PieSeries
+                    {
+                        Title = "Beams",
+                        Values = new ChartValues<ObservableValue> {new ObservableValue(embodiedCO2Beams) },
+                        DataLabels = true,
+                        Fill = new SolidColorBrush(Colors.Lavender),
+                        Foreground = new SolidColorBrush(Colors.Transparent)
+                    },
+                    new PieSeries
+                    {
+                        Title = "Foundations",
+                        Values = new ChartValues<ObservableValue> {new ObservableValue(embodiedCO2Foundations) },
+                        DataLabels = true,
+                        Fill = new SolidColorBrush(Colors.Peru),
+                        Foreground = new SolidColorBrush(Colors.Transparent)
+                    },
+                    new PieSeries
+                    {
+                        Title = "Core",
+                        Values = new ChartValues<ObservableValue> {new ObservableValue(embodiedCO2Core) },
+                        DataLabels = true,
+                        Fill = new SolidColorBrush(Colors.DarkKhaki),
+                        Foreground = new SolidColorBrush(Colors.Transparent)
+                    }
+                };
+
+                DataContext = this;
 
             }
+
+
+
+
+
+
+
+
+
+
+            
+
+
+
 
 
 
@@ -721,6 +826,11 @@ namespace B_GOpt.Views
         }
 
         private void ButtonRFEM_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ButtonClearValues_Click(object sender, RoutedEventArgs e)
         {
 
         }
