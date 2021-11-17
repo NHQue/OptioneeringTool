@@ -6,6 +6,7 @@
   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
   xmlns:local="clr-namespace:B_GOpt.Views"
   xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+  xmlns:viewModel="clr-namespace:B_GOpt.ViewModel"
   d:DesignHeight="300" d:DesignWidth="300"
   d:DataContext="{d:DesignInstance local:MainWindow}"
   mc:Ignorable="d" 
@@ -20,8 +21,11 @@
   AllowsTransparency="True"
   FontFamily="/Fonts/#Poppins-Regular" 
   FontWeight="Light"
-  
   >
+
+    <!--<Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>-->
 
     <Window.Resources>
         
@@ -160,6 +164,53 @@
             </Style.Triggers>
         </Style>
 
+
+        <!--SystemButtonTheme-->
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}"
+           x:Key="SystemButtonTheme">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid 
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Background="{TemplateBinding Background}"
+                              >
+                                <Border BorderThickness="{TemplateBinding BorderThickness}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        CornerRadius="4"
+                                        VerticalAlignment="Center">
+                                    <TextBlock 
+                                        Text="{TemplateBinding Property=Content}"
+                                        VerticalAlignment="Center"
+                                        Margin="4,2,4,2"
+                                        FontFamily="/Fonts/#Poppins"/>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="Opacity" Value=".2"/>
+                <Setter Property="BorderBrush" Value="Black"/>
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Opacity" Value=".8"/>
+                    <Setter Property="BorderBrush" Value="Black"/>
+                </Trigger>
+            </Style.Triggers>
+
+        </Style>
+
+
+
         <!--GearButtonTheme-->
         <Style BasedOn="{StaticResource {x:Type Button}}"
            TargetType="{x:Type Button}"
@@ -183,14 +234,15 @@
 
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Opacity" Value=".3"/>
             </Style.Setters>
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Opacity" Value=".6"/>
+                    <Setter Property="Opacity" Value=".8"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Opacity" Value=".3"/>
+                    <Setter Property="Opacity" Value=".6"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -309,6 +361,10 @@
                     </TextBlock>
 
 
+                    
+                    
+                    <!--Window Buttons-->
+                    
                     <Border BorderThickness="1"
                             BorderBrush="DarkGray"
                             Opacity=".7"
@@ -341,13 +397,8 @@
                         </Button>
                     </Border>
                 </StackPanel>
-                
-                
-                
-                
 
-                
-                
+
             </Grid>
 
 
@@ -373,7 +424,7 @@
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\steel.png"
                              IsChecked="False"
                              Margin="10,200,0,0" Checked="RadioButtonSteelMat_Checked"
-                        />
+                    />
 
                     <RadioButton
                              x:Name="RadioButtonConcreteMat"
@@ -383,21 +434,23 @@
                              FontSize="14"
                              Style="{StaticResource MaterialButtonTheme}"
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\concrete.png"
-                             IsChecked="True"
-                             Margin="10,30,0,0" Checked="RadioButtonConcreteMat_Checked"
-                        />
+                             IsChecked="False"
+                             Margin="10,30,0,0" 
+                             Checked="RadioButtonConcreteMat_Checked"
+                    />
 
                     <RadioButton
                              x:Name="RadioButtonTimberMat"
-                             Height="30" Width="30"
+                             Height="33" Width="33"
                              Foreground="White"
                              HorizontalAlignment="Left"
                              FontSize="14"
                              Style="{StaticResource MaterialButtonTheme}"
-                             Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\timber.png"
+                             Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\timber1.png"
                              IsChecked="False"
-                             Margin="10,30,0,0" Checked="RadioButtonTimberMat_Checked"
-                        />
+                             Margin="8,30,0,0" 
+                             Checked="RadioButtonTimberMat_Checked"
+                    />
 
                     <RadioButton
                              x:Name="RadioButtonCompositeMat"
@@ -408,24 +461,21 @@
                              Style="{StaticResource MaterialButtonTheme}"
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\composite.png"
                              IsChecked="False"
-                             Margin="10,30,0,0" Checked="RadioButtonCompositeMat_Checked"
-                        />
+                             Margin="10,27,0,0" 
+                             Checked="RadioButtonCompositeMat_Checked"
+                    />
 
                     <Button
-                             
                              Height="15" Width="15"
                              Foreground="White"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Bottom"
                              FontSize="14"
-                             Opacity=".3"
                              Style="{StaticResource GearButtonTheme}"
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\gear.png"
                              Margin="18,170,0,0"
-                             Click="InstructionsButton_Click"
-                        />
-
-
+                             Click="RadioButtonInstructions_Click"
+                    />
 
 
                 </StackPanel>
@@ -508,12 +558,12 @@
                     </Border.Background>
                 </Border>
 
-                <Border Width ="125" CornerRadius="10"
+                <Border Width ="130" CornerRadius="10"
                         HorizontalAlignment="Right">
                     <Border.Background>
                         <LinearGradientBrush StartPoint="0,0"
                                              EndPoint="1,2">
-                            <GradientStop Color="PaleTurquoise" Offset="0.0"/>
+                            <GradientStop Color="LightSkyBlue" Offset="-0"/>
                             <GradientStop Color="AliceBlue" Offset="1"/>
                         </LinearGradientBrush>
 
@@ -523,20 +573,17 @@
                                 Margin="10,10,10,0"
                                 >
                         <TextBlock   x:Name="TextBlockBuildingPropsTitle"
-                                     Foreground="Black"
+                                     Foreground="White"
                                      FontSize="12"
                                      Opacity=".8"
                                      FontWeight="Normal"/>
 
                         <TextBlock   x:Name="TextBlockBuildingProps"
-                                     Foreground="Black"
+                                     Foreground="White"
                                      FontSize="11"
                                      />
                     </StackPanel>
-                    
-                   
-                    
-                    
+
                     
                 </Border>
 
@@ -544,10 +591,14 @@
                     <StackPanel>
                         <TextBlock Text="Calculate your building's&#x0a;embodied carbon"
                                        Foreground="White"
+                                       HorizontalAlignment="Left"
+                                       Width="200"
                                        FontSize="18"
                                        Margin="10,10,10,0"/>
                         <TextBlock Text="Get started"
                                        Foreground="White"
+                                       HorizontalAlignment="Left"
+                                       Width="200"
                                        FontSize="10"
                                        Margin="10,10,10,0"/>
                     </StackPanel>
@@ -595,15 +646,6 @@
                             Margin="0,20,10,0"/>
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock  Text="Slab System"
-                            Foreground="Black"
-                            FontSize="12"
-                            FontWeight="Normal"
-                            Margin="0,10,10,0"/>
-                </StackPanel>
-                
-
-                <StackPanel Orientation="Horizontal">
                     <TextBlock  Text="Load"
                                 Width="120"
                             Foreground="Black"
@@ -621,6 +663,7 @@
                     <TextBlock  x:Name="sliderLoadValue"
                                 Foreground="Black"
                                 FontSize="12"
+                                FontWeight="Normal"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Margin="20,0,0,0"
@@ -648,6 +691,7 @@
                     <TextBlock  x:Name="sliderFloorHeightValue"
                                 Foreground="Black"
                                 FontSize="12"
+                                FontWeight="Normal"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Margin="20,0,0,0"
@@ -674,6 +718,7 @@
                     <TextBlock  x:Name="sliderXSpacValue"
                                 Foreground="Black"
                                 FontSize="12"
+                                FontWeight="Normal"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Margin="20,0,0,0"
@@ -701,16 +746,71 @@
                     <TextBlock  x:Name="sliderYSpacValue"
                                 Foreground="Black"
                                 FontSize="12"
+                                FontWeight="Normal"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
                                 Margin="20,0,0,0"
                                 Text="3.5 m">
                     </TextBlock>
 
-
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Margin="0,160,0,0">
+
+
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center"
+                            Height="30">
+                    <TextBlock  Text="Slab System"
+                                Width="120"
+                                Foreground="Black"
+                                FontSize="12"
+                                FontWeight="Normal"
+                                Margin="0,10,10,0"/>
+
+
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <RadioButton
+                             x:Name="RadioButtonPlateSystem"
+                             Height="22" Width="90"
+                             Margin="0,0,10,0"
+                             Foreground="Black"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Center"
+                             FontSize="12"
+                             FontWeight="Normal"
+                             Style="{StaticResource SystemButtonTheme}"
+                             Content="Plate System"
+                             IsChecked="True"
+                             Checked="RadioButtonPlateSystem_Checked"
+                        />
+
+                        <RadioButton
+                             x:Name="RadioButtonBeamSystem"
+                             Content="Beam System"
+                             Height="22" Width="120"
+                             Margin="0,0,0,0"
+                             Foreground="Black"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Center"
+                             FontSize="12"
+                             FontWeight="Normal"
+                             Style="{StaticResource SystemButtonTheme}"
+                             IsChecked="False"
+                             Checked="RadioButtonBeamSystem_Checked"
+                           
+                            
+                        />
+
+                    </StackPanel>
+                    
+                    
+                </StackPanel>
+
+
+
+
+                <StackPanel Orientation="Horizontal" Margin="0,152,0,0">
                     
                     <Button Content="Calculate"
                                 FontSize="10"

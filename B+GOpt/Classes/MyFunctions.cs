@@ -16,6 +16,8 @@ using System.Windows.Forms;
 using ComponentFactory.Krypton.Toolkit;
 using Rhino.Geometry.Intersect;
 using B_GOpt.Classes;
+using System.Windows.Media.Media3D;
+using System.Windows.Media;
 
 namespace B_GOpt
 {
@@ -748,6 +750,29 @@ namespace B_GOpt
                     }
                 }
             }
+
         }
+
+
+        public static Model3D AddLine(Point3D startPoint, Point3D EndPoint, string name)
+        {
+            SolidColorBrush brush = new SolidColorBrush(Colors.Black);
+            var material = new DiffuseMaterial(brush);
+            var mesh = new MeshGeometry3D();
+            mesh.Positions.Add(startPoint);
+            mesh.Positions.Add(EndPoint);
+            mesh.TriangleIndices.Add(0);
+            mesh.TriangleIndices.Add(1);
+            mesh.TriangleIndices.Add(0);
+            return new GeometryModel3D(mesh, material);
+        }
+
+
+
+
+
+
+
+
     }
 }

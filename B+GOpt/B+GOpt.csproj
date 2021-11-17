@@ -129,7 +129,11 @@
       <DependentUpon>Dashboard.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\MyFunctions.cs" />
-    <Compile Include="ModelView\MainViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\SteelViewModel.cs" />
+    <Compile Include="ViewModel\ConcreteViewModel.cs" />
+    <Compile Include="ViewModel\CompositeViewModel.cs" />
+    <Compile Include="ViewModel\TimberViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -208,6 +212,7 @@
     <Content Include="EmbeddedResources\Images\gear.png" />
     <Content Include="EmbeddedResources\Images\steel.png" />
     <Content Include="EmbeddedResources\Images\timber.png" />
+    <Content Include="EmbeddedResources\Images\timber1.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

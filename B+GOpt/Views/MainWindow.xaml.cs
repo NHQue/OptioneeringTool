@@ -672,7 +672,6 @@ namespace B_GOpt.Views
                 TextBlockEmbodiedCO2Value.Text = embodiedCO2Total.ToString() + "  kg CO" + ("\u2082") + "e";
 
 
-
                 double totalWeight =    (BuildingResults.CalculateWeight(innerColMass, material) + BuildingResults.CalculateWeight(outerColMass, material) +
                                         BuildingResults.CalculateWeight(slabsMass, material))/10;
 
@@ -689,7 +688,8 @@ namespace B_GOpt.Views
                         Title = "Slabs",
                         Values = new ChartValues<ObservableValue> {new ObservableValue(embodiedCO2Slabs) },
                         DataLabels = true,
-                        Fill = new SolidColorBrush(Colors.DarkSeaGreen)
+                        Fill = new SolidColorBrush(Colors.DarkSeaGreen),
+                        Foreground = new SolidColorBrush(Colors.Transparent)
                     },
                     new PieSeries
                     {
@@ -704,7 +704,7 @@ namespace B_GOpt.Views
                         Title = "Beams",
                         Values = new ChartValues<ObservableValue> {new ObservableValue(embodiedCO2Beams) },
                         DataLabels = true,
-                        Fill = new SolidColorBrush(Colors.Lavender),
+                        Fill = new SolidColorBrush(Colors.Salmon),
                         Foreground = new SolidColorBrush(Colors.Transparent)
                     },
                     new PieSeries
@@ -726,6 +726,49 @@ namespace B_GOpt.Views
                 };
 
                 DataContext = this;
+
+
+
+
+
+
+
+                //Drawing the Buildings pictogram
+
+                MeshingParameters meshParams = new MeshingParameters();          //Creates a new MeshingParmter object "meshParam"
+                meshParams.MinimumEdgeLength = 0.1;                              //Declares values of the MeshingParmter object "meshParam"
+                meshParams.MaximumEdgeLength = 50;
+
+                Mesh[] brepMeshes = Mesh.CreateFromBrep(brep, meshParams);
+
+
+                Mesh weldedMesh = new Mesh();                                   //Creates a new mesh object "weldedMesh"
+
+                foreach (var mesh in brepMeshes)
+                {
+                    weldedMesh.Append(mesh);                                    //Appends the single mesh to the mesh "weldedMesh"
+                }
+
+
+
+
+
+                MeshVertexList vertices = weldedMesh.Vertices;
+                MeshFaceList faces = weldedMesh.Faces;
+                MeshVertexNormalList normals = weldedMesh.Normals;
+
+                for (int i = 0; i < faces.Count; i++)
+                {
+                    int indA = faces[i].A;
+                    int indB = faces[i].B;
+                    int indC = faces[i].C;
+                }
+
+
+
+                docform.Objects.AddMesh(weldedMesh);
+
+
 
             }
 
@@ -772,7 +815,7 @@ namespace B_GOpt.Views
 
 
 
-        private void InstructionsButton_Click(object sender, RoutedEventArgs e)
+        private void RadioButtonInstructions_Click(object sender, RoutedEventArgs e)
         {
             //var dialog = new Views.SampleCsWpfDialog();
             //dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
@@ -804,6 +847,9 @@ namespace B_GOpt.Views
             material = "Steel";
             string infoMat = String.Format($"Selected {material} as structural material");
             RhinoApp.WriteLine(infoMat);
+
+            RadioButtonPlateSystem.Content = "Slim Floor";
+            RadioButtonBeamSystem.Content = "Composite Beams"; 
         }
 
         private void RadioButtonConcreteMat_Checked(object sender, RoutedEventArgs e)
@@ -811,6 +857,9 @@ namespace B_GOpt.Views
             material = "Concrete";
             string infoMat = String.Format($"Selected {material} as structural material");
             RhinoApp.WriteLine(infoMat);
+
+            RadioButtonPlateSystem.Content = "Flat Slab";
+            RadioButtonBeamSystem.Content = "Precast T-Beams";
         }
 
         private void RadioButtonTimberMat_Checked(object sender, RoutedEventArgs e)
@@ -818,12 +867,30 @@ namespace B_GOpt.Views
             material = "Timber";
             string infoMat = String.Format($"Selected {material} as structural material");
             RhinoApp.WriteLine(infoMat);
+
+            RadioButtonPlateSystem.Content = "CLT Slab";
+            RadioButtonBeamSystem.Content = "Timber Joists";
         }
 
         private void RadioButtonCompositeMat_Checked(object sender, RoutedEventArgs e)
         {
+            material = "Composite";
+            string infoMat = String.Format($"Selected {material} as structural material");
+            RhinoApp.WriteLine(infoMat);
+
+            RadioButtonPlateSystem.Content = "HBV Slab";
+            RadioButtonBeamSystem.Content = "CLT on Steelframe";
+        }
+
+        private void RadioButtonBeamSystem_Checked(object sender, RoutedEventArgs e)
+        {
 
         }
+        private void RadioButtonPlateSystem_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
 
         private void ButtonRFEM_Click(object sender, RoutedEventArgs e)
         {

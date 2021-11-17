@@ -177,14 +177,15 @@
 
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Opacity" Value="0.3"/>
             </Style.Setters>
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Opacity" Value=".6"/>
+                    <Setter Property="Opacity" Value="0.8"/>
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Opacity" Value=".3"/>
+                    <Setter Property="Opacity" Value="0.6"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -342,11 +343,10 @@
                              HorizontalAlignment="Left"
                              VerticalAlignment="Bottom"
                              FontSize="14"
-                             Opacity=".3"
                              Style="{StaticResource GearButtonTheme}"
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\gear.png"
                              Margin="18,0,0,25"
-                             Click="InstructionsButton_Click"
+                             Click="RadioButtonInstructions_Click"
                         />
 
             </Border>
@@ -557,7 +557,59 @@
                   Height="250"
                   Width="370"
                   HorizontalAlignment="Right"
-                  VerticalAlignment="Top">
+                  VerticalAlignment="Top"
+                  Margin="0,0,0,0">
+
+
+
+                <Grid Height="200"
+                      Width="330"
+                      HorizontalAlignment="Right"
+                          VerticalAlignment="Top"
+                          Margin="0,0,0,0">
+                    
+                    
+                    <!--<Viewport3D
+                        x:Name="ViewportBuildingPicto"
+                        RenderOptions.BitmapScalingMode="HighQuality"
+                        Focusable="True">-->
+
+                        <!--<ModelVisual3D x:Name="Model">
+
+                        </ModelVisual3D>
+
+                        --><!-- Camera --><!--
+                        <Viewport3D.Camera>
+                            <PerspectiveCamera x:Name="Camera"
+                               Position="0,0,0"
+                               LookDirection="0,1,0"
+                               UpDirection="0,0,1"
+                               FieldOfView="100"
+                               FarPlaneDistance="10"
+                               NearPlaneDistance="0.1"/>
+                        </Viewport3D.Camera>
+
+                    </Viewport3D>-->
+
+                </Grid>
+
+            </Grid>
+
+
+            
+            
+            
+            
+            
+            
+            <Grid Grid.Column="2" Grid.Row="3"
+                  Grid.RowSpan="2" Grid.ColumnSpan="3"
+                  Height="250"
+                  Width="370"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Top"
+                  Margin="0,40,0,0">
+
 
                 <Grid Margin="0,0,0,0">
 
@@ -572,8 +624,13 @@
 
                 </Grid>
 
-            </Grid>
+        </Grid>
 
+            
+            
+            
+            
+            
 
             <Grid Grid.Column="4" Grid.Row="3">
 

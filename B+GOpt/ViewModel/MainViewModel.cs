@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using B_GOpt.Core;
 
-namespace WPF_UI.MVVM.ViewModel
+namespace B_GOpt.ViewModel
 {
     class MainViewModel : ObservableObject
     {

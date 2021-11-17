@@ -11,8 +11,11 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using B_GOpt.Classes; 
+
 
 namespace B_GOpt.Views
 {
@@ -24,6 +27,17 @@ namespace B_GOpt.Views
         public CompareVariantsView()
         {
             InitializeComponent();
+
+
+
+            //var ModelsGroup = new Model3DGroup();
+            //ModelsGroup.Children.Add(this.AddLine(new Point3D(0, 0, 100), new Point3D(0, 100, 100), "line 1)"));
+            //ModelsGroup.Children.Add(new AmbientLight(Colors.White));
+            //Model.Content = ModelsGroup;
+
+
+
+
         }
         
 
@@ -56,7 +70,7 @@ namespace B_GOpt.Views
 
         }
 
-        private void InstructionsButton_Click(object sender, RoutedEventArgs e)
+        private void RadioButtonInstructions_Click(object sender, RoutedEventArgs e)
         {
             //var dialog = new Views.SampleCsWpfDialog();
             //dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
@@ -76,5 +90,6 @@ namespace B_GOpt.Views
         {
 
         }
+
     }
 }
