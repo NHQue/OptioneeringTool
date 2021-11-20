@@ -442,7 +442,7 @@ namespace B_GOpt.Classes
                     {
                         Brep coreBrep = coreFaces[j].DuplicateFace(false);
                         coreBreps.Add(coreBrep);
-                        doc.Objects.AddBrep(coreBrep);
+                        //doc.Objects.AddBrep(coreBrep);
                     }
                 }
             }

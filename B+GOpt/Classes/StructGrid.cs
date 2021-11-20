@@ -46,7 +46,7 @@ namespace B_GOpt.Classes
             {
                 Line line = new Line(divPtsX1[i], divPtsX3[i]);
                 gridLinesX.Add(line);
-                doc.Objects.AddLine(line);
+                //doc.Objects.AddLine(line);
             }
 
             return gridLinesX;
@@ -73,7 +73,7 @@ namespace B_GOpt.Classes
             {
                 Line line = new Line(divPtsY0[i], divPtsY2[i]);
                 gridLinesY.Add(line);
-                doc.Objects.AddLine(line);
+                //doc.Objects.AddLine(line);
             }
 
             return gridLinesY;
@@ -81,12 +81,11 @@ namespace B_GOpt.Classes
 
 
         public static RhinoList<Line> SecondaryBeams(BoundingBox bbox, double actXSpac, double actYSpac, 
-                                            RhinoList<Line> gridLinesY, RhinoList<Line> gridLinesX, double distance)
+                                            RhinoList<Line> gridLinesY, RhinoList<Line> gridLinesX, double distance, RhinoDoc doc)
         {
             RhinoList<Line> secondaryBeams = new RhinoList<Line>();
 
             int countNumber = 1;
-
 
             if (actXSpac > actYSpac)
             {
@@ -101,9 +100,12 @@ namespace B_GOpt.Classes
 
 
                 List<Line> linesA = MyFunctions.SplitLineByLines(edges[0], gridLinesY);
-                List<Line> linesB = MyFunctions.SplitLineByLines(edges[0], gridLinesY);
+                List<Line> linesB = MyFunctions.SplitLineByLines(edges[2], gridLinesY);
 
                 countNumber = Convert.ToInt32(Math.Floor(actXSpac / distance));
+                double actDist = Math.Round(actXSpac / countNumber, 2);
+
+                RhinoApp.WriteLine($"Secondary Beams: Count {countNumber}, Distance {actDist} ");
 
                 for (int i = 0; i < linesA.Count; i++)
                 {
@@ -151,12 +153,7 @@ namespace B_GOpt.Classes
             }
 
             return secondaryBeams;
-
         }
-
-
-
-
 
 
 

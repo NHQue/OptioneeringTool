@@ -25,6 +25,7 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using LiveCharts.Defaults;
 using System.Windows.Media.Media3D;
+using Rhino.DocObjects;
 
 namespace B_GOpt.Views 
 {
@@ -37,6 +38,7 @@ namespace B_GOpt.Views
 
 
         private Rhino.Geometry.Brep brep = null;
+        List<Guid> ids = new List<Guid>();
         RhinoList<Brep> cores = new RhinoList<Brep>();
         private double surfaceArea;
         double far;
@@ -282,6 +284,8 @@ namespace B_GOpt.Views
                 RhinoList<Rhino.Geometry.Line> xGridLines = StructGrid.XGridLines(bBox, nspacY, docform);
                 RhinoList<Rhino.Geometry.Line> yGridLines = StructGrid.YGridLines(bBox, nspacX, docform);
 
+                RhinoList<Rhino.Geometry.Line> secondaryBeamLines = StructGrid.SecondaryBeams(bBox, actXSpac, actYSpac, yGridLines, xGridLines, beamDistance, docform);
+
                 RhinoList<Rhino.Geometry.Line> xBeams = new RhinoList<Rhino.Geometry.Line>();
                 RhinoList<Rhino.Geometry.Line> yBeams = new RhinoList<Rhino.Geometry.Line>();
 
@@ -300,7 +304,7 @@ namespace B_GOpt.Views
                 List<Column> innerCol = new List<Column>();
                 List<Column> edgeCol = new List<Column>();
 
-                List<Slab> slabs1 = new List<Slab>();
+                List<Slab> slabsSlabs = new List<Slab>();
 
 
 
@@ -311,7 +315,7 @@ namespace B_GOpt.Views
                 for (int i = 0; i < floorSlabs.Count; i++)
                 {
                     Slab slab = new Slab(floorSlabs[i], actXSpac, actYSpac, i, liveLoad, 0);
-                    slabs1.Add(slab);
+                    slabsSlabs.Add(slab);
                 }
 
 
@@ -326,7 +330,7 @@ namespace B_GOpt.Views
 
                     for (int i = 0; i < floorSlabs.Count; i++)
                     {
-                        slabs1[i].Height = crossSectionSlab;
+                        slabsSlabs[i].Height = crossSectionSlab;
                     }
 
                     deadLoadSlab = crossSectionSlab * 25;
@@ -358,6 +362,18 @@ namespace B_GOpt.Views
                     bBox.Transform(xTrans);
                     xGridLines = StructGrid.XGridLines(bBox, nspacY, docform);
                     yGridLines = StructGrid.YGridLines(bBox, nspacX, docform);
+
+                    secondaryBeamLines = StructGrid.SecondaryBeams(bBox, actXSpac, actYSpac, yGridLines, xGridLines, beamDistance, docform);
+
+                    if (structSystem == "Beam" )
+                    {
+                        if (actXSpac < actYSpac)
+                        {
+                            xGridLines.AddRange(secondaryBeamLines);
+                        }
+                        else
+                            yGridLines.AddRange(secondaryBeamLines);
+                    }
 
                     RhinoList<Rhino.Geometry.Line> xIntLines = StructGrid.XIntLines(xGridLines, slabEdgeCurves[i], docform);
                     RhinoList<Rhino.Geometry.Line> yIntLines = StructGrid.YIntLines(yGridLines, slabEdgeCurves[i], docform);
@@ -512,16 +528,16 @@ namespace B_GOpt.Views
                 RhinoList<Brep> coreBreps = buildingGeom.GetCoreWalls(cores, docform);
 
 
-
-
-
                 //Adds the elements to the Rhino Document
+                //--------------------------------------------------------------------------------------
 
+                MyFunctions.SetLayer(docform, "XBeams", System.Drawing.Color.Salmon);
                 //for (int i = 0; i < xBeams.Count; i++)
                 //{
                 //    docform.Objects.AddLine(xBeams[i]);
                 //}
 
+                MyFunctions.SetLayer(docform, "YBeams", System.Drawing.Color.IndianRed);
                 //for (int i = 0; i < yBeams.Count; i++)
                 //{
                 //    docform.Objects.AddLine(yBeams[i]);
@@ -532,11 +548,13 @@ namespace B_GOpt.Views
                 //    docform.Objects.AddCurve(edgeBeams[i]);
                 //}
 
+                MyFunctions.SetLayer(docform, "OuterColumn", System.Drawing.Color.Cyan);
                 //for (int i = 0; i < outerColumns.Count; i++)
                 //{
                 //    docform.Objects.AddLine(outerColumns[i]);
                 //}
 
+                MyFunctions.SetLayer(docform, "InnerColumns", System.Drawing.Color.LightSkyBlue);
                 for (int i = 0; i < innerColumns.Count; i++)
                 {
                     docform.Objects.AddLine(innerColumns[i]);
@@ -552,16 +570,22 @@ namespace B_GOpt.Views
                 //    docform.Objects.AddBrep(slabs[i]);
                 //}
 
-                for (int i = 0; i < slabEdgeCurves.Count; i++)
-                {
-                    docform.Objects.AddCurve(slabEdgeCurves[i]);
-                }
+                //for (int i = 0; i < slabEdgeCurves.Count; i++)
+                //{
+                //    docform.Objects.AddCurve(slabEdgeCurves[i]);
+                //}
 
+                MyFunctions.SetLayer(docform, "FloorSlabs", System.Drawing.Color.DarkSeaGreen);
                 for (int i = 0; i < floorSlabs.Count; i++)
                 {
                     docform.Objects.AddBrep(floorSlabs[i]);
                 }
 
+                MyFunctions.SetLayer(docform, "Core", System.Drawing.Color.DarkKhaki);
+                for (int i = 0; i < coreBreps.Count; i++)
+                {
+                    docform.Objects.AddBrep(coreBreps[i]);
+                }
 
                 //for (int i = 0; i < beamsInXDir.Count; i++)
                 //{
@@ -575,6 +599,13 @@ namespace B_GOpt.Views
 
 
 
+                //Hide selected objects (building geometry and cores) to visualize the structure
+                //-----------------------------------------------------------------------------------------------------------------
+
+                for (int i = 0; i < ids.Count; i++)
+                {
+                    RhinoDoc.ActiveDoc.Objects.Hide(ids[i], true);
+                }
 
 
 
@@ -582,31 +613,32 @@ namespace B_GOpt.Views
 
                 //Creating TextDots with some member data
                 //-----------------------------------------------------------------------------------------------------------------
-                //Innercolumn
-                MyFunctions.SetLayer(docform, "InnerColumnLoad", System.Drawing.Color.Beige);
 
-                for (int i = 0; i < innerCol.Count; i++)
-                {
-                    var textDot = new TextDot(Convert.ToInt32(innerCol[i].Load).ToString(), innerCol[i].LineCurve.PointAt(0.5));
-                    docform.Objects.AddTextDot(textDot);
-                }
+                ////Innercolumn
+                //MyFunctions.SetLayer(docform, "InnerColumnLoad", System.Drawing.Color.Beige);
 
-                MyFunctions.SetLayer(docform, "InnerColumnArea", System.Drawing.Color.Beige);
+                //for (int i = 0; i < innerCol.Count; i++)
+                //{
+                //    var textDot = new TextDot(Convert.ToInt32(innerCol[i].Load).ToString(), innerCol[i].LineCurve.PointAt(0.5));
+                //    docform.Objects.AddTextDot(textDot);
+                //}
 
-                for (int i = 0; i < innerCol.Count; i++)
-                {
-                    var textDot = new TextDot(Math.Round(innerCol[i].Area, 2).ToString(), innerCol[i].LineCurve.PointAt(0.5));
-                    docform.Objects.AddTextDot(textDot);
-                }
+                //MyFunctions.SetLayer(docform, "InnerColumnArea", System.Drawing.Color.Beige);
 
-                //Slabs
-                MyFunctions.SetLayer(docform, "SlabCrossSection", System.Drawing.Color.Beige);
+                //for (int i = 0; i < innerCol.Count; i++)
+                //{
+                //    var textDot = new TextDot(Math.Round(innerCol[i].Area, 2).ToString(), innerCol[i].LineCurve.PointAt(0.5));
+                //    docform.Objects.AddTextDot(textDot);
+                //}
 
-                for (int i = 0; i < slabs1.Count; i++)
-                {
-                    var textDot = new TextDot(Math.Round(slabs1[i].Height, 2).ToString(), slabs1[i].GetBoundingBox(true).Center);
-                    docform.Objects.AddTextDot(textDot);
-                }
+                ////Slabs
+                //MyFunctions.SetLayer(docform, "SlabCrossSection", System.Drawing.Color.Beige);
+
+                //for (int i = 0; i < slabsSlabs.Count; i++)
+                //{
+                //    var textDot = new TextDot(Math.Round(slabsSlabs[i].Height, 2).ToString(), slabsSlabs[i].GetBoundingBox(true).Center);
+                //    docform.Objects.AddTextDot(textDot);
+                //}
 
 
 
@@ -646,7 +678,7 @@ namespace B_GOpt.Views
                 TextBlockSurfaceAreaValue.Text = Math.Round(surfaceArea, 0).ToString() + "  m" + ("\u00B2");
                 TextBlockFarValue.Text = Math.Round(baseSrf.GetArea() / surfaceArea, 2).ToString();
 
-                TextBlockClearFloorHeightValue.Text = (actFloorHeight - slabs1[1].Height).ToString() + "  m";
+                TextBlockClearFloorHeightValue.Text = (actFloorHeight - slabsSlabs[1].Height).ToString() + "  m";
 
                 
 
@@ -671,7 +703,7 @@ namespace B_GOpt.Views
 
                 for (int i = 0; i < slabs.Count; i++)
                 {
-                    slabsMass =+ slabs1[i].Height * slabs[i].GetArea();
+                    slabsMass =+slabsSlabs[i].Height * slabs[i].GetArea();
                 }
 
                 foundationMass = baseSrf.GetArea() * crossSectionGroundSlab;
@@ -761,12 +793,27 @@ namespace B_GOpt.Views
 
         private void ButtonSelectBuilding_Click(object sender, RoutedEventArgs e)
         {
-            brep = MyFunctions.SelectBuildingGeometry(brep);
+            ObjRef objRef = MyFunctions.SelectBuildingGeometry(brep);
+
+            brep = objRef.Brep();
+
+            ids.Add(objRef.ObjectId);
         }
 
         private void ButtonSelectCores_Click(object sender, RoutedEventArgs e)
         {
-            cores = MyFunctions.SelectCores();
+            List<ObjRef> objRefs = MyFunctions.SelectCores();
+
+            for (int i = 0; i < objRefs.Count; i++)
+            {
+                cores.Add(objRefs[i].Brep());
+                ids.Add(objRefs[i].ObjectId);
+
+            }
+
+
+
+            //cores = MyFunctions.SelectCores();
         }
 
 
@@ -879,130 +926,31 @@ namespace B_GOpt.Views
 
         private void ButtonClearValues_Click(object sender, RoutedEventArgs e)
         {
-            if (brep != null)
+            //Reset the dashboard
+            //-----------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+            //Clear all layers and lists
+            //-----------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+            //Show  selected objects (building geometry and cores) to visualize the structure
+            //-----------------------------------------------------------------------------------------------------------------
+
+            for (int i = 0; i < ids.Count; i++)
             {
-                BuildingGeometry buildingGeom = new BuildingGeometry(brep);
-
-                string volume = Math.Round(VolumeMassProperties.Compute(brep).Volume, 0).ToString();
-
-                int coreCount = cores.Count;
-
-                TextBlockBuildingPropsTitle.Text = "Building Dimensions";
-
-                TextBlockBuildingProps.Text = $"Height: {buildingGeom.BuildingHeight(brep)} m" + System.Environment.NewLine +
-                                                $"Length: {buildingGeom.BuildingLength(brep)} m" + System.Environment.NewLine +
-                                                $"Width: {buildingGeom.BuildingWidth(brep)} m" + System.Environment.NewLine +
-                                                $"Volume: {volume} m" + ("\u00B3") + System.Environment.NewLine +
-                                                $"Cores: {coreCount}";
-
-                //double valueFloorHeight = tbarFloorHeight.Value / 100f;
-                double valueFloorHeight = SliderFloorHeight.Value;
-                double valueSpacX = SliderXSpac.Value;
-                double valueSpacY = SliderYSpac.Value;
-                double beamDistance = SliderDistance.Value;
-
-                double actFloorHeight = buildingGeom.FloorHeight(brep, valueFloorHeight);
-                actXSpac = buildingGeom.ActualXSpacing(brep, valueSpacX);
-                actYSpac = buildingGeom.ActualXSpacing(brep, valueSpacY);
-
-                int nStorey = Convert.ToInt32(Math.Floor(buildingGeom.BuildingHeight(brep) / valueFloorHeight));
-                int nspacX = Convert.ToInt32(Math.Floor(buildingGeom.BuildingLength(brep) / valueSpacX));
-                int nspacY = Convert.ToInt32(Math.Floor(buildingGeom.BuildingWidth(brep) / valueSpacY));
-
-                string buildingInfo = String.Format($"Building Height: {buildingGeom.BuildingHeight(brep)} m; Building Length: {buildingGeom.BuildingLength(brep)} m; Building Width: {buildingGeom.BuildingWidth(brep)} m;" +
-                                                    $" Actual FloorHeight: {actFloorHeight} m; Actual x-Spacing: {actXSpac} m; Actual y-Spacing: {actYSpac} m;" +
-                                                    $" Storey Count: {nStorey}; Divisions in x-Direction: {nspacX}; Divisions in y-Direction: {nspacY}");
-
-                RhinoApp.WriteLine(buildingInfo);
-
-                Brep baseSrf = buildingGeom.GetBaseSurface(brep, docform);
-                BrepEdgeList baseSrfEdges = baseSrf.Edges;
-                CurveList baseSrfEdgeCurves = new CurveList();
-
-                for (int i = 0; i < baseSrfEdges.Count; i++)
-                {
-                    baseSrfEdgeCurves.Add(baseSrfEdges[i]);
-                    docform.Objects.AddCurve(baseSrfEdges[i].ToNurbsCurve());
-                }
-
-                Curve[] baseSrfJoinedEdgeCurves = Curve.JoinCurves(baseSrfEdgeCurves);
-
-
-                //Creates the slabs edge curves to use them for their own Grid 2D creation
-                RhinoList<Brep> slabs = buildingGeom.ConstructSlabs(brep, actFloorHeight, nStorey, docform);
-                CurveList slabEdgeCurves = new CurveList();
-
-                for (int i = 0; i < slabs.Count; i++)
-                {
-                    BrepEdgeList slabEdges = slabs[i].Edges;
-                    CurveList crvs = new CurveList();
-
-                    for (int j = 0; j < slabEdges.Count; j++)
-                    {
-                        crvs.Add(slabEdges[j]);
-                    }
-
-                    Curve[] joinedEdgeCurves = Curve.JoinCurves(crvs);
-
-                    slabEdgeCurves.Add(joinedEdgeCurves[0]);
-                }
-
-                //Creates the grid at base floor
-                //-------------------------------------------------------------------------------------------
-                BoundingBox bBox = StructGrid.CreateBoundingBox(baseSrfJoinedEdgeCurves[0]);
-
-                RhinoList<Rhino.Geometry.Line> xGridLines = StructGrid.XGridLines(bBox, nspacY, docform);
-                RhinoList<Rhino.Geometry.Line> yGridLines = StructGrid.YGridLines(bBox, nspacX, docform);
-                RhinoList<Rhino.Geometry.Line> secondaryBeamLines = StructGrid.YGridLines(bBox, nspacX, docform);
-
-                RhinoList<Rhino.Geometry.Line> xBeams = new RhinoList<Rhino.Geometry.Line>();
-                RhinoList<Rhino.Geometry.Line> yBeams = new RhinoList<Rhino.Geometry.Line>();
-
-                RhinoList<Curve> edgeBeams = new RhinoList<Curve>();
-
-                List<Rhino.Geometry.Line> outerColumns = new List<Rhino.Geometry.Line>();
-                List<Rhino.Geometry.Line> innerColumns = new List<Rhino.Geometry.Line>();
-                List<Rhino.Geometry.Line> edgeColumns = new List<Rhino.Geometry.Line>();
-
-
-                //Using custom members 
-                List<Beam> beamsInXDir = new List<Beam>();
-                List<Beam> beamsInYDir = new List<Beam>();
-
-                List<Column> outerCol = new List<Column>();
-                List<Column> innerCol = new List<Column>();
-                List<Column> edgeCol = new List<Column>();
-
-                List<Slab> slabs1 = new List<Slab>();
-
-
-
-
-                //Intersect slabs with core
-                RhinoList<Brep> floorSlabs = StructGrid.SplitSlabsWithCores(cores, slabEdgeCurves, docform);
-
-                for (int i = 0; i < floorSlabs.Count; i++)
-                {
-                    Slab slab = new Slab(floorSlabs[i], actXSpac, actYSpac, i, liveLoad, 0);
-                    slabs1.Add(slab);
-                }
-
-                //Creates the Grid 2D for all slabs
-                //Iteration variable i corresponds to the storey
-                //-------------------------------------------------------------------------------------------
-                Rhino.Geometry.Transform xTrans = Rhino.Geometry.Transform.Translation(0, 0, actFloorHeight);
-
-                for (int i = 0; i < slabs.Count; i++)
-                {
-                    bBox.Transform(xTrans);
-                    xGridLines = StructGrid.XGridLines(bBox, nspacY, docform);
-                    yGridLines = StructGrid.YGridLines(bBox, nspacX, docform);
-
-                    secondaryBeamLines = StructGrid.SecondaryBeams(bBox, actXSpac, actYSpac, yGridLines, xGridLines, beamDistance);
-                }
-
-
+                RhinoDoc.ActiveDoc.Objects.Show(ids[i], true);
             }
+
 
         }
 

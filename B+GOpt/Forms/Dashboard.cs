@@ -80,15 +80,15 @@ namespace B_GOpt.Forms
         }
 
 
-        private void btnSelectBuilding_Click_1(object sender, EventArgs e)
-        {
-            brep = MyFunctions.SelectBuildingGeometry(brep);
-        }
+        //private void btnSelectBuilding_Click_1(object sender, EventArgs e)
+        //{
+        //    brep = MyFunctions.SelectBuildingGeometry(brep);
+        //}
 
-        private void btnSelectCore_Click(object sender, EventArgs e)
-        {
-            cores = MyFunctions.SelectCores();
-        }
+        //private void btnSelectCore_Click(object sender, EventArgs e)
+        //{
+        //    cores = MyFunctions.SelectCores();
+        //}
 
 
         private void btnStructGrid3D_Click(object sender, EventArgs e)

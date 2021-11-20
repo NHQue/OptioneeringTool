@@ -384,7 +384,7 @@ namespace B_GOpt.Forms
             this.btnSelectBuilding.StateTracking.Content.ShortText.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
             this.btnSelectBuilding.TabIndex = 27;
             this.btnSelectBuilding.Values.Text = "Select Your Building";
-            this.btnSelectBuilding.Click += new System.EventHandler(this.btnSelectBuilding_Click_1);
+            //this.btnSelectBuilding.Click += new System.EventHandler(this.btnSelectBuilding_Click_1);
             // 
             // btnSelectCore
             // 
@@ -445,8 +445,8 @@ namespace B_GOpt.Forms
             this.btnSelectCore.StateTracking.Border.Width = 1;
             this.btnSelectCore.StateTracking.Content.ShortText.Color1 = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(142)))), ((int)(((byte)(254)))));
             this.btnSelectCore.TabIndex = 28;
-            this.btnSelectCore.Values.Text = "Select the Building Core";
-            this.btnSelectCore.Click += new System.EventHandler(this.btnSelectCore_Click);
+            //this.btnSelectCore.Values.Text = "Select the Building Core";
+            //this.btnSelectCore.Click += new System.EventHandler(this.btnSelectCore_Click);
             // 
             // lblRes
             // 

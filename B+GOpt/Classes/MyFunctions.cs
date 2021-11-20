@@ -24,13 +24,15 @@ namespace B_GOpt
     class MyFunctions
     {
 
+
         /// <summary>
-        /// This funuction Selects the Building Geometry
+        /// This method selects the Building Geometry
         /// </summary>
         /// <param name="brep"></param>
         /// <returns></returns>
-        public static Brep SelectBuildingGeometry(Brep brep)
+        public static ObjRef SelectBuildingGeometry(Brep brep)
         {
+
             GetObject gb = new GetObject();
             gb.SetCommandPrompt("Select a building geometry");
             gb.GeometryFilter = ObjectType.Brep;
@@ -38,21 +40,29 @@ namespace B_GOpt
             gb.SubObjectSelect = false;
             gb.Get();
             brep = gb.Object(0).Brep();
+            ObjRef objRef = gb.Object(0);
             if (gb.CommandResult() != Result.Success)
                 return null;
 
             if (brep != null)
             {
                 RhinoApp.WriteLine("Building geometry successfully selected");
-                return  brep;
+                RhinoApp.WriteLine($"ObjRef Id ofBuilding geometry: {objRef.ObjectId}");
+                return objRef;
+                //return null;
             }
-
 
             return null;
         }
 
-        public static RhinoList<Brep> SelectCores()
+        /// <summary>
+        /// This method selects the Building Cores
+        /// </summary>
+        /// <returns></returns>
+        public static List<ObjRef> SelectCores()
         {
+            List<ObjRef> objRefs = new List<ObjRef>(); 
+
             GetObject gb = new GetObject();
             gb.SetCommandPrompt("Select the building's cores");
             gb.EnablePreSelect(false, true);
@@ -67,8 +77,12 @@ namespace B_GOpt
             for (int i = 0; i < gb.ObjectCount; i++)
             {
                 Brep core = gb.Object(i).Brep();                    //Checks if the selected object can be converted to a brep that means it is a brep
+                ObjRef objRef = gb.Object(i);
                 if (null != core)
+                {
                     cores.Add(core);
+                    objRefs.Add(objRef);
+                }
             }
 
             if (cores != null)
@@ -84,7 +98,7 @@ namespace B_GOpt
                 else
                     RhinoApp.WriteLine("Multiple cores successfully selected");
 
-                return cores;
+                return objRefs;
             }
 
             return null;
@@ -363,6 +377,12 @@ namespace B_GOpt
         }
 
 
+        /// <summary>
+        /// This method splits a single line with multiple lines and returns the resulting segments of the line
+        /// </summary>
+        /// <param name="lineToSplit"></param>
+        /// <param name="linesSplit"></param>
+        /// <returns></returns>
         public static List<Line> SplitLineByLines(Line lineToSplit, RhinoList<Line> linesSplit)
         {
             //Basic intersection parameters
@@ -406,6 +426,13 @@ namespace B_GOpt
 
 
 
+        /// <summary>
+        /// This method splits a single line with multiple breps and returns the resulting segments of the line
+        /// </summary>
+        /// <param name="breps"></param>
+        /// <param name="line"></param>
+        /// <param name="doc"></param>
+        /// <returns></returns>
         public static RhinoList<Line> SplitLineWithBreps(RhinoList<Brep> breps, Line line, RhinoDoc doc)
         {
             //Basic intersection parameters
@@ -449,6 +476,13 @@ namespace B_GOpt
 
 
 
+        /// <summary>
+        /// This method checks whether a line is inside a brep
+        /// </summary>
+        /// <param name="breps"></param>
+        /// <param name="line"></param>
+        /// <param name="doc"></param>
+        /// <returns></returns>
         public static bool IsLineInsideBreps(RhinoList<Brep> breps, Line line, RhinoDoc doc)
         {
             double tolerance = doc.ModelAbsoluteTolerance;
@@ -473,43 +507,6 @@ namespace B_GOpt
                 return false;
         }
 
-
-
-
-
-
-
-        public static bool LineInBrep(Line line, Brep brep, RhinoDoc doc)
-        {
-            double tolerance = doc.ModelAbsoluteTolerance;
-            bool strictlyIn = false;
-
-            line.ToNurbsCurve().Domain = new Interval(0, 1);
-            Point3d midPt = new Point3d(line.PointAt(0.5));
-
-            if (brep.IsPointInside(midPt, tolerance, strictlyIn))
-                return true;
-            else
-                return false;
-
-
-            //double tolerance = doc.ModelAbsoluteTolerance;
-            //bool strictlyIn = false;
-            //column.ToNurbsCurve().Domain = new Interval(0, 1);
-            //Point3d midPt = new Point3d(column.PointAt(0.5));
-            //List<bool> boolValues = new List<bool>();
-            //for (int i = 0; i < breps.Count; i++)
-            //{
-            //    if (breps[i].IsPointInside(midPt, tolerance, strictlyIn))
-            //        boolValues.Add(true);
-            //    else
-            //        boolValues.Add(false);
-            //}
-            //if (boolValues.Contains(true))
-            //    return true;
-            //else
-            //    return false;
-        }
 
 
         /// <summary>
