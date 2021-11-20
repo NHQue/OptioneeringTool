@@ -94,10 +94,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\BaseGrid.cs" />
     <Compile Include="Classes\BuildingVariant.cs" />
     <Compile Include="Classes\CostCalculation.cs" />
     <Compile Include="Classes\LCACalculation.cs" />
     <Compile Include="Classes\Members\Slab.cs" />
+    <Compile Include="Classes\PreDim.cs" />
     <Compile Include="Classes\PreDimTest.cs" />
     <Compile Include="Classes\BuildingResults.cs" />
     <Compile Include="Classes\StructGrid.cs" />
@@ -106,7 +108,6 @@
     <Compile Include="Classes\Members\Column.cs" />
     <Compile Include="Classes\Members\BuildingCore.cs" />
     <Compile Include="Classes\ExportToDlubal.cs" />
-    <Compile Include="Classes\PreDim.cs" />
     <Compile Include="Commands\BGOpt_DefaultCommand.cs" />
     <Compile Include="BGOptPlugIn.cs" />
     <Compile Include="Commands\OptPanel.cs" />

@@ -75,6 +75,41 @@ namespace B_GOpt.Classes
 
         //Static Methods
         //--------------------------------------------------------------------------------------------------------------
+
+        //Main Methods
+        //--------------------------------------------------------------------------------------------------------------
+
+
+        public static void Slab(string material, double spanX, double spanY)
+        {
+
+
+            if (material == "Concrete")
+            {
+
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //Single Methods
+        //--------------------------------------------------------------------------------------------------------------
         //Slabs
         //---------------------------------------------------------------------------------------------------------------
         public static void ConcreteSlab(double spanX, double spanY)
@@ -327,10 +362,26 @@ namespace B_GOpt.Classes
 
         //Foundation
         //---------------------------------------------------------------------------------------------------------------
-        public static void Foundation()
+        public static double GroundSlab(double buildingHeight, int storeyCount)
         {
+            double height = 0;          
+
+            height = Math.Round(Math.Max((buildingHeight * 100) / 30, 10 * storeyCount), 0);
+
+            if (height % 2 != 0)
+            {
+                height = height + 1;
+            }
+
+            return Math.Max(height, 30)/100;
+        }
 
 
+        public static double CoreWalls()
+        {
+            double height = 0.3;                //m
+
+            return height;
         }
 
     }

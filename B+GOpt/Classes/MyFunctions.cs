@@ -363,6 +363,49 @@ namespace B_GOpt
         }
 
 
+        public static List<Line> SplitLineByLines(Line lineToSplit, RhinoList<Line> linesSplit)
+        {
+            //Basic intersection parameters
+            const double intersection_tolerance = 0.001;
+            const double overlap_tolerance = 0.0;
+
+            List<Line> lineSegments = new List<Line>();
+
+                NurbsCurve lineToSplitToCrv = lineToSplit.ToNurbsCurve();
+                lineToSplitToCrv.Domain = new Interval(0, 1);
+                List<double> intParams = new List<double>();
+
+                for (int j = 0; j < linesSplit.Count; j++)
+                {
+                    NurbsCurve lineSplitToCrv = linesSplit[j].ToNurbsCurve();
+                    CurveIntersections intEvents = Rhino.Geometry.Intersect.Intersection.CurveCurve(lineToSplitToCrv, lineSplitToCrv, intersection_tolerance, overlap_tolerance);
+
+                    if (intEvents.Count >= 1)
+                    {
+                        intParams.Add(intEvents[0].ParameterA);
+                    }
+                }
+
+                Curve[] curveSeg = lineToSplitToCrv.Split(intParams);
+
+                for (int j = 0; j < curveSeg.Length; j++)
+                {
+                    Line line = new Line(curveSeg[j].PointAtStart, curveSeg[j].PointAtEnd);
+                    lineSegments.Add(line);
+                    //doc.Objects.AddCurve(curveSeg[j]);
+                }
+            
+
+            return lineSegments;
+        }
+
+
+
+
+
+
+
+
         public static RhinoList<Line> SplitLineWithBreps(RhinoList<Brep> breps, Line line, RhinoDoc doc)
         {
             //Basic intersection parameters
@@ -754,25 +797,76 @@ namespace B_GOpt
         }
 
 
-        public static Model3D AddLine(Point3D startPoint, Point3D EndPoint, string name)
+        public static void DrawBuildingInWPF(Brep brep, Point3D EndPoint, string name)
         {
-            SolidColorBrush brush = new SolidColorBrush(Colors.Black);
-            var material = new DiffuseMaterial(brush);
-            var mesh = new MeshGeometry3D();
-            mesh.Positions.Add(startPoint);
-            mesh.Positions.Add(EndPoint);
-            mesh.TriangleIndices.Add(0);
-            mesh.TriangleIndices.Add(1);
-            mesh.TriangleIndices.Add(0);
-            return new GeometryModel3D(mesh, material);
+            GeometryModel3D myGeometryModel = new GeometryModel3D();
+
+            // The geometry specifes the shape of the 3D plane. In this sample, a flat sheet is created.
+            MeshGeometry3D myMeshGeometry3D = new MeshGeometry3D();
+
+            MeshingParameters meshParams = new MeshingParameters();          //Creates a new MeshingParmter object "meshParam"
+            meshParams.MinimumEdgeLength = 0.1;                              //Declares values of the MeshingParmter object "meshParam"
+            meshParams.MaximumEdgeLength = 50;
+
+            Mesh[] brepMeshes = Mesh.CreateFromBrep(brep, meshParams);
+
+            Mesh weldedMesh = new Mesh();                                   //Creates a new mesh object "weldedMesh"
+
+            foreach (var mesh in brepMeshes)
+            {
+                weldedMesh.Append(mesh);                                    //Appends the single mesh to the mesh "weldedMesh"
+            }
+
+            //Get the mesh components
+            MeshVertexList vertices = weldedMesh.Vertices;
+            MeshVertexNormalList normals = weldedMesh.Normals;
+            Vector3DCollection myNormalCollection = new Vector3DCollection();
+
+            for (int i = 0; i < normals.Count; i++)
+            {
+                myNormalCollection.Add(new Vector3D(normals[i].X, normals[i].Y, normals[i].Z));
+            }
+
+
+            //Convert Rhino Mesh to MeshGeometry3D
+            myMeshGeometry3D.Normals = myNormalCollection;
+
+            Point3DCollection myPositionCollection = new Point3DCollection();
+
+            for (int i = 0; i < vertices.Count; i++)
+            {
+                myPositionCollection.Add(new Point3D(vertices[i].X, vertices[i].Y, vertices[i].Z));
+            }
+
+            myMeshGeometry3D.Positions = myPositionCollection;
+
+
+            Int32Collection myTriangleIndicesCollection = new Int32Collection();
+
+            MeshFaceList faces = weldedMesh.Faces;
+
+            for (int i = 0; i < faces.Count; i++)
+            {
+                int indA = faces[i].A;
+                int indB = faces[i].B;
+                int indC = faces[i].C;
+
+                myTriangleIndicesCollection.Add(indA);
+                myTriangleIndicesCollection.Add(indB);
+                myTriangleIndicesCollection.Add(indC);
+            }
+
+            myMeshGeometry3D.TriangleIndices = myTriangleIndicesCollection;
+
+
+            // Apply the mesh to the geometry model.
+            myGeometryModel.Geometry = myMeshGeometry3D;
+
+
+            //Set the properties of the Model3D
+            //buildingMeshWPF.TriangleIndices = myTriangleIndicesCollection;
+            //buildingMeshWPF.Positions = myPositionCollection;
+            //buildingMeshWPF.Normals = myNormalCollection;
         }
-
-
-
-
-
-
-
-
     }
 }

@@ -424,7 +424,40 @@ namespace B_GOpt.Classes
         }
 
 
+        public RhinoList<Brep> GetCoreWalls(RhinoList<Brep> cores, RhinoDoc doc)
+        {
+
+            RhinoList<Rhino.Geometry.Brep> coreBreps = new RhinoList<Rhino.Geometry.Brep>();
+
+            for (int i = 0; i < cores.Count; i++)
+            {
+                BrepFaceList coreFaces = cores[i].Faces;                                                //Gets all the faces from the core geometry
+
+                for (int j = 0; j < coreFaces.Count; j++)
+                {
+                    Vector3d z = new Vector3d(0, 0, 1);
+                    Vector3d neg_z = new Vector3d(0, 0, -1);
+
+                    if (coreFaces[j].NormalAt(1, 1) != z && coreFaces[j].NormalAt(1, 1) != neg_z)    //Deletes the upper and bottom face from the core geometry
+                    {
+                        Brep coreBrep = coreFaces[j].DuplicateFace(false);
+                        coreBreps.Add(coreBrep);
+                        doc.Objects.AddBrep(coreBrep);
+                    }
+                }
+            }
+
+            return coreBreps;
+        }
 
 
-    }
+
+
+
+
+
+
+
+
+        }
 }

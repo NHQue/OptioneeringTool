@@ -46,7 +46,7 @@ namespace B_GOpt.Classes
             {
                 Line line = new Line(divPtsX1[i], divPtsX3[i]);
                 gridLinesX.Add(line);
-                //doc.Objects.AddLine(line);
+                doc.Objects.AddLine(line);
             }
 
             return gridLinesX;
@@ -73,11 +73,91 @@ namespace B_GOpt.Classes
             {
                 Line line = new Line(divPtsY0[i], divPtsY2[i]);
                 gridLinesY.Add(line);
-                //doc.Objects.AddLine(line);
+                doc.Objects.AddLine(line);
             }
 
             return gridLinesY;
         }
+
+
+        public static RhinoList<Line> SecondaryBeams(BoundingBox bbox, double actXSpac, double actYSpac, 
+                                            RhinoList<Line> gridLinesY, RhinoList<Line> gridLinesX, double distance)
+        {
+            RhinoList<Line> secondaryBeams = new RhinoList<Line>();
+
+            int countNumber = 1;
+
+
+            if (actXSpac > actYSpac)
+            {
+                Line[] edges = bbox.GetEdges();
+                int numEdges = edges.Count();
+
+                edges[2].Flip();
+                //edges[3].Flip();
+
+                Point3d[] divPtsY0;
+                Point3d[] divPtsY2;
+
+
+                List<Line> linesA = MyFunctions.SplitLineByLines(edges[0], gridLinesY);
+                List<Line> linesB = MyFunctions.SplitLineByLines(edges[0], gridLinesY);
+
+                countNumber = Convert.ToInt32(Math.Floor(actXSpac / distance));
+
+                for (int i = 0; i < linesA.Count; i++)
+                {
+                    linesA[i].ToNurbsCurve().DivideByCount(countNumber, false, out divPtsY0);
+                    linesB[i].ToNurbsCurve().DivideByCount(countNumber, false, out divPtsY2);
+
+                    for (int j = 0; j < divPtsY0.Length; j++)
+                    {
+                        Line line = new Line(divPtsY0[j], divPtsY2[j]);
+                        secondaryBeams.Add(line);
+                        //doc.Objects.AddLine(line);
+                    }
+                }
+            }
+
+            else
+            {
+                Line[] edges = bbox.GetEdges();
+                int numEdges = edges.Count();
+
+                edges[3].Flip();
+                //edges[3].Flip();
+
+                Point3d[] divPtsX1;
+                Point3d[] divPtsX3;
+
+
+                List<Line> linesA = MyFunctions.SplitLineByLines(edges[1], gridLinesX);
+                List<Line> linesB = MyFunctions.SplitLineByLines(edges[3], gridLinesX);
+
+                countNumber = Convert.ToInt32(Math.Floor(actYSpac / distance));
+
+                for (int i = 0; i < linesA.Count; i++)
+                {
+                    linesA[i].ToNurbsCurve().DivideByCount(countNumber, false, out divPtsX1);
+                    linesB[i].ToNurbsCurve().DivideByCount(countNumber, false, out divPtsX3);
+
+                    for (int j = 0; j < divPtsX1.Length; j++)
+                    {
+                        Line line = new Line(divPtsX3[j], divPtsX3[j]);
+                        secondaryBeams.Add(line);
+                        //doc.Objects.AddLine(line);
+                    }
+                }
+            }
+
+            return secondaryBeams;
+
+        }
+
+
+
+
+
 
 
 
@@ -492,6 +572,17 @@ namespace B_GOpt.Classes
 
             return floorSlabs;
         }
+
+
+
+        public static void BaseStructGrid(string material, Brep building, double actXSpac , double actYSpac, RhinoDoc doc)
+        {
+      
+
+
+
+        }
+
 
 
 
