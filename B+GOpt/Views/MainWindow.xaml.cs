@@ -26,6 +26,7 @@ using LiveCharts.Wpf;
 using LiveCharts.Defaults;
 using System.Windows.Media.Media3D;
 using Rhino.DocObjects;
+using Rhino.DocObjects.Tables;
 
 namespace B_GOpt.Views 
 {
@@ -34,12 +35,11 @@ namespace B_GOpt.Views
     /// </summary>
     public partial class MainWindow
     {
+        //Declaration of some variables
+        //-----------------------------------------------------------------
         private RhinoDoc docform;
 
-
         private Rhino.Geometry.Brep brep = null;
-        List<Guid> ids = new List<Guid>();
-        RhinoList<Brep> cores = new RhinoList<Brep>();
         private double surfaceArea;
         double far;
         double liveLoad = 1.5;
@@ -53,8 +53,12 @@ namespace B_GOpt.Views
         public double actYSpac; 
 
 
+        //Declaration of some lists
+        //-----------------------------------------------------------------
+        List<Guid> ids = new List<Guid>();
+        List<Layer> layers = new List<Layer>();
+        RhinoList<Brep> cores = new RhinoList<Brep>();
         List<BuildingVariant> variants = new List<BuildingVariant>();
-
 
 
         public MainWindow(RhinoDoc doc)
@@ -67,41 +71,6 @@ namespace B_GOpt.Views
 
             TextBlockProject.Text = "Project: " + projectName.Substring(projectName.Length - 3); 
 
-
-
-            //SeriesCollection = new SeriesCollection
-            //{
-            //    new PieSeries
-            //    {
-            //        Title = "Concrete",
-            //        Values = new ChartValues<ObservableValue> {new ObservableValue(10)},
-            //        DataLabels = true,
-            //        Fill = new SolidColorBrush(Colors.DarkSeaGreen)
-            //    },
-            //    new PieSeries
-            //    {
-            //        Title = "Steel",
-            //        Values = new ChartValues<ObservableValue> {new ObservableValue(20)},
-            //        DataLabels = true,
-            //        Fill = new SolidColorBrush(Colors.LightSkyBlue)
-            //    },
-            //    new PieSeries
-            //    {
-            //        Title = "Reinforcement",
-            //        Values = new ChartValues<ObservableValue> {new ObservableValue(30)},
-            //        DataLabels = true,
-            //        Fill = new SolidColorBrush(Colors.Lavender)
-            //    },
-            //    new PieSeries
-            //    {
-            //        Title = "Timber",
-            //        Values = new ChartValues<ObservableValue> {new ObservableValue(18)},
-            //        DataLabels = true,
-            //        Fill = new SolidColorBrush(Colors.Peru)
-            //    },
-            //};
-
-
             //DataContext = this;
         }
 
@@ -113,10 +82,6 @@ namespace B_GOpt.Views
         {
             MessageBox.Show("Current value: " + chartPoint.Y + "(" + (chartPoint.Participation * 100).ToString() + "%)");
         }
-
-
-
-
 
 
         private void SliderLoad_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -189,19 +154,6 @@ namespace B_GOpt.Views
             WindowInteropHelper wih = new WindowInteropHelper(dialogCompare);
             wih.Owner = Rhino.RhinoApp.MainWindowHandle();
             dialogCompare.Show();
-
-
-
-            //Prompt results
-            //-------------------------------------------------------------------------------------------------------------
-
-             
-
-
-
-
-
-
 
         }
 
@@ -307,8 +259,6 @@ namespace B_GOpt.Views
                 List<Slab> slabsSlabs = new List<Slab>();
 
 
-
-
                 //Intersect slabs with core
                 RhinoList<Brep> floorSlabs = StructGrid.SplitSlabsWithCores(cores, slabEdgeCurves, docform);
 
@@ -317,9 +267,6 @@ namespace B_GOpt.Views
                     Slab slab = new Slab(floorSlabs[i], actXSpac, actYSpac, i, liveLoad, 0);
                     slabsSlabs.Add(slab);
                 }
-
-
-
 
 
                 //Predimensioning slabs
@@ -343,11 +290,8 @@ namespace B_GOpt.Views
                 RhinoApp.WriteLine("SlabHeight: " + crossSectionSlab);
 
 
-
                 //Calculating total load
                 totalLoad = liveLoad + deadLoadSlab + addDeadLoad;
-
-
 
 
 
@@ -531,13 +475,17 @@ namespace B_GOpt.Views
                 //Adds the elements to the Rhino Document
                 //--------------------------------------------------------------------------------------
 
-                MyFunctions.SetLayer(docform, "XBeams", System.Drawing.Color.Salmon);
+                Layer layerXBeams = MyFunctions.SetLayer(docform, "XBeams", System.Drawing.Color.Salmon);
+                layers.Add(layerXBeams);
+
                 //for (int i = 0; i < xBeams.Count; i++)
                 //{
                 //    docform.Objects.AddLine(xBeams[i]);
                 //}
 
-                MyFunctions.SetLayer(docform, "YBeams", System.Drawing.Color.IndianRed);
+                Layer layerYBeams = MyFunctions.SetLayer(docform, "YBeams", System.Drawing.Color.IndianRed);
+                layers.Add(layerYBeams);
+
                 //for (int i = 0; i < yBeams.Count; i++)
                 //{
                 //    docform.Objects.AddLine(yBeams[i]);
@@ -548,13 +496,17 @@ namespace B_GOpt.Views
                 //    docform.Objects.AddCurve(edgeBeams[i]);
                 //}
 
-                MyFunctions.SetLayer(docform, "OuterColumn", System.Drawing.Color.Cyan);
+                Layer layerOuterColumn = MyFunctions.SetLayer(docform, "OuterColumn", System.Drawing.Color.Cyan);
+                layers.Add(layerOuterColumn);
+
                 //for (int i = 0; i < outerColumns.Count; i++)
                 //{
                 //    docform.Objects.AddLine(outerColumns[i]);
                 //}
 
-                MyFunctions.SetLayer(docform, "InnerColumns", System.Drawing.Color.LightSkyBlue);
+                Layer layerInnerColumns = MyFunctions.SetLayer(docform, "InnerColumns", System.Drawing.Color.LightSkyBlue);
+                layers.Add(layerInnerColumns);
+
                 for (int i = 0; i < innerColumns.Count; i++)
                 {
                     docform.Objects.AddLine(innerColumns[i]);
@@ -575,13 +527,17 @@ namespace B_GOpt.Views
                 //    docform.Objects.AddCurve(slabEdgeCurves[i]);
                 //}
 
-                MyFunctions.SetLayer(docform, "FloorSlabs", System.Drawing.Color.DarkSeaGreen);
+                Layer layerFloorSlabs = MyFunctions.SetLayer(docform, "FloorSlabs", System.Drawing.Color.DarkSeaGreen);
+                layers.Add(layerFloorSlabs);
+
                 for (int i = 0; i < floorSlabs.Count; i++)
                 {
                     docform.Objects.AddBrep(floorSlabs[i]);
                 }
 
-                MyFunctions.SetLayer(docform, "Core", System.Drawing.Color.DarkKhaki);
+                Layer layerCore = MyFunctions.SetLayer(docform, "Core", System.Drawing.Color.DarkKhaki);
+                layers.Add(layerCore);
+
                 for (int i = 0; i < coreBreps.Count; i++)
                 {
                     docform.Objects.AddBrep(coreBreps[i]);
@@ -643,9 +599,11 @@ namespace B_GOpt.Views
 
 
 
+                //Setting view to rendered
+                //------------------------------------------------------------------------------------------
 
-
-
+                Rhino.Display.DisplayModeDescription rendered = Rhino.Display.DisplayModeDescription.FindByName("Rendered");
+                Rhino.RhinoDoc.ActiveDoc.Views.ActiveView.ActiveViewport.DisplayMode = rendered;
 
 
 
@@ -786,10 +744,8 @@ namespace B_GOpt.Views
 
                 DataContext = this;
             }
-
-
-
         }
+
 
         private void ButtonSelectBuilding_Click(object sender, RoutedEventArgs e)
         {
@@ -800,6 +756,7 @@ namespace B_GOpt.Views
             ids.Add(objRef.ObjectId);
         }
 
+
         private void ButtonSelectCores_Click(object sender, RoutedEventArgs e)
         {
             List<ObjRef> objRefs = MyFunctions.SelectCores();
@@ -808,12 +765,7 @@ namespace B_GOpt.Views
             {
                 cores.Add(objRefs[i].Brep());
                 ids.Add(objRefs[i].ObjectId);
-
             }
-
-
-
-            //cores = MyFunctions.SelectCores();
         }
 
 
@@ -885,34 +837,17 @@ namespace B_GOpt.Views
             RadioButtonBeamSystem.Content = "CLT on Steelframe";
         }
 
+
         private void RadioButtonBeamSystem_Checked(object sender, RoutedEventArgs e)
         {
-
-            //if (RadioButtonBeamSystem.IsChecked == true)
-            //{
-            //    TextblockDistance.Visibility = Visibility.Visible;
-            //    SliderDistance.Visibility = Visibility.Visible;
-            //    SliderDistanceValue.Visibility = Visibility.Visible;
-            //}
-
-
-         
-
             structSystem = "Beam";
             string infoStructSyst = String.Format($"Selected {structSystem} Sytem as structural system");
             RhinoApp.WriteLine(infoStructSyst);
         }
+
+
         private void RadioButtonPlateSystem_Checked(object sender, RoutedEventArgs e)
         {
-            //if (RadioButtonPlateSystem.IsChecked == true)
-            //{
-            //    //TextblockDistance.Visibility = Visibility.Collapsed;
-            //    //SliderDistance.Visibility = Visibility.Collapsed;
-            //    //SliderDistanceValue.Visibility = Visibility.Collapsed;
-            //}
-
-
-
             structSystem = "Plate";
             string infoStructSyst = String.Format($"Selected {structSystem} Sytem as structural system");
             RhinoApp.WriteLine(infoStructSyst);
@@ -928,22 +863,26 @@ namespace B_GOpt.Views
         {
             //Reset the dashboard
             //-----------------------------------------------------------------------------------------------------------------
-
-
-
-
-
+            TextBlockBuildingProps.Text = "";
+            TextBlockBuildingPropsTitle.Text = "";
+            TextBlockClearFloorHeightValue.Text = "-";
+            TextBlockCostsValue.Text = "";
+            TextBlockEmbodiedCO2Value.Text = "";
+            TextBlockFarValue.Text = "";
+            TextBlockProject.Text = "";
+            TextBlockSurfaceAreaValue.Text = "";
+            TextBlockWeightValue.Text = "";
 
 
             //Clear all layers and lists
             //-----------------------------------------------------------------------------------------------------------------
+            for (int i = 0; i < layers.Count; i++)
+            {
+                RhinoDoc.ActiveDoc.Layers.Purge(layers[i].Id, true);
+            }
 
 
-
-
-
-
-            //Show  selected objects (building geometry and cores) to visualize the structure
+            //Show selected objects (building geometry and cores) tback to normal
             //-----------------------------------------------------------------------------------------------------------------
 
             for (int i = 0; i < ids.Count; i++)
@@ -952,6 +891,11 @@ namespace B_GOpt.Views
             }
 
 
+            //Show selected objects (building geometry and cores) tback to normal
+            //-----------------------------------------------------------------------------------------------------------------
+
+            Rhino.Display.DisplayModeDescription wireframe = Rhino.Display.DisplayModeDescription.FindByName("Wireframe");
+            Rhino.RhinoDoc.ActiveDoc.Views.ActiveView.ActiveViewport.DisplayMode = wireframe;
         }
 
         private void SliderDistance_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -960,7 +904,6 @@ namespace B_GOpt.Views
             {
                 SliderDistanceValue.Text = Math.Round(SliderDistance.Value, 2).ToString() + " m";
             }
-
         }
     }
 }

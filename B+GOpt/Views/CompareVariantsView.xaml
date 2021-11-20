@@ -262,7 +262,8 @@
     </Window.Resources>
 
     <Border Background="WhiteSmoke"
-            CornerRadius="20">
+            CornerRadius="20"
+            x:Name="printView">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>
@@ -677,7 +678,8 @@
 
 
 
-            <Grid Grid.Column="2" Grid.Row="3"
+            <Grid 
+                  Grid.Column="2" Grid.Row="3"
                   Grid.RowSpan="2" Grid.ColumnSpan="3"
                   Height="250"
                   Width="370"

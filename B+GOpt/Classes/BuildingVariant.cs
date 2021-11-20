@@ -11,10 +11,9 @@ using System.Threading.Tasks;
 
 namespace B_GOpt.Classes
 {
-    public  class BuildingVariant
+    public class BuildingVariant
     {
 
-        
         //Properties with getter and setter
         public Brep Brep { get; set; }
 
@@ -34,6 +33,7 @@ namespace B_GOpt.Classes
 
         public double Weight { get; set; }
 
+
         //Constructor
         public BuildingVariant(Brep brep, int index, string material, string structSystem, 
                                 double embodiedCO2, double actXSpax, double actYSpax, 
@@ -49,6 +49,7 @@ namespace B_GOpt.Classes
             SurfaceArea = surfaceArea;
             Weight = weight; 
         }
+
 
         //Declaration of some basic variables/stuff
         //----------------------------------------------------------------------------------------------------------

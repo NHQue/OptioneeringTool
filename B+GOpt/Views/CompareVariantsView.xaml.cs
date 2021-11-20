@@ -14,8 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using B_GOpt.Classes; 
-
+using B_GOpt.Classes;
+using Microsoft.Win32;
 
 namespace B_GOpt.Views
 {
@@ -67,6 +67,20 @@ namespace B_GOpt.Views
 
         private void ButtonExportPDF_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                this.IsEnabled = false;
+
+                PrintDialog printDialog = new PrintDialog();
+                if (printDialog.ShowDialog() == true)
+                {
+                    printDialog.PrintVisual(printView, "B+G_OptioneeringTool_Variants");
+                }
+            }
+            finally
+            {
+                this.IsEnabled = true;
+            }
 
         }
 
