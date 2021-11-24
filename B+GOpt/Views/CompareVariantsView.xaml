@@ -426,12 +426,24 @@
                                 <GradientStop Color="#ffc554" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.Background>
-                        <TextBlock  x:Name="ResultsCase1"
-                            Text=""
-                            Foreground="Black"
-                            FontSize="10"
-                            FontWeight="Light"
-                            Margin="10,5,0,0"/>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock  x:Name="TextBlockVariant1"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="10"
+                                    FontWeight="Light"
+                                    Margin="10,5,0,0"/>
+                            <TextBlock  x:Name="TextBlockResultsVariant1"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="8"
+                                    FontWeight="Light"
+                                    Margin="10,0,0,0"/>
+                        </StackPanel>
                     </Border>
 
                     <Border 
@@ -448,6 +460,24 @@
                                 <GradientStop Color="#ffc554" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.Background>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock  x:Name="TextBlockVariant2"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="10"
+                                    FontWeight="Light"
+                                    Margin="10,5,0,0"/>
+                            <TextBlock  x:Name="TextBlockResultsVariant2"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="8"
+                                    FontWeight="Light"
+                                    Margin="10,0,0,0"/>
+                        </StackPanel>
                     </Border>
 
                     <Border 
@@ -464,6 +494,24 @@
                                 <GradientStop Color="#ffc554" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.Background>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock  x:Name="TextBlockVariant3"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="10"
+                                    FontWeight="Light"
+                                    Margin="10,5,0,0"/>
+                            <TextBlock  x:Name="TextBlockResultsVariant3"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="8"
+                                    FontWeight="Light"
+                                    Margin="10,0,0,0"/>
+                        </StackPanel>
                     </Border>
 
                     <Border 
@@ -480,6 +528,24 @@
                                 <GradientStop Color="#ffc554" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.Background>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock  x:Name="TextBlockVariant4"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="10"
+                                    FontWeight="Light"
+                                    Margin="10,5,0,0"/>
+                            <TextBlock  x:Name="TextBlockResultsVariant4"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="8"
+                                    FontWeight="Light"
+                                    Margin="10,0,0,0"/>
+                        </StackPanel>
                     </Border>
 
                     <Border 
@@ -496,6 +562,24 @@
                                 <GradientStop Color="#ffc554" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.Background>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock  x:Name="TextBlockVariant5"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="10"
+                                    FontWeight="Light"
+                                    Margin="10,5,0,0"/>
+                            <TextBlock  x:Name="TextBlockResultsVariant5"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="8"
+                                    FontWeight="Light"
+                                    Margin="10,0,0,0"/>
+                        </StackPanel>
                     </Border>
 
                     <Border 
@@ -512,6 +596,24 @@
                                 <GradientStop Color="#ffc554" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.Background>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock  x:Name="TextBlockVariant6"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="10"
+                                    FontWeight="Light"
+                                    Margin="10,5,0,0"/>
+                            <TextBlock  x:Name="TextBlockResultsVariant6"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="8"
+                                    FontWeight="Light"
+                                    Margin="10,0,0,0"/>
+                        </StackPanel>
                     </Border>
 
                     <Border 
@@ -528,6 +630,24 @@
                                 <GradientStop Color="#ffc554" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.Background>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock  x:Name="TextBlockVariant7"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="10"
+                                    FontWeight="Light"
+                                    Margin="10,5,0,0"/>
+                            <TextBlock  x:Name="TextBlockResultsVariant7"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="8"
+                                    FontWeight="Light"
+                                    Margin="10,0,0,0"/>
+                        </StackPanel>
                     </Border>
 
                     <Border 
@@ -544,6 +664,24 @@
                                 <GradientStop Color="#ffc554" Offset="1"/>
                             </LinearGradientBrush>
                         </Border.Background>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock  x:Name="TextBlockVariant8"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="10"
+                                    FontWeight="Light"
+                                    Margin="10,5,0,0"/>
+                            <TextBlock  x:Name="TextBlockResultsVariant8"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Left"
+                                    Text=""
+                                    Foreground="White"
+                                    FontSize="8"
+                                    FontWeight="Light"
+                                    Margin="10,0,0,0"/>
+                        </StackPanel>
                     </Border>
 
 

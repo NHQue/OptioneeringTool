@@ -21,9 +21,13 @@ namespace B_GOpt.Classes
 
         public string Material { get; set; }
 
-        public string StructSystem { get; set; }
+        public string DefinedStructSystem { get; set; }
 
         public string Grid { get; set; }
+
+        public double ActXSpac { get; set; }
+
+        public double ActYSpac { get; set; }
 
         public double EmbodiedCO2 { get; set; }
 
@@ -35,15 +39,22 @@ namespace B_GOpt.Classes
 
 
         //Constructor
-        public BuildingVariant(Brep brep, int index, string material, string structSystem, 
-                                double embodiedCO2, double actXSpax, double actYSpax, 
+        public BuildingVariant()
+        {
+
+        }
+
+        public BuildingVariant(Brep brep, int index, string material, string definedstructSystem, 
+                                double embodiedCO2, double actXSpac, double actYSpac, 
                                 double costs, double surfaceArea, double weight)
         {
             Brep = brep;
             Index = index;
             Material = material;
-            StructSystem = structSystem;
-            Grid = String.Format($"{actXSpax} x {actYSpax}"); 
+            DefinedStructSystem = definedstructSystem;
+            ActXSpac = actXSpac*100;
+            ActYSpac = actYSpac*100;
+            Grid = String.Format($"{actXSpac} x {actYSpac}"); 
             EmbodiedCO2 = embodiedCO2;
             Costs = costs;
             SurfaceArea = surfaceArea;
@@ -61,9 +72,22 @@ namespace B_GOpt.Classes
         //----------------------------------------------------------------------------------------------------------
         public override string ToString()
         {
-            return String.Format(   $"Case: {Index}" + System.Environment.NewLine + 
-                                    $"Sytstem : {Material} + {StructSystem}, Grid: {Grid}, EmbodiedCO2: {EmbodiedCO2}," +
-                                    $"Costs: {Costs}; Surface Area:  {SurfaceArea}, Weight: {Weight}");
+            return String.Format($"{Material},{DefinedStructSystem},{ActXSpac},{ActYSpac},{EmbodiedCO2},{Costs},{SurfaceArea},{Weight}");
+
+
+            //return String.Format(   $"Case: {Index}" + System.Environment.NewLine + 
+            //                        $"System : {Material} + {StructSystem}, Grid: {Grid}, EmbodiedCO2: {EmbodiedCO2}," +
+            //                        $"Costs: {Costs}; Surface Area:  {SurfaceArea}, Weight: {Weight}");
         }
+
+        public string ToResult()
+        {
+            return String.Format($"System : {Material} {DefinedStructSystem}, Grid: {ActXSpac/100} x {ActYSpac/100}," + System.Environment.NewLine + 
+                                 $"Embodied Carbon: {EmbodiedCO2}" + $" kg CO" + ("\u2082") + $"e" + $", Costs: {Costs} EUR," + System.Environment.NewLine + 
+                                 $"Surface Area: {SurfaceArea}" + $" m" + ($"\u00B2") + $", Weight: {Weight} t");
+        }
+
+
+
     }
 }

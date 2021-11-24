@@ -502,7 +502,7 @@ namespace B_GOpt.Classes
                     for (int k = 0; k < intCurves.Length; k++)
                     {
                         innerEdgeCurves.Add(intCurves[k]);
-                        doc.Objects.AddCurve(intCurves[k]);
+                        //doc.Objects.AddCurve(intCurves[k]);
                     }
                 }
 

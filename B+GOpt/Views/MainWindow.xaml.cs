@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -50,7 +51,31 @@ namespace B_GOpt.Views
         string structSystem;
 
         public double actXSpac;
-        public double actYSpac; 
+        public double actYSpac;
+
+        private ObservableValue valueEmbodiedCO2Slabs;
+        private ObservableValue valueEmbodiedCO2Col;
+        private ObservableValue valueEmbodiedCO2Beams;
+        private ObservableValue valueEmbodiedCO2Foundations;
+        private ObservableValue valueEmbodiedCO2Cores;
+
+
+        double embodiedCO2Col = 0;
+        double embodiedCO2Slabs = 0;
+        double embodiedCO2Beams = 0;
+        double embodiedCO2Foundations = 0;
+        double embodiedCO2Core = 0;
+
+        double embodiedCO2Total = 0;
+
+        public BuildingVariant buildingVariant = new BuildingVariant();
+
+
+        //Clear textfile 
+        string filePath = @"C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\BuildingVariants.txt";
+
+        
+
 
 
         //Declaration of some lists
@@ -69,14 +94,68 @@ namespace B_GOpt.Views
 
             string projectName = RhinoDoc.ActiveDoc.Name;
 
-            TextBlockProject.Text = "Project: " + projectName.Substring(projectName.Length - 3); 
+            TextBlockProject.Text = "Project: " + projectName.Substring(projectName.Length - 3);
 
-            //DataContext = this;
+
+            File.WriteAllText(filePath, String.Empty);
+
+
+            //Defining the Carbon PieChart
+            //--------------------------------------------------------------------------------------
+            valueEmbodiedCO2Slabs = new ObservableValue(0);
+            valueEmbodiedCO2Col = new ObservableValue(0);
+            valueEmbodiedCO2Beams = new ObservableValue(0);
+            valueEmbodiedCO2Foundations = new ObservableValue(0);
+            valueEmbodiedCO2Cores = new ObservableValue(0);
+
+            SeriesCollection = new SeriesCollection
+                {
+                    new PieSeries
+                    {
+                        Title = "Slabs",
+                        Values = new ChartValues<ObservableValue> { valueEmbodiedCO2Slabs },
+                        DataLabels = true,
+                        Fill = new SolidColorBrush(Colors.DarkSeaGreen),
+                        Foreground = new SolidColorBrush(Colors.Transparent)
+                    },
+                    new PieSeries
+                    {
+                        Title = "Columns",
+                        Values = new ChartValues<ObservableValue> {valueEmbodiedCO2Col},
+                        DataLabels = true,
+                        Fill = new SolidColorBrush(Colors.LightSkyBlue),
+                        Foreground = new SolidColorBrush(Colors.Transparent)
+                    },
+                    new PieSeries
+                    {
+                        Title = "Beams",
+                        Values = new ChartValues<ObservableValue> {valueEmbodiedCO2Beams},
+                        DataLabels = true,
+                        Fill = new SolidColorBrush(Colors.Salmon),
+                        Foreground = new SolidColorBrush(Colors.Transparent)
+                    },
+                    new PieSeries
+                    {
+                        Title = "Foundations",
+                        Values = new ChartValues<ObservableValue> {valueEmbodiedCO2Foundations},
+                        DataLabels = true,
+                        Fill = new SolidColorBrush(Colors.Peru),
+                        Foreground = new SolidColorBrush(Colors.Transparent)
+                    },
+                    new PieSeries
+                    {
+                        Title = "Core",
+                        Values = new ChartValues<ObservableValue> {valueEmbodiedCO2Cores},
+                        DataLabels = true,
+                        Fill = new SolidColorBrush(Colors.DarkKhaki),
+                        Foreground = new SolidColorBrush(Colors.Transparent)
+                    }
+                };
+
+            DataContext = this;
         }
 
         public SeriesCollection SeriesCollection { get; set; }
-
-        public Func<ChartPoint, string> PointLabel { get; set; }
 
         private void PieChart_DataClick(object sender, ChartPoint chartPoint)
         {
@@ -138,7 +217,6 @@ namespace B_GOpt.Views
 
         private void ButtonCompareVariants_Click(object sender, RoutedEventArgs e)
         {
-
             //Open window
             //-------------------------------------------------------------------------------------------------------------
 
@@ -154,7 +232,6 @@ namespace B_GOpt.Views
             WindowInteropHelper wih = new WindowInteropHelper(dialogCompare);
             wih.Owner = Rhino.RhinoApp.MainWindowHandle();
             dialogCompare.Show();
-
         }
 
         private void ButtonCalculate_Click(object sender, RoutedEventArgs e)
@@ -204,7 +281,7 @@ namespace B_GOpt.Views
                 for (int i = 0; i < baseSrfEdges.Count; i++)
                 {
                     baseSrfEdgeCurves.Add(baseSrfEdges[i]);
-                    docform.Objects.AddCurve(baseSrfEdges[i].ToNurbsCurve());
+                    //docform.Objects.AddCurve(baseSrfEdges[i].ToNurbsCurve());
                 }
 
                 Curve[] baseSrfJoinedEdgeCurves = Curve.JoinCurves(baseSrfEdgeCurves);
@@ -270,7 +347,10 @@ namespace B_GOpt.Views
 
 
                 //Predimensioning slabs
+                //-------------------------------------------------------------------------------------------
+
                 double crossSectionSlab;
+
                 if (material == "Concrete")
                 {
                     crossSectionSlab = PreDim.ConcreteSlab(actXSpac, actYSpac);
@@ -280,20 +360,33 @@ namespace B_GOpt.Views
                         slabsSlabs[i].Height = crossSectionSlab;
                     }
 
-                    deadLoadSlab = crossSectionSlab * 25;
+                    double gammaConcrete = 25;               //kN/m3
+                    deadLoadSlab = crossSectionSlab * gammaConcrete;
                 }
+
+                else if (material == "Timber")
+                {
+                    crossSectionSlab = PreDim.TimberSlab(actXSpac, actYSpac);
+
+                    for (int i = 0; i < floorSlabs.Count; i++)
+                    {
+                        slabsSlabs[i].Height = crossSectionSlab;
+                    }
+
+                    double gammaCLT = 5;               //kN/m3
+                    deadLoadSlab = crossSectionSlab * gammaCLT;
+                }
+
                 else
                 {
                     crossSectionSlab = 1;
                 }
 
-                RhinoApp.WriteLine("SlabHeight: " + crossSectionSlab);
+                RhinoApp.WriteLine("SlabHeight: " + crossSectionSlab + " [m]");
 
 
                 //Calculating total load
                 totalLoad = liveLoad + deadLoadSlab + addDeadLoad;
-
-
 
 
                 //Creates the Grid 2D for all slabs
@@ -369,7 +462,7 @@ namespace B_GOpt.Views
                             {
                                 LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
                                 Column col = new Column(lineCurve, i, nStorey, totalLoad, actXSpac, actYSpac, 0);
-                                col.Area = PreDim.ConcreteColumn(col.Load);
+                                col.Area = PreDim.Column(material, col.Load, col.Length);
                                 innerCol.Add(col);
 
                                 innerColumns.Add(innerColumnsIt[j]);
@@ -426,7 +519,7 @@ namespace B_GOpt.Views
                             {
                                 LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
                                 Column col = new Column(lineCurve, i, nStorey, totalLoad, actXSpac, actYSpac, 0);
-                                col.Area = PreDim.ConcreteColumn(col.Load);
+                                col.Area = PreDim.Column(material, col.Load, col.Length);
 
                                 innerCol.Add(col);
 
@@ -565,8 +658,6 @@ namespace B_GOpt.Views
 
 
 
-
-
                 //Creating TextDots with some member data
                 //-----------------------------------------------------------------------------------------------------------------
 
@@ -617,10 +708,66 @@ namespace B_GOpt.Views
                 //------------------------------------------------------------------------------------------
 
                 //Foundations - ground slab 
+                double crossSectionGroundSlab = PreDim.GroundSlab(buildingGeom.BuildingHeight(brep), nStorey);
 
-                double crossSectionGroundSlab = PreDimTest.GroundSlab(buildingGeom.BuildingHeight(brep), nStorey);
+                //Core walls
+                double crossSectionCoreWall = PreDim.CoreWalls();
 
 
+
+
+                //Massing -> Volume in m3
+                //-------------------------------------------------------------------------------------------
+                double innerColMass = 0;
+                double outerColMass = 0;
+                double slabsMass = 0;
+                double foundationMass = 0;
+                double coreMass = 0;
+
+                for (int i = 0; i < innerCol.Count; i++)
+                {
+                    innerColMass = innerColMass + (innerCol[i].Area * innerCol[i].Length); 
+                }
+
+                for (int i = 0; i < outerCol.Count; i++)
+                {
+                    outerColMass = outerColMass  + outerCol[i].Area * outerCol[i].Length;
+                }
+
+                slabsMass = surfaceArea * crossSectionSlab;
+
+                foundationMass = baseSrf.GetArea() * crossSectionGroundSlab;
+
+                double coreArea = 0;
+                for (int i = 0; i < coreBreps.Count; i++)
+                {
+                    double area = coreBreps[i].GetArea();
+                    coreArea = coreArea + area;
+                }
+
+                coreMass = coreArea * crossSectionCoreWall;
+
+                RhinoApp.WriteLine($"CoreArea: {coreArea}, CoreMass: {coreMass}, SlabMass: {slabsMass}, ColumnsMass. {innerColMass + outerColMass}");
+
+
+                //Carbon calculation
+                //------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                valueEmbodiedCO2Col.Value = Math.Round(LCACalculation.CalculateLCA(innerColMass, material) + LCACalculation.CalculateLCA(outerColMass, material), 0);
+                valueEmbodiedCO2Slabs.Value = Math.Round(LCACalculation.CalculateLCA(slabsMass, material), 0);
+                valueEmbodiedCO2Beams.Value = 0;
+                valueEmbodiedCO2Foundations.Value = Math.Round(LCACalculation.CalculateLCA(foundationMass, "Concrete"), 0);
+                valueEmbodiedCO2Cores.Value = Math.Round(LCACalculation.CalculateLCA(coreMass, "Concrete"), 0);
+
+                embodiedCO2Total = valueEmbodiedCO2Slabs.Value + valueEmbodiedCO2Col.Value + valueEmbodiedCO2Beams.Value + 
+                                   valueEmbodiedCO2Foundations.Value + valueEmbodiedCO2Cores.Value;
+
+
+                //Weight calculation
+                //------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                double totalWeight =    (BuildingResults.CalculateWeight(innerColMass, material) + BuildingResults.CalculateWeight(outerColMass, material) +
+                                         BuildingResults.CalculateWeight(slabsMass, material))/10;
 
 
 
@@ -635,114 +782,15 @@ namespace B_GOpt.Views
 
                 TextBlockSurfaceAreaValue.Text = Math.Round(surfaceArea, 0).ToString() + "  m" + ("\u00B2");
                 TextBlockFarValue.Text = Math.Round(baseSrf.GetArea() / surfaceArea, 2).ToString();
-
                 TextBlockClearFloorHeightValue.Text = (actFloorHeight - slabsSlabs[1].Height).ToString() + "  m";
-
-                
-
-
-                //Massing
-                //-------------------------------------------------------------------------------------------
-                double innerColMass = 0;
-                double outerColMass = 0;
-                double slabsMass = 0;
-                double foundationMass = 0;
-                double coreMass = 0;
-
-                for (int i = 0; i < innerCol.Count; i++)
-                {
-                    innerColMass =+ innerCol[i].Area * innerCol[i].Length; 
-                }
-
-                for (int i = 0; i < outerCol.Count; i++)
-                {
-                    outerColMass =+ outerCol[i].Area * outerCol[i].Length;
-                }
-
-                for (int i = 0; i < slabs.Count; i++)
-                {
-                    slabsMass =+slabsSlabs[i].Height * slabs[i].GetArea();
-                }
-
-                foundationMass = baseSrf.GetArea() * crossSectionGroundSlab;
-
-                double coreArea = 0;
-                for (int i = 0; i < coreBreps.Count; i++)
-                {
-                    double area = coreBreps[i].GetArea();
-                    coreArea = coreArea + area;
-                }
-
-                coreMass = coreArea * PreDimTest.CoreWalls();
-
-
-                //Carbon calculation
-                //------------------------------------------------------------------------------------------------------------------------------------------------------
-
-                double embodiedCO2Col = Math.Round(LCACalculation.CalculateLCA(innerColMass, material) + LCACalculation.CalculateLCA(outerColMass, material), 0); 
-                double embodiedCO2Slabs = Math.Round(LCACalculation.CalculateLCA(slabsMass, material), 0);
-                double embodiedCO2Beams = 0;
-                double embodiedCO2Foundations = Math.Round(LCACalculation.CalculateLCA(foundationMass, "Concrete"), 0);
-                double embodiedCO2Core = Math.Round(LCACalculation.CalculateLCA(coreMass, "Concrete"), 0);
-
-                double embodiedCO2Total = embodiedCO2Col + embodiedCO2Slabs + embodiedCO2Beams + embodiedCO2Foundations + embodiedCO2Core;
-
+                TextBlockWeightValue.Text = Math.Round(totalWeight, 0).ToString() + " t";
                 TextBlockEmbodiedCO2Value.Text = embodiedCO2Total.ToString() + "  kg CO" + ("\u2082") + "e";
 
-                double totalWeight =    (BuildingResults.CalculateWeight(innerColMass, material) + BuildingResults.CalculateWeight(outerColMass, material) +
-                                        BuildingResults.CalculateWeight(slabsMass, material))/10;
-
-                TextBlockWeightValue.Text = Math.Round(totalWeight, 0).ToString() + " t";
 
 
-
-                //Defining the Pie Chart
-                //-------------------------------------------------------------------------------------------------------------------------------------------------
-                SeriesCollection = new SeriesCollection
-                {
-                    new PieSeries
-                    {
-                        Title = "Slabs",
-                        Values = new ChartValues<ObservableValue> {new ObservableValue(embodiedCO2Slabs) },
-                        DataLabels = true,
-                        Fill = new SolidColorBrush(Colors.DarkSeaGreen),
-                        Foreground = new SolidColorBrush(Colors.Transparent)
-                    },
-                    new PieSeries
-                    {
-                        Title = "Columns",
-                        Values = new ChartValues<ObservableValue> {new ObservableValue(embodiedCO2Col) },
-                        DataLabels = true,
-                        Fill = new SolidColorBrush(Colors.LightSkyBlue),
-                        Foreground = new SolidColorBrush(Colors.Transparent)
-                    },
-                    new PieSeries
-                    {
-                        Title = "Beams",
-                        Values = new ChartValues<ObservableValue> {new ObservableValue(embodiedCO2Beams) },
-                        DataLabels = true,
-                        Fill = new SolidColorBrush(Colors.Salmon),
-                        Foreground = new SolidColorBrush(Colors.Transparent)
-                    },
-                    new PieSeries
-                    {
-                        Title = "Foundations",
-                        Values = new ChartValues<ObservableValue> {new ObservableValue(embodiedCO2Foundations) },
-                        DataLabels = true,
-                        Fill = new SolidColorBrush(Colors.Peru),
-                        Foreground = new SolidColorBrush(Colors.Transparent)
-                    },
-                    new PieSeries
-                    {
-                        Title = "Core",
-                        Values = new ChartValues<ObservableValue> {new ObservableValue(embodiedCO2Core) },
-                        DataLabels = true,
-                        Fill = new SolidColorBrush(Colors.DarkKhaki),
-                        Foreground = new SolidColorBrush(Colors.Transparent)
-                    }
-                };
-
-                DataContext = this;
+                //Saving variant
+                //------------------------------------------------------------------------------------------------------------------------------------------------------
+                buildingVariant = new BuildingVariant(brep, 0, material, structSystem, embodiedCO2Total, actXSpac, actYSpac, 0, surfaceArea, totalWeight);
             }
         }
 
@@ -752,7 +800,6 @@ namespace B_GOpt.Views
             ObjRef objRef = MyFunctions.SelectBuildingGeometry(brep);
 
             brep = objRef.Brep();
-
             ids.Add(objRef.ObjectId);
         }
 
@@ -791,8 +838,40 @@ namespace B_GOpt.Views
         private void ButtonSaveVariant_Click(object sender, RoutedEventArgs e)
         {
             BuildingVariant variant = new BuildingVariant(brep, 1, material, "Plate", 1000000, actXSpac, actYSpac, 51000000, surfaceArea, 34000000);
+
+            variant.DefinedStructSystem = MyFunctions.EvaluateSystem(material, structSystem);
+            
             variants.Add(variant);
 
+
+            //Writing in Textfile
+            //-----------------------------------------------------------------------------------------------------------------------------------------
+            filePath = @"C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\BuildingVariants.txt";
+
+            List<string> lines = new List<string>();
+
+            lines = File.ReadAllLines(filePath).ToList();
+
+            string variantInfo = variant.ToString();
+
+            lines.Add(variantInfo);
+
+            File.WriteAllLines(filePath, lines);
+
+            RhinoApp.WriteLine(variantInfo);
+
+
+
+            //Reset all variables for the next variant
+            valueEmbodiedCO2Slabs.Value = 0;
+            valueEmbodiedCO2Col.Value = 0;
+            valueEmbodiedCO2Beams.Value = 0;
+            valueEmbodiedCO2Foundations.Value = 0;
+            valueEmbodiedCO2Cores.Value = 0;
+
+            embodiedCO2Total = 0;
+            surfaceArea = 0;
+            far = 0;
         }
 
 
@@ -802,6 +881,9 @@ namespace B_GOpt.Views
             material = "Steel";
             string infoMat = String.Format($"Selected {material} as structural material");
             RhinoApp.WriteLine(infoMat);
+
+            SliderXSpac.Maximum = 8.1;
+            SliderYSpac.Maximum = 8.1;
 
             RadioButtonPlateSystem.Content = "Slim Floor";
             RadioButtonBeamSystem.Content = "Composite Beams"; 
@@ -813,6 +895,9 @@ namespace B_GOpt.Views
             string infoMat = String.Format($"Selected {material} as structural material");
             RhinoApp.WriteLine(infoMat);
 
+            SliderXSpac.Maximum = 8.1;
+            SliderYSpac.Maximum = 8.1;
+
             RadioButtonPlateSystem.Content = "Flat Slab";
             RadioButtonBeamSystem.Content = "Precast T-Beams";
         }
@@ -823,6 +908,9 @@ namespace B_GOpt.Views
             string infoMat = String.Format($"Selected {material} as structural material");
             RhinoApp.WriteLine(infoMat);
 
+            SliderXSpac.Maximum = 6.9;
+            SliderYSpac.Maximum = 6.9;
+
             RadioButtonPlateSystem.Content = "CLT Slab";
             RadioButtonBeamSystem.Content = "Timber Joists";
         }
@@ -832,6 +920,9 @@ namespace B_GOpt.Views
             material = "Composite";
             string infoMat = String.Format($"Selected {material} as structural material");
             RhinoApp.WriteLine(infoMat);
+
+            SliderXSpac.Maximum = 8.1;
+            SliderYSpac.Maximum = 8.1;
 
             RadioButtonPlateSystem.Content = "HBV Slab";
             RadioButtonBeamSystem.Content = "CLT on Steelframe";
@@ -866,12 +957,22 @@ namespace B_GOpt.Views
             TextBlockBuildingProps.Text = "";
             TextBlockBuildingPropsTitle.Text = "";
             TextBlockClearFloorHeightValue.Text = "-";
-            TextBlockCostsValue.Text = "";
-            TextBlockEmbodiedCO2Value.Text = "";
-            TextBlockFarValue.Text = "";
-            TextBlockProject.Text = "";
-            TextBlockSurfaceAreaValue.Text = "";
-            TextBlockWeightValue.Text = "";
+            TextBlockCostsValue.Text = "-";
+            TextBlockEmbodiedCO2Value.Text = "-";
+            TextBlockFarValue.Text = "-";
+            TextBlockSurfaceAreaValue.Text = "-";
+            TextBlockWeightValue.Text = "-";
+
+
+            valueEmbodiedCO2Slabs.Value = 0;
+            valueEmbodiedCO2Col.Value = 0;
+            valueEmbodiedCO2Beams.Value = 0;
+            valueEmbodiedCO2Foundations.Value = 0;
+            valueEmbodiedCO2Cores.Value = 0;
+
+            embodiedCO2Total = 0;
+            surfaceArea = 0;
+            far = 0;
 
 
             //Clear all layers and lists
@@ -882,7 +983,7 @@ namespace B_GOpt.Views
             }
 
 
-            //Show selected objects (building geometry and cores) tback to normal
+            //Show selected objects (building geometry and cores) back to normal
             //-----------------------------------------------------------------------------------------------------------------
 
             for (int i = 0; i < ids.Count; i++)
@@ -891,7 +992,7 @@ namespace B_GOpt.Views
             }
 
 
-            //Show selected objects (building geometry and cores) tback to normal
+            //Show selected objects (building geometry and cores) back to normal
             //-----------------------------------------------------------------------------------------------------------------
 
             Rhino.Display.DisplayModeDescription wireframe = Rhino.Display.DisplayModeDescription.FindByName("Wireframe");

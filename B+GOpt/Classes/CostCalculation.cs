@@ -13,13 +13,14 @@ namespace B_GOpt.Classes
         //CHECK UNITS!!!!!!!!!!!!!!
         //------------------------------------------------------------------------
         //Steel
-        double reinforcBars = 1.99;             //EUR per m3
-        double hotRolledSect = 1.55;
-        double platedSect = 2.46;
-        double galvProfiledSheet = 2.76;
+        double reinforcBars = 1.55;             //EUR per kg
+        double steel_S355 = 2.8;                //EUR per kg
+        double platedSect;
+        double galvProfiledSheet;
 
         //Concrete
-        double C30_37 = 100;                      //EUR per m3
+        double C30_37 = 170;                      //EUR per m3
+        double formwork = 42;                     //EUR per m2
         //double C30_37_CEMI;
         //double C30_37_CEMII_A_V;
         //double C30_37_CEMII_B_V;
@@ -29,10 +30,10 @@ namespace B_GOpt.Classes
         //double C30_37_CEMIII_B;
 
         //Timber 
-        double softwood = 110.46;                 //EUR per m3
-        double clt = 206.96;
-        double glulam = 225.28;
-        double plywood = 367.74;
+        double softwood;                            //EUR per m3
+        double clt = 600;                           //EUR per m3
+        double glulam = 800;
+        double plywood;
 
 
 

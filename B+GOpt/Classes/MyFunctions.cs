@@ -47,7 +47,7 @@ namespace B_GOpt
             if (brep != null)
             {
                 RhinoApp.WriteLine("Building geometry successfully selected");
-                RhinoApp.WriteLine($"ObjRef Id ofBuilding geometry: {objRef.ObjectId}");
+                //RhinoApp.WriteLine($"ObjRef Id of Building geometry: {objRef.ObjectId}");
                 return objRef;
                 //return null;
             }
@@ -864,6 +864,42 @@ namespace B_GOpt
             //buildingMeshWPF.TriangleIndices = myTriangleIndicesCollection;
             //buildingMeshWPF.Positions = myPositionCollection;
             //buildingMeshWPF.Normals = myNormalCollection;
+        }
+
+        public static string EvaluateSystem(string material, string structSystem)
+        {
+            string definedStructSystem = "Not defined";
+
+            if (material == "Concrete")
+            {
+                if (structSystem == "Beam")
+                    definedStructSystem = "Precast T-Beams";
+                else
+                    definedStructSystem = "Flat Slab";
+            }
+            else if (material == "Steel")
+            {
+                if (structSystem == "Beam")
+                    definedStructSystem = "Composite Beams";
+                else
+                    definedStructSystem = "Slim Floor";
+            }
+            else if (material == "Timber")
+            {
+                if (structSystem == "Beam")
+                    definedStructSystem = "Timber Joists";
+                else
+                    definedStructSystem = "CLT Slab";
+            }
+            else if (material == "Composite")
+            {
+                if (structSystem == "Beam")
+                    definedStructSystem = "CLT on Steelframe";
+                else
+                    definedStructSystem = "HBV Slab";
+            }
+
+            return definedStructSystem;
         }
     }
 }
