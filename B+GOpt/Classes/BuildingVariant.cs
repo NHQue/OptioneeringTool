@@ -38,15 +38,14 @@ namespace B_GOpt.Classes
         public double Weight { get; set; }
 
 
-        //Constructor
-        public BuildingVariant()
+        //Constructors
+        public BuildingVariant()        //Default constructor
         {
 
         }
 
-        public BuildingVariant(Brep brep, int index, string material, string definedstructSystem, 
-                                double embodiedCO2, double actXSpac, double actYSpac, 
-                                double costs, double surfaceArea, double weight)
+        public BuildingVariant(Brep brep, int index, string material, string definedstructSystem, double embodiedCO2,
+                               double actXSpac, double actYSpac, double costs, double surfaceArea, double weight)
         {
             Brep = brep;
             Index = index;
@@ -73,21 +72,13 @@ namespace B_GOpt.Classes
         public override string ToString()
         {
             return String.Format($"{Material},{DefinedStructSystem},{ActXSpac},{ActYSpac},{EmbodiedCO2},{Costs},{SurfaceArea},{Weight}");
-
-
-            //return String.Format(   $"Case: {Index}" + System.Environment.NewLine + 
-            //                        $"System : {Material} + {StructSystem}, Grid: {Grid}, EmbodiedCO2: {EmbodiedCO2}," +
-            //                        $"Costs: {Costs}; Surface Area:  {SurfaceArea}, Weight: {Weight}");
         }
 
         public string ToResult()
         {
-            return String.Format($"System : {Material} {DefinedStructSystem}, Grid: {ActXSpac/100} x {ActYSpac/100}," + System.Environment.NewLine + 
+            return String.Format($"Material: {Material}, System: {DefinedStructSystem}, Grid: {ActXSpac/100} x {ActYSpac/100}," + System.Environment.NewLine + 
                                  $"Embodied Carbon: {EmbodiedCO2}" + $" kg CO" + ("\u2082") + $"e" + $", Costs: {Costs} EUR," + System.Environment.NewLine + 
                                  $"Surface Area: {SurfaceArea}" + $" m" + ($"\u00B2") + $", Weight: {Weight} t");
         }
-
-
-
     }
 }

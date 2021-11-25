@@ -345,10 +345,11 @@
                              VerticalAlignment="Bottom"
                              FontSize="14"
                              Style="{StaticResource GearButtonTheme}"
-                             Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\gear.png"
                              Margin="18,0,0,25"
-                             Click="RadioButtonInstructions_Click"
-                        />
+                             Click="RadioButtonInstructions_Click">
+                    <BitmapImage UriSource="pack://application:,,,/B+GOpt;component/EmbeddedResources/Images/gear.png"/>
+                </Button>
+                        
 
             </Border>
 
@@ -387,8 +388,9 @@
                         HorizontalAlignment="Right"
                         Height="40"
                         Width="40"
+                        Background="White"
                         Opacity=".9">
-                    <Image Source="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\bg.jpg"/>
+                    <Image Source="../EmbeddedResources/Images/B+G.PNG" Margin="4,4,4,4"/>
                     <Border.Clip>
                         <RectangleGeometry RadiusX="10"
                                            RadiusY="10"
@@ -704,8 +706,25 @@
                 <Grid Height="200"
                       Width="330"
                       HorizontalAlignment="Right"
-                          VerticalAlignment="Top"
-                          Margin="0,0,0,0">
+                      VerticalAlignment="Top"
+                      Margin="0,0,0,0">
+
+                    <Border BorderBrush="Black"
+                            VerticalAlignment="Top"
+                            HorizontalAlignment="Right"
+                            BorderThickness="1"
+                            Margin="60,0,0,0"
+                            Height="155"
+                            Width="250">
+                        <Image
+                           Source="../EmbeddedResources/Images/Building.PNG"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Top"
+                           Margin="0,0,0,0">
+                        </Image>
+                    </Border>
+
+                    
 
 
                     <!--<Viewport3D
@@ -733,23 +752,23 @@
                     </Viewport3D>-->
 
 
-                    <Viewbox>
+                    <!--<Viewbox>
                         <Canvas Width="321" Height="201">
 
-                            <!-- The Viewport3D provides a rendering surface for 3-D visual content. -->
+                            --><!-- The Viewport3D provides a rendering surface for 3-D visual content. --><!--
                             <Viewport3D ClipToBounds="True" Width="150" Height="150" Canvas.Left="98" Canvas.Top="21">
 
-                                <!-- Defines the camera used to view the 3D object. -->
+                                --><!-- Defines the camera used to view the 3D object. --><!--
                                 <Viewport3D.Camera>
                                     <PerspectiveCamera Position="0,0,2" LookDirection="0,0,-1" FieldOfView="60" />
                                 </Viewport3D.Camera>
 
-                                <!-- The ModelVisual3D children contain the 3D models -->
+                                --><!-- The ModelVisual3D children contain the 3D models --><!--
                                 <Viewport3D.Children>
 
-                                    <!-- This ModelVisual3D defines the light cast in the scene. Without light, the 3D 
+                                    --><!-- This ModelVisual3D defines the light cast in the scene. Without light, the 3D 
                  object cannot be seen. Also, the direction of the lights affect shadowing. If desired,
-                 you can create multiple lights with different colors that shine from different directions. -->
+                 you can create multiple lights with different colors that shine from different directions. --><!--
                                     <ModelVisual3D>
                                         <ModelVisual3D.Content>
                                             <DirectionalLight Color="#FFFFFF" Direction="-0.612372,-0.5,-0.612372" />
@@ -759,7 +778,7 @@
                                         <ModelVisual3D.Content>
                                             <GeometryModel3D>
 
-                                                <!-- The geometry specifies the shape of the 3D plane. In this sample, a flat sheet is created. -->
+                                                --><!-- The geometry specifies the shape of the 3D plane. In this sample, a flat sheet is created. --><!--
                                                 <GeometryModel3D.Geometry>
                                                     <MeshGeometry3D
                      TriangleIndices="0,1,2 3,4,5 "
@@ -768,8 +787,8 @@
                      Positions="-0.5,-0.5,0.5 0.5,-0.5,0.5 0.5,0.5,0.5 0.5,0.5,0.5 -0.5,0.5,0.5 -0.5,-0.5,0.5 " />
                                                 </GeometryModel3D.Geometry>
 
-                                                <!-- The material specifies the material applied to the 3D object. In this sample a linear gradient 
-                       covers the surface of the 3D object.-->
+                                                --><!-- The material specifies the material applied to the 3D object. In this sample a linear gradient 
+                       covers the surface of the 3D object.--><!--
                                                 <GeometryModel3D.Material>
                                                     <MaterialGroup>
                                                         <DiffuseMaterial>
@@ -787,8 +806,8 @@
                                                     </MaterialGroup>
                                                 </GeometryModel3D.Material>
 
-                                                <!-- Apply a transform to the object. In this sample, a rotation transform is applied, rendering the 
-                       3D object rotated. -->
+                                                --><!-- Apply a transform to the object. In this sample, a rotation transform is applied, rendering the 
+                       3D object rotated. --><!--
                                                 <GeometryModel3D.Transform>
                                                     <RotateTransform3D>
                                                         <RotateTransform3D.Rotation>
@@ -803,16 +822,11 @@
 
                             </Viewport3D>
                         </Canvas>
-                    </Viewbox>
+                    </Viewbox>-->
 
                 </Grid>
 
             </Grid>
-
-
-
-
-
 
 
 
@@ -828,14 +842,51 @@
 
                 <Grid Margin="0,0,0,0">
 
-                    <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom">
+                    <lvc:CartesianChart Grid.Row="1" DataTooltip="{x:Null}">
+                        <lvc:CartesianChart.Series>
+                            <lvc:HeatSeries Values="{Binding Values}" DataLabels="True">
+
+                                <!--
+                    The GradientStopCollection is optional to define a custom gradient
+                    If this property is not specified, LiveCharts will set a gradient
+                    -->
+
+                                <lvc:HeatSeries.GradientStopCollection>
+                                    <GradientStop Offset="0" Color="DarkSlateGray"></GradientStop>
+                                   
+                                    <GradientStop Offset=".2" Color="#992F4F4F"></GradientStop>
+                                    
+                                    <GradientStop Offset=".4" Color="DarkSeaGreen"></GradientStop>
+                                    
+                                    <GradientStop Offset=".6" Color="#998FBC8F"></GradientStop>
+                                    
+                                    <GradientStop Offset=".8" Color="#CD5C5C"></GradientStop>
+                                    
+                                    <GradientStop Offset="1" Color="Firebrick"></GradientStop>
+                                </lvc:HeatSeries.GradientStopCollection>
+                            </lvc:HeatSeries>
+                        </lvc:CartesianChart.Series>
+                        <lvc:CartesianChart.AxisX >
+                            <lvc:Axis Labels="{Binding variants}" LabelsRotation="-15">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="1"></lvc:Separator>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Labels="{Binding performanceIndicators}"></lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart>
+
+
+                    <!--<lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom">
                         <lvc:CartesianChart.AxisY>
                             <lvc:Axis Title="Sales" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
                         </lvc:CartesianChart.AxisY>
                         <lvc:CartesianChart.AxisX>
                             <lvc:Axis Title="Month" Labels="{Binding Labels}"></lvc:Axis>
                         </lvc:CartesianChart.AxisX>
-                    </lvc:CartesianChart>
+                    </lvc:CartesianChart>-->
 
                 </Grid>
 

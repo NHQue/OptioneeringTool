@@ -13,7 +13,6 @@ using Rhino.DocObjects;
 using System.Runtime.InteropServices;
 using Rhino.Geometry.Collections;
 using System.Windows.Forms;
-using ComponentFactory.Krypton.Toolkit;
 using Rhino.Geometry.Intersect;
 using B_GOpt.Classes;
 using System.Windows.Media.Media3D;

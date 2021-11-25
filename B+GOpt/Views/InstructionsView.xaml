@@ -334,8 +334,9 @@
                         HorizontalAlignment="Right"
                         Height="40"
                         Width="40"
+                        Background="White"
                         Opacity=".9">
-                    <Image Source="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\bg.jpg"/>
+                    <Image Source="../EmbeddedResources/Images/B+G.PNG" Margin="4,4,4,4"/>
                     <Border.Clip>
                         <RectangleGeometry RadiusX="10"
                                            RadiusY="10"

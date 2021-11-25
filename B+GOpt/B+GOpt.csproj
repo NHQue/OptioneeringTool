@@ -32,21 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ComponentFactory.Krypton.Docking">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Krypton-master\Bin\ComponentFactory.Krypton.Docking.dll</HintPath>
-    </Reference>
-    <Reference Include="ComponentFactory.Krypton.Navigator">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Krypton-master\Bin\ComponentFactory.Krypton.Navigator.dll</HintPath>
-    </Reference>
-    <Reference Include="ComponentFactory.Krypton.Ribbon">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Krypton-master\Bin\ComponentFactory.Krypton.Ribbon.dll</HintPath>
-    </Reference>
-    <Reference Include="ComponentFactory.Krypton.Toolkit">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Krypton-master\Bin\ComponentFactory.Krypton.Toolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="ComponentFactory.Krypton.Workspace">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\Program Files (x86)\Krypton-master\Bin\ComponentFactory.Krypton.Workspace.dll</HintPath>
-    </Reference>
     <Reference Include="Dlubal.RFEM5, Version=5.7.0.0, Culture=neutral, PublicKeyToken=f22b2f92593d105e, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -200,19 +185,23 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="EmbeddedResources\Images\antwerpen.jpg" />
-    <Content Include="EmbeddedResources\Images\antwerpen1.PNG" />
+    <Content Include="EmbeddedResources\Images\antwerpen.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="EmbeddedResources\Images\antwerpen1.PNG" />
     <Content Include="EmbeddedResources\Images\antwerpen2.PNG" />
-    <Content Include="EmbeddedResources\Images\bg.jpg" />
+    <Resource Include="EmbeddedResources\Images\bg.jpg" />
+    <Resource Include="EmbeddedResources\Images\B+G.PNG" />
     <Content Include="EmbeddedResources\Images\bollingergrohmann.jpg" />
-    <Content Include="EmbeddedResources\Images\composite.png" />
-    <Content Include="EmbeddedResources\Images\concrete.png" />
+    <Resource Include="EmbeddedResources\Images\composite.png" />
+    <Resource Include="EmbeddedResources\Images\Building.PNG" />
     <Content Include="EmbeddedResources\Images\db.jpg" />
     <Content Include="EmbeddedResources\Images\gallery.jpg" />
-    <Content Include="EmbeddedResources\Images\gear.png" />
-    <Content Include="EmbeddedResources\Images\steel.png" />
+    <Resource Include="EmbeddedResources\Images\gear.png" />
+    <Resource Include="EmbeddedResources\Images\steel.png" />
+    <Resource Include="EmbeddedResources\Images\rc.png" />
     <Content Include="EmbeddedResources\Images\timber.png" />
-    <Content Include="EmbeddedResources\Images\timber1.png" />
+    <Resource Include="EmbeddedResources\Images\timber1.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

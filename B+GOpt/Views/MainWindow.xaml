@@ -1,4 +1,4 @@
-﻿<Window
+﻿    <Window
   x:Class="B_GOpt.Views.MainWindow"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -22,12 +22,14 @@
   FontFamily="/Fonts/#Poppins-Regular" 
   FontWeight="Light"
   >
-
+    
     <!--<Window.DataContext>
         <viewModel:MainViewModel/>
     </Window.DataContext>-->
 
     <Window.Resources>
+
+        
 
         <BooleanToVisibilityConverter x:Key="b2v" />
 
@@ -140,8 +142,42 @@
                         <ControlTemplate TargetType="RadioButton">
                             <Grid   VerticalAlignment="Stretch"
                                     HorizontalAlignment="Stretch"
-                                    Background="{TemplateBinding Background}"
-                                    >
+                                    Background="{TemplateBinding Background}">
+                                <Border>
+                                    <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                </Border>
+
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Opacity" Value=".3"/>
+                <Setter Property="BorderThickness" Value="0"/>
+            </Style.Setters>
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Opacity" Value=".8"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="True">
+                    <Setter Property="Opacity" Value=".6"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!--MaterialButtonTheme-->
+        <Style BasedOn="{StaticResource {x:Type ToggleButton}}"
+           TargetType="{x:Type RadioButton}"
+           x:Key="SteelButtonTheme">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RadioButton">
+                            <Grid   VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"
+                                    Background="{TemplateBinding Background}">
                                 <Border>
                                     <Image Source="{Binding Path=Content, RelativeSource={RelativeSource TemplatedParent}}"/>
                                 </Border>
@@ -416,7 +452,8 @@
                 </Border.Background>
 
                 <StackPanel Orientation="Vertical">
-                    <RadioButton
+
+                    <!--<RadioButton
                              x:Name="RadioButtonSteelMat"
                              Height="30" Width="30"
                              Foreground="White"
@@ -425,21 +462,35 @@
                              Style="{StaticResource MaterialButtonTheme}"
                              Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\steel.png"
                              IsChecked="False"
-                             Margin="10,200,0,0" Checked="RadioButtonSteelMat_Checked"
-                    />
+                             Margin="10,200,0,0" 
+                             Checked="RadioButtonSteelMat_Checked"
+                            />-->
 
-                    <RadioButton
-                             x:Name="RadioButtonConcreteMat"
+                    <RadioButton x:Name="RadioButtonSteelMat"
                              Height="30" Width="30"
                              Foreground="White"
                              HorizontalAlignment="Left"
                              FontSize="14"
-                             Style="{StaticResource MaterialButtonTheme}"
-                             Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\concrete.png"
                              IsChecked="False"
-                             Margin="10,30,0,0" 
-                             Checked="RadioButtonConcreteMat_Checked"
-                    />
+                             Margin="10,200,0,0" 
+                             Checked="RadioButtonSteelMat_Checked"
+                             Style="{StaticResource MaterialButtonTheme}">
+                        <BitmapImage UriSource="pack://application:,,,/B+GOpt;component/EmbeddedResources/Images/steel.png"/>
+                    </RadioButton>
+
+                    <RadioButton
+                             x:Name="RadioButtonConcreteMat"
+                             Height="33" Width="33"
+                             Foreground="White"
+                             HorizontalAlignment="Left"
+                             FontSize="14"
+                             Style="{StaticResource MaterialButtonTheme}"
+                             IsChecked="False"
+                             Margin="8,30,0,0" 
+                             Checked="RadioButtonConcreteMat_Checked">
+                        <BitmapImage UriSource="pack://application:,,,/B+GOpt;component/EmbeddedResources/Images/rc.png"/>
+                    </RadioButton>
+
 
                     <RadioButton
                              x:Name="RadioButtonTimberMat"
@@ -448,11 +499,12 @@
                              HorizontalAlignment="Left"
                              FontSize="14"
                              Style="{StaticResource MaterialButtonTheme}"
-                             Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\timber1.png"
                              IsChecked="False"
                              Margin="8,30,0,0" 
-                             Checked="RadioButtonTimberMat_Checked"
-                    />
+                             Checked="RadioButtonTimberMat_Checked">
+                        <BitmapImage UriSource="pack://application:,,,/B+GOpt;component/EmbeddedResources/Images/timber1.png"/>
+                    </RadioButton>
+
 
                     <RadioButton
                              x:Name="RadioButtonCompositeMat"
@@ -461,11 +513,11 @@
                              HorizontalAlignment="Left"
                              FontSize="14"
                              Style="{StaticResource MaterialButtonTheme}"
-                             Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\composite.png"
-                             IsChecked="False"
                              Margin="10,27,0,0" 
-                             Checked="RadioButtonCompositeMat_Checked"
-                    />
+                             Checked="RadioButtonCompositeMat_Checked">
+                        <BitmapImage UriSource="pack://application:,,,/B+GOpt;component/EmbeddedResources/Images/composite.png"/>
+                    </RadioButton>
+
 
                     <Button
                              Height="15" Width="15"
@@ -474,10 +526,10 @@
                              VerticalAlignment="Bottom"
                              FontSize="14"
                              Style="{StaticResource GearButtonTheme}"
-                             Content="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\gear.png"
                              Margin="18,170,0,0"
-                             Click="RadioButtonInstructions_Click"
-                    />
+                             Click="RadioButtonInstructions_Click">
+                        <BitmapImage UriSource="pack://application:,,,/B+GOpt;component/EmbeddedResources/Images/gear.png"/>
+                    </Button>
 
 
                 </StackPanel>
@@ -520,8 +572,9 @@
                         HorizontalAlignment="Right"
                         Height="40"
                         Width="40"
+                        Background="White"
                         Opacity=".9">
-                    <Image Source="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\bg.jpg"/>
+                    <Image Source="../EmbeddedResources/Images/B+G.PNG" Margin="4,4,4,4"/>
                     <Border.Clip>
                         <RectangleGeometry RadiusX="10"
                                            RadiusY="10"
@@ -994,7 +1047,7 @@
                                            Rect="0,0,280,220"/>
                 </Border.Clip>
 
-                <Image Source="C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\Images\antwerpen1.png"
+                <Image Source="../EmbeddedResources/Images/antwerpen1.PNG"
                        Margin="-40,-32,-39,-0.2"
                        Opacity="0.8"/>
 

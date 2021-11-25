@@ -16,6 +16,8 @@ using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using B_GOpt.Classes;
+using LiveCharts;
+using LiveCharts.Defaults;
 using Microsoft.Win32;
 using Rhino;
 
@@ -26,6 +28,14 @@ namespace B_GOpt.Views
     /// </summary>
     public partial class CompareVariantsView : Window
     {
+
+        public ChartValues<HeatPoint> Values { get; set; }
+        public string[] performanceIndicators { get; set; }
+        public string[] variants { get; set; }
+
+        readonly string fileName = "BuildingVariants.txt";
+
+
         public CompareVariantsView()
         {
             InitializeComponent();
@@ -38,11 +48,11 @@ namespace B_GOpt.Views
 
             //Writing in Textfile
             //-----------------------------------------------------------------------------------------------------------------------------------------
-            string filePath = @"C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\BuildingVariants.txt";
 
+            string filePath = System.IO.Path.Combine(Environment.CurrentDirectory, fileName);
             List<string> lines = new List<string>();
-
             lines = File.ReadAllLines(filePath).ToList();
+
 
             List<BuildingVariant> buildingVariants = new List<BuildingVariant>();
 
@@ -64,64 +74,133 @@ namespace B_GOpt.Views
             }
 
 
-
+            //Set the eight textblocks for the building variants
+            #region Variant Textblock region
             if (buildingVariants.Count > 0)
             {
                 TextBlockVariant1.Text = "Variant 1";
                 TextBlockResultsVariant1.Text = buildingVariants[0].ToResult();
             }
-
-
             if (buildingVariants.Count > 1)
             {
                 TextBlockVariant2.Text = "Variant 2";
                 TextBlockResultsVariant2.Text = buildingVariants[1].ToResult();
             }
-
             if (buildingVariants.Count > 2)
             {
                 TextBlockVariant3.Text = "Variant 3";
                 TextBlockResultsVariant3.Text = buildingVariants[2].ToResult();
             }
-
             if (buildingVariants.Count > 3)
             {
                 TextBlockVariant4.Text = "Variant 4";
                 TextBlockResultsVariant4.Text = buildingVariants[3].ToResult();
             }
-
             if (buildingVariants.Count > 4)
             {
                 TextBlockVariant5.Text = "Variant 5";
                 TextBlockResultsVariant5.Text = buildingVariants[4].ToResult();
             }
-
             if (buildingVariants.Count > 5)
             {
                 TextBlockVariant6.Text = "Variant 6";
                 TextBlockResultsVariant6.Text = buildingVariants[5].ToResult();
             }
-
             if (buildingVariants.Count > 6)
             {
                 TextBlockVariant7.Text = "Variant 7";
                 TextBlockResultsVariant7.Text = buildingVariants[6].ToResult();
             }
-
             if (buildingVariants.Count > 7)
             {
                 TextBlockVariant8.Text = "Variant 8";
                 TextBlockResultsVariant8.Text = buildingVariants[7].ToResult();
             }
+            #endregion
 
 
 
+            //Creating the Heat Map
+            //-----------------------------------------------------------------------------------------------------------------
 
+            Random r = new Random();
 
+            Values = new ChartValues<HeatPoint>
+            {
+                //X means building variant
+                //Y is the performance
+ 
+                //"Variant 1"
+                new HeatPoint(0, 0, r.Next(0, 10)),
+                new HeatPoint(0, 1, r.Next(0, 10)),
+                new HeatPoint(0, 2, r.Next(0, 10)),
+                new HeatPoint(0, 3, r.Next(0, 10)),
+ 
+                //"Variant 2"
+                new HeatPoint(1, 0, r.Next(0, 10)),
+                new HeatPoint(1, 1, r.Next(0, 10)),
+                new HeatPoint(1, 2, r.Next(0, 10)),
+                new HeatPoint(1, 3, r.Next(0, 10)),
+ 
+                //"Variant 3"
+                new HeatPoint(2, 0, r.Next(0, 10)),
+                new HeatPoint(2, 1, r.Next(0, 10)),
+                new HeatPoint(2, 2, r.Next(0, 10)),
+                new HeatPoint(2, 3, r.Next(0, 10)),
+ 
+                //"Variant 4"
+                new HeatPoint(3, 0, r.Next(0, 10)),
+                new HeatPoint(3, 1, r.Next(0, 10)),
+                new HeatPoint(3, 2, r.Next(0, 10)),
+                new HeatPoint(3, 3, r.Next(0, 10)),
+ 
+                //"Variant 5"
+                new HeatPoint(4, 0, r.Next(0, 10)),
+                new HeatPoint(4, 1, r.Next(0, 10)),
+                new HeatPoint(4, 2, r.Next(0, 10)),
+                new HeatPoint(4, 3, r.Next(0, 10)),
 
+                //"Variant 6"
+                new HeatPoint(5, 0, r.Next(0, 10)),
+                new HeatPoint(5, 1, r.Next(0, 10)),
+                new HeatPoint(5, 2, r.Next(0, 10)),
+                new HeatPoint(5, 3, r.Next(0, 10)),
 
+                //"Variant 7"
+                new HeatPoint(6, 0, r.Next(0, 10)),
+                new HeatPoint(6, 1, r.Next(0, 10)),
+                new HeatPoint(6, 2, r.Next(0, 10)),
+                new HeatPoint(6, 3, r.Next(0, 10)),
 
+                //"Variant 8"
+                new HeatPoint(7, 0, r.Next(0, 10)),
+                new HeatPoint(7, 1, r.Next(0, 10)),
+                new HeatPoint(7, 2, r.Next(0, 10)),
+                new HeatPoint(7, 3, r.Next(0, 10)),
+            };
 
+            performanceIndicators = new[]
+            {
+
+                "Surface Area",
+                "Disassembly options",
+                "Costs",
+                "Embodied Carbon"
+            };
+
+            variants = new[]
+            {
+                "Variant 1",
+                "Variant 2",
+                "Variant 3",
+                "Variant 4",
+                "Variant 5",
+                "Variant 6",
+                "Variant 7",
+                "Variant 8"
+            };
+
+            DataContext = this;
         }
         
 

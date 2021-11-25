@@ -70,12 +70,7 @@ namespace B_GOpt.Views
 
         public BuildingVariant buildingVariant = new BuildingVariant();
 
-
-        //Clear textfile 
-        string filePath = @"C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\BuildingVariants.txt";
-
-        
-
+        readonly string fileName = "BuildingVariants.txt";
 
 
         //Declaration of some lists
@@ -92,11 +87,12 @@ namespace B_GOpt.Views
 
             docform = doc;
 
+            //Prompt project name
             string projectName = RhinoDoc.ActiveDoc.Name;
-
             TextBlockProject.Text = "Project: " + projectName.Substring(projectName.Length - 3);
 
-
+            //Clear textfile
+            string filePath = System.IO.Path.Combine(Environment.CurrentDirectory, fileName);
             File.WriteAllText(filePath, String.Empty);
 
 
@@ -568,6 +564,7 @@ namespace B_GOpt.Views
                 //Adds the elements to the Rhino Document
                 //--------------------------------------------------------------------------------------
 
+                #region Adding Region
                 Layer layerXBeams = MyFunctions.SetLayer(docform, "XBeams", System.Drawing.Color.Salmon);
                 layers.Add(layerXBeams);
 
@@ -645,6 +642,9 @@ namespace B_GOpt.Views
                 //{
                 //    docform.Objects.AddCurve(beamsInYDir[i].ToNurbsCurve());
                 //}
+                #endregion
+
+
 
 
 
@@ -838,28 +838,21 @@ namespace B_GOpt.Views
         private void ButtonSaveVariant_Click(object sender, RoutedEventArgs e)
         {
             BuildingVariant variant = new BuildingVariant(brep, 1, material, "Plate", 1000000, actXSpac, actYSpac, 51000000, surfaceArea, 34000000);
-
             variant.DefinedStructSystem = MyFunctions.EvaluateSystem(material, structSystem);
-            
             variants.Add(variant);
 
 
             //Writing in Textfile
             //-----------------------------------------------------------------------------------------------------------------------------------------
-            filePath = @"C:\Users\Niklas\Desktop\Studium\Master\M4\Thesis\Tool\OptioneeringTool\OptioneeringTool\B+GOpt\EmbeddedResources\BuildingVariants.txt";
+            string filePath = System.IO.Path.Combine(Environment.CurrentDirectory, fileName);
 
             List<string> lines = new List<string>();
-
             lines = File.ReadAllLines(filePath).ToList();
-
             string variantInfo = variant.ToString();
-
             lines.Add(variantInfo);
-
             File.WriteAllLines(filePath, lines);
 
-            RhinoApp.WriteLine(variantInfo);
-
+            //RhinoApp.WriteLine(variantInfo);
 
 
             //Reset all variables for the next variant
@@ -947,7 +940,10 @@ namespace B_GOpt.Views
 
         private void ButtonRFEM_Click(object sender, RoutedEventArgs e)
         {
+            string fileName = "BuildingVariants.txt";
+            string path = System.IO.Path.Combine(Environment.CurrentDirectory, fileName);
 
+            RhinoApp.WriteLine(path);
         }
 
         private void ButtonClearValues_Click(object sender, RoutedEventArgs e)
