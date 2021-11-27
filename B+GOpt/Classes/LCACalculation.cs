@@ -45,6 +45,12 @@ namespace B_GOpt.Classes
         //Methods
         //-------------------------------------------------------------------------------------------------
 
+        /// <summary>
+        /// This methods calculates the carbon values of the different materials 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="material"></param>
+        /// <returns></returns>
         public static double CalculateLCA(double value, string material)
         {
             if (material == "Concrete")
@@ -54,11 +60,38 @@ namespace B_GOpt.Classes
             }
             else
                 return 0; 
-
-
         }
 
 
 
+        /// <summary>
+        /// This methods calculates the carbon values of the reinforcement 
+        /// </summary>
+        /// <param name="reinfMass"></param>
+        /// <param name="material"></param>
+        /// <returns></returns>
+        public static double[] CalculateReinforcementLCA(double[] reinfMass, string material)
+        {
+            //Create array to return reinforcement carbon values
+            //Index 0: Slab
+            //Index 1: Column
+            //Index 2: Beam
+            //Index 3: Core
+            //Index 4: Foundation
+
+            double[] reinfLCAValues = new double[] { 0, 0, 0, 0, 0 };
+
+            if (material == "Concrete")
+            {
+                reinfLCAValues[0] = reinfMass[0] * reinforcBars;
+                reinfLCAValues[1] = reinfMass[1] * reinforcBars;
+                reinfLCAValues[2] = reinfMass[2] * reinforcBars;
+            }
+
+            reinfLCAValues[3] = reinfMass[3] * reinforcBars;
+            reinfLCAValues[4] = reinfMass[4] * reinforcBars;
+
+            return reinfLCAValues;
+        }
     }
 }

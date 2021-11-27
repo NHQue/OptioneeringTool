@@ -36,6 +36,13 @@ namespace B_GOpt.Views
         readonly string fileName = "BuildingVariants.txt";
 
 
+        private void HeatMapRanking_DataClick(object sender, ChartPoint chartPoint)
+        {
+            MessageBox.Show("Current value: " + chartPoint.Weight +  "(" + (chartPoint.SeriesView).ToString() );
+        }
+
+
+
         public CompareVariantsView()
         {
             InitializeComponent();
@@ -131,57 +138,56 @@ namespace B_GOpt.Views
                 //Y is the performance
  
                 //"Variant 1"
-                new HeatPoint(0, 0, r.Next(0, 10)),
-                new HeatPoint(0, 1, r.Next(0, 10)),
-                new HeatPoint(0, 2, r.Next(0, 10)),
-                new HeatPoint(0, 3, r.Next(0, 10)),
+                new HeatPoint(0, 0, r.Next(1, 9)),
+                new HeatPoint(0, 1, r.Next(1, 9)),
+                new HeatPoint(0, 2, r.Next(1, 9)),
+                new HeatPoint(0, 3, r.Next(1, 9)),
  
                 //"Variant 2"
-                new HeatPoint(1, 0, r.Next(0, 10)),
-                new HeatPoint(1, 1, r.Next(0, 10)),
-                new HeatPoint(1, 2, r.Next(0, 10)),
-                new HeatPoint(1, 3, r.Next(0, 10)),
+                new HeatPoint(1, 0, r.Next(1, 9)),
+                new HeatPoint(1, 1, r.Next(1, 9)),
+                new HeatPoint(1, 2, r.Next(1, 9)),
+                new HeatPoint(1, 3, r.Next(1, 9)),
  
                 //"Variant 3"
-                new HeatPoint(2, 0, r.Next(0, 10)),
-                new HeatPoint(2, 1, r.Next(0, 10)),
-                new HeatPoint(2, 2, r.Next(0, 10)),
-                new HeatPoint(2, 3, r.Next(0, 10)),
+                new HeatPoint(2, 0, r.Next(1, 9)),
+                new HeatPoint(2, 1, r.Next(1, 9)),
+                new HeatPoint(2, 2, r.Next(1, 9)),
+                new HeatPoint(2, 3, r.Next(1, 9)),
  
                 //"Variant 4"
-                new HeatPoint(3, 0, r.Next(0, 10)),
-                new HeatPoint(3, 1, r.Next(0, 10)),
-                new HeatPoint(3, 2, r.Next(0, 10)),
-                new HeatPoint(3, 3, r.Next(0, 10)),
+                new HeatPoint(3, 0, r.Next(1, 9)),
+                new HeatPoint(3, 1, r.Next(1, 9)),
+                new HeatPoint(3, 2, r.Next(1, 9)),
+                new HeatPoint(3, 3, r.Next(1, 9)),
  
                 //"Variant 5"
-                new HeatPoint(4, 0, r.Next(0, 10)),
-                new HeatPoint(4, 1, r.Next(0, 10)),
-                new HeatPoint(4, 2, r.Next(0, 10)),
-                new HeatPoint(4, 3, r.Next(0, 10)),
+                new HeatPoint(4, 0, r.Next(1, 9)),
+                new HeatPoint(4, 1, r.Next(1, 9)),
+                new HeatPoint(4, 2, r.Next(1, 9)),
+                new HeatPoint(4, 3, r.Next(1, 9)),
 
                 //"Variant 6"
-                new HeatPoint(5, 0, r.Next(0, 10)),
-                new HeatPoint(5, 1, r.Next(0, 10)),
-                new HeatPoint(5, 2, r.Next(0, 10)),
-                new HeatPoint(5, 3, r.Next(0, 10)),
+                new HeatPoint(5, 0, r.Next(1, 9)),
+                new HeatPoint(5, 1, r.Next(1, 9)),
+                new HeatPoint(5, 2, r.Next(1, 9)),
+                new HeatPoint(5, 3, r.Next(1, 9)),
 
                 //"Variant 7"
-                new HeatPoint(6, 0, r.Next(0, 10)),
-                new HeatPoint(6, 1, r.Next(0, 10)),
-                new HeatPoint(6, 2, r.Next(0, 10)),
-                new HeatPoint(6, 3, r.Next(0, 10)),
+                new HeatPoint(6, 0, r.Next(1, 9)),
+                new HeatPoint(6, 1, r.Next(1, 9)),
+                new HeatPoint(6, 2, r.Next(1, 9)),
+                new HeatPoint(6, 3, r.Next(1, 9)),
 
                 //"Variant 8"
-                new HeatPoint(7, 0, r.Next(0, 10)),
-                new HeatPoint(7, 1, r.Next(0, 10)),
-                new HeatPoint(7, 2, r.Next(0, 10)),
-                new HeatPoint(7, 3, r.Next(0, 10)),
+                new HeatPoint(7, 0, r.Next(1, 9)),
+                new HeatPoint(7, 1, r.Next(1, 9)),
+                new HeatPoint(7, 2, r.Next(1, 9)),
+                new HeatPoint(7, 3, r.Next(1, 9)),
             };
 
             performanceIndicators = new[]
             {
-
                 "Surface Area",
                 "Disassembly options",
                 "Costs",
@@ -190,14 +196,14 @@ namespace B_GOpt.Views
 
             variants = new[]
             {
-                "Variant 1",
-                "Variant 2",
-                "Variant 3",
-                "Variant 4",
-                "Variant 5",
-                "Variant 6",
-                "Variant 7",
-                "Variant 8"
+                "Var 1",
+                "Var 2",
+                "Var 3",
+                "Var 4",
+                "Var 5",
+                "Var 6",
+                "Var 7",
+                "Var 8"
             };
 
             DataContext = this;

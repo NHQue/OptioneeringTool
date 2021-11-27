@@ -105,7 +105,7 @@ namespace B_GOpt.Classes
                 countNumber = Convert.ToInt32(Math.Floor(actXSpac / distance));
                 double actDist = Math.Round(actXSpac / countNumber, 2);
 
-                RhinoApp.WriteLine($"Secondary Beams: Count {countNumber}, Distance {actDist} ");
+                //RhinoApp.WriteLine($"Secondary Beams: Count {countNumber}, Distance {actDist} ");
 
                 for (int i = 0; i < linesA.Count; i++)
                 {

@@ -69,14 +69,23 @@ namespace B_GOpt.Classes
 
         //Methods
         //----------------------------------------------------------------------------------------------------------
+
+        /// <summary>
+        /// This method prints the information of the class's object seperated by values to save it in the text file 
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return String.Format($"{Material},{DefinedStructSystem},{ActXSpac},{ActYSpac},{EmbodiedCO2},{Costs},{SurfaceArea},{Weight}");
         }
 
+        /// <summary>
+        /// This method prints the information of the class's object to visualize it in the UI TextBlocks
+        /// </summary>
+        /// <returns></returns>
         public string ToResult()
         {
-            return String.Format($"Material: {Material}, System: {DefinedStructSystem}, Grid: {ActXSpac/100} x {ActYSpac/100}," + System.Environment.NewLine + 
+            return String.Format($"Material: {Material}, System: {DefinedStructSystem}, Grid: {ActXSpac/100}  m x {ActYSpac/100} m ," + System.Environment.NewLine + 
                                  $"Embodied Carbon: {EmbodiedCO2}" + $" kg CO" + ("\u2082") + $"e" + $", Costs: {Costs} EUR," + System.Environment.NewLine + 
                                  $"Surface Area: {SurfaceArea}" + $" m" + ($"\u00B2") + $", Weight: {Weight} t");
         }

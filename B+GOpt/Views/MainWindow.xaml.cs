@@ -60,12 +60,6 @@ namespace B_GOpt.Views
         private ObservableValue valueEmbodiedCO2Cores;
 
 
-        double embodiedCO2Col = 0;
-        double embodiedCO2Slabs = 0;
-        double embodiedCO2Beams = 0;
-        double embodiedCO2Foundations = 0;
-        double embodiedCO2Core = 0;
-
         double embodiedCO2Total = 0;
 
         public BuildingVariant buildingVariant = new BuildingVariant();
@@ -78,7 +72,7 @@ namespace B_GOpt.Views
         List<Guid> ids = new List<Guid>();
         List<Layer> layers = new List<Layer>();
         RhinoList<Brep> cores = new RhinoList<Brep>();
-        List<BuildingVariant> variants = new List<BuildingVariant>();
+        List<BuildingVariant> buildingVariants = new List<BuildingVariant>();
 
 
         public MainWindow(RhinoDoc doc)
@@ -155,15 +149,18 @@ namespace B_GOpt.Views
 
         private void PieChart_DataClick(object sender, ChartPoint chartPoint)
         {
-            MessageBox.Show("Current value: " + chartPoint.Y + "(" + (chartPoint.Participation * 100).ToString() + "%)");
+            MessageBox.Show("Embodied carbon: " + chartPoint.Y + " kg CO" + ("\u2082") + "e " 
+                            + "(" + (Math.Round(chartPoint.Participation, 3) * 100).ToString() + "% of the building's structure)");
         }
 
 
+
+        #region Update sliders
         private void SliderLoad_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (SliderLoadValue != null)
             {
-                SliderLoadValue.Text = Math.Round(SliderLoad.Value, 2).ToString() + " kN/m²";
+                SliderLoadValue.Text = Math.Round(SliderLoad.Value, 1).ToString() + " kN/m²";
             }
         }
 
@@ -190,6 +187,18 @@ namespace B_GOpt.Views
                 SliderYSpacValue.Text = Math.Round(SliderYSpac.Value, 2).ToString() + " m";
             }
         }
+
+        private void SliderDistance_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (SliderDistanceValue != null)
+            {
+                SliderDistanceValue.Text = Math.Round(SliderDistance.Value, 2).ToString() + " m";
+            }
+        }
+        #endregion
+
+
+
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -232,7 +241,20 @@ namespace B_GOpt.Views
 
         private void ButtonCalculate_Click(object sender, RoutedEventArgs e)
         {
+            //Reset all variables for the next variant
+            valueEmbodiedCO2Slabs.Value = 0;
+            valueEmbodiedCO2Col.Value = 0;
+            valueEmbodiedCO2Beams.Value = 0;
+            valueEmbodiedCO2Foundations.Value = 0;
+            valueEmbodiedCO2Cores.Value = 0;
 
+            embodiedCO2Total = 0;
+            surfaceArea = 0;
+            far = 0;
+
+
+
+            //Check if a building is selected
             if (brep != null)
             {
                 BuildingGeometry buildingGeom = new BuildingGeometry(brep);
@@ -335,11 +357,17 @@ namespace B_GOpt.Views
                 //Intersect slabs with core
                 RhinoList<Brep> floorSlabs = StructGrid.SplitSlabsWithCores(cores, slabEdgeCurves, docform);
 
+                floorSlabs.Remove(floorSlabs[floorSlabs.Count - 1]);
+                
+                floorSlabs.Add(slabs[slabs.Count - 1]);
+
+
                 for (int i = 0; i < floorSlabs.Count; i++)
                 {
                     Slab slab = new Slab(floorSlabs[i], actXSpac, actYSpac, i, liveLoad, 0);
                     slabsSlabs.Add(slab);
                 }
+
 
 
                 //Predimensioning slabs
@@ -558,13 +586,13 @@ namespace B_GOpt.Views
 
 
                 //Extracting the core walls
-                RhinoList<Brep> coreBreps = buildingGeom.GetCoreWalls(cores, docform);
+                RhinoList<Brep> coreBreps = buildingGeom.GetCoreWalls(cores, slabs, docform);
 
 
                 //Adds the elements to the Rhino Document
                 //--------------------------------------------------------------------------------------
 
-                #region Adding Region
+                #region Adding to RhinoDoc Region
                 Layer layerXBeams = MyFunctions.SetLayer(docform, "XBeams", System.Drawing.Color.Salmon);
                 layers.Add(layerXBeams);
 
@@ -589,10 +617,15 @@ namespace B_GOpt.Views
                 Layer layerOuterColumn = MyFunctions.SetLayer(docform, "OuterColumn", System.Drawing.Color.Cyan);
                 layers.Add(layerOuterColumn);
 
-                //for (int i = 0; i < outerColumns.Count; i++)
-                //{
-                //    docform.Objects.AddLine(outerColumns[i]);
-                //}
+                for (int i = 0; i < outerColumns.Count; i++)
+                {
+                    docform.Objects.AddLine(outerColumns[i]);
+                }
+
+                for (int i = 0; i < edgeColumns.Count; i++)
+                {
+                    docform.Objects.AddLine(edgeColumns[i]);
+                }
 
                 Layer layerInnerColumns = MyFunctions.SetLayer(docform, "InnerColumns", System.Drawing.Color.LightSkyBlue);
                 layers.Add(layerInnerColumns);
@@ -601,11 +634,6 @@ namespace B_GOpt.Views
                 {
                     docform.Objects.AddLine(innerColumns[i]);
                 }
-
-                //for (int i = 0; i < edgeColumns.Count; i++)
-                //{
-                //    docform.Objects.AddLine(edgeColumns[i]);
-                //}
 
                 //for (int i = 0; i < slabs.Count; i++)
                 //{
@@ -718,11 +746,20 @@ namespace B_GOpt.Views
 
                 //Massing -> Volume in m3
                 //-------------------------------------------------------------------------------------------
+                double slabMass = 0;
                 double innerColMass = 0;
                 double outerColMass = 0;
-                double slabsMass = 0;
+                double edgeColMass = 0;
+                double beamMass = 0;
                 double foundationMass = 0;
                 double coreMass = 0;
+
+                for (int i = 0; i < floorSlabs.Count; i++)
+                {
+                    double area = floorSlabs[i].GetArea();
+                    surfaceArea = surfaceArea + area;
+                }
+                slabMass = surfaceArea * crossSectionSlab;
 
                 for (int i = 0; i < innerCol.Count; i++)
                 {
@@ -734,9 +771,11 @@ namespace B_GOpt.Views
                     outerColMass = outerColMass  + outerCol[i].Area * outerCol[i].Length;
                 }
 
-                slabsMass = surfaceArea * crossSectionSlab;
-
-                foundationMass = baseSrf.GetArea() * crossSectionGroundSlab;
+                for (int i = 0; i < edgeCol.Count; i++)
+                {
+                    edgeColMass = edgeColMass + edgeCol[i].Area * edgeCol[i].Length;
+                }
+                double colMass = innerColMass + outerColMass + edgeColMass;
 
                 double coreArea = 0;
                 for (int i = 0; i < coreBreps.Count; i++)
@@ -744,41 +783,49 @@ namespace B_GOpt.Views
                     double area = coreBreps[i].GetArea();
                     coreArea = coreArea + area;
                 }
-
                 coreMass = coreArea * crossSectionCoreWall;
 
-                RhinoApp.WriteLine($"CoreArea: {coreArea}, CoreMass: {coreMass}, SlabMass: {slabsMass}, ColumnsMass. {innerColMass + outerColMass}");
+                foundationMass = baseSrf.GetArea() * crossSectionGroundSlab;
+
+
+                RhinoApp.WriteLine($"CoreArea: {Math.Round(coreArea, 1)} m2, CoreMass: {Math.Round(coreMass, 1)} m3, SlabMass: {Math.Round(slabMass, 1)} m3, " +
+                                   $"ColumnsMass: {Math.Round(colMass, 1)} m3");
+
+                //Reinforcement calculation
+                double[] reinfMass = BuildingResults.CalculateReinforcement(slabMass, colMass, beamMass, coreMass, foundationMass, material);
+                double[] reinfCarbon = LCACalculation.CalculateReinforcement(reinfMass, material);
+
 
 
                 //Carbon calculation
                 //------------------------------------------------------------------------------------------------------------------------------------------------------
 
-                valueEmbodiedCO2Col.Value = Math.Round(LCACalculation.CalculateLCA(innerColMass, material) + LCACalculation.CalculateLCA(outerColMass, material), 0);
-                valueEmbodiedCO2Slabs.Value = Math.Round(LCACalculation.CalculateLCA(slabsMass, material), 0);
+                valueEmbodiedCO2Slabs.Value = Math.Round((LCACalculation.CalculateLCA(slabMass, material) + reinfCarbon[0]), 0);
+                valueEmbodiedCO2Col.Value = Math.Round((LCACalculation.CalculateLCA(colMass, material) + reinfCarbon[1]), 0);
                 valueEmbodiedCO2Beams.Value = 0;
-                valueEmbodiedCO2Foundations.Value = Math.Round(LCACalculation.CalculateLCA(foundationMass, "Concrete"), 0);
-                valueEmbodiedCO2Cores.Value = Math.Round(LCACalculation.CalculateLCA(coreMass, "Concrete"), 0);
+                valueEmbodiedCO2Cores.Value = Math.Round((LCACalculation.CalculateLCA(coreMass, material) + reinfCarbon[3]), 0);
+                valueEmbodiedCO2Foundations.Value = Math.Round((LCACalculation.CalculateLCA(foundationMass, material) + reinfCarbon[4]), 0);
 
                 embodiedCO2Total = valueEmbodiedCO2Slabs.Value + valueEmbodiedCO2Col.Value + valueEmbodiedCO2Beams.Value + 
                                    valueEmbodiedCO2Foundations.Value + valueEmbodiedCO2Cores.Value;
 
 
+                RhinoApp.WriteLine($"Reinforcement Mass: Slabs {reinfMass[0]} m3, Columns {reinfMass[1]} m3, Beams {reinfMass[2]} m3, Cores {reinfMass[3]} m3, Foundations {reinfMass[4]} m3");
+                RhinoApp.WriteLine($"Reinforcement Carbon: Slabs {reinfCarbon[0]} kg, Columns {reinfCarbon[1]} kg, Beams {reinfCarbon[2]} kg, Cores {reinfCarbon[3]} kg, Foundations {reinfCarbon[4]} kg");
+
+
+
                 //Weight calculation
                 //------------------------------------------------------------------------------------------------------------------------------------------------------
 
-                double totalWeight =    (BuildingResults.CalculateWeight(innerColMass, material) + BuildingResults.CalculateWeight(outerColMass, material) +
-                                         BuildingResults.CalculateWeight(slabsMass, material))/10;
+                double totalWeight =    (BuildingResults.CalculateWeight(slabMass, material ) + BuildingResults.CalculateWeight(colMass, material) + BuildingResults.CalculateWeight(beamMass, material) +
+                                         BuildingResults.CalculateWeight(coreMass, material) + BuildingResults.CalculateWeight(foundationMass, material));
 
 
 
 
                 //Prompting the results to the dashboard
                 //-------------------------------------------------------------------------------------------
-                for (int i = 0; i < floorSlabs.Count; i++)
-                {
-                    double area = floorSlabs[i].GetArea();
-                    surfaceArea = surfaceArea + area;
-                }
 
                 TextBlockSurfaceAreaValue.Text = Math.Round(surfaceArea, 0).ToString() + "  m" + ("\u00B2");
                 TextBlockFarValue.Text = Math.Round(baseSrf.GetArea() / surfaceArea, 2).ToString();
@@ -837,9 +884,9 @@ namespace B_GOpt.Views
 
         private void ButtonSaveVariant_Click(object sender, RoutedEventArgs e)
         {
-            BuildingVariant variant = new BuildingVariant(brep, 1, material, "Plate", 1000000, actXSpac, actYSpac, 51000000, surfaceArea, 34000000);
-            variant.DefinedStructSystem = MyFunctions.EvaluateSystem(material, structSystem);
-            variants.Add(variant);
+            //BuildingVariant variant = new BuildingVariant(brep, 1, material, "Plate", 1000000, actXSpac, actYSpac, 51000000, surfaceArea, 34000000);
+            buildingVariant.DefinedStructSystem = MyFunctions.EvaluateSystem(material, structSystem);
+            buildingVariants.Add(buildingVariant);
 
 
             //Writing in Textfile
@@ -848,27 +895,29 @@ namespace B_GOpt.Views
 
             List<string> lines = new List<string>();
             lines = File.ReadAllLines(filePath).ToList();
-            string variantInfo = variant.ToString();
+            string variantInfo = buildingVariant.ToString();
             lines.Add(variantInfo);
             File.WriteAllLines(filePath, lines);
 
             //RhinoApp.WriteLine(variantInfo);
 
 
-            //Reset all variables for the next variant
-            valueEmbodiedCO2Slabs.Value = 0;
-            valueEmbodiedCO2Col.Value = 0;
-            valueEmbodiedCO2Beams.Value = 0;
-            valueEmbodiedCO2Foundations.Value = 0;
-            valueEmbodiedCO2Cores.Value = 0;
+            ////Reset all variables for the next variant
+            //valueEmbodiedCO2Slabs.Value = 0;
+            //valueEmbodiedCO2Col.Value = 0;
+            //valueEmbodiedCO2Beams.Value = 0;
+            //valueEmbodiedCO2Foundations.Value = 0;
+            //valueEmbodiedCO2Cores.Value = 0;
 
-            embodiedCO2Total = 0;
-            surfaceArea = 0;
-            far = 0;
+            //embodiedCO2Total = 0;
+            //surfaceArea = 0;
+            //far = 0;
         }
 
 
 
+
+        #region Checked status of different Material Buttons
         private void RadioButtonSteelMat_Checked(object sender, RoutedEventArgs e)
         {
             material = "Steel";
@@ -879,7 +928,7 @@ namespace B_GOpt.Views
             SliderYSpac.Maximum = 8.1;
 
             RadioButtonPlateSystem.Content = "Slim Floor";
-            RadioButtonBeamSystem.Content = "Composite Beams"; 
+            RadioButtonBeamSystem.Content = "Composite Beams";
         }
 
         private void RadioButtonConcreteMat_Checked(object sender, RoutedEventArgs e)
@@ -920,6 +969,9 @@ namespace B_GOpt.Views
             RadioButtonPlateSystem.Content = "HBV Slab";
             RadioButtonBeamSystem.Content = "CLT on Steelframe";
         }
+        #endregion
+
+
 
 
         private void RadioButtonBeamSystem_Checked(object sender, RoutedEventArgs e)
@@ -995,12 +1047,5 @@ namespace B_GOpt.Views
             Rhino.RhinoDoc.ActiveDoc.Views.ActiveView.ActiveViewport.DisplayMode = wireframe;
         }
 
-        private void SliderDistance_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (SliderDistanceValue != null)
-            {
-                SliderDistanceValue.Text = Math.Round(SliderDistance.Value, 2).ToString() + " m";
-            }
-        }
     }
 }

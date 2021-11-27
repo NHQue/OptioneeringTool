@@ -10,7 +10,7 @@
             d:DesignHeight="450" d:DesignWidth="800"
             ResizeMode="NoResize"
             WindowStartupLocation="Manual" 
-            Top="200" Left="30"
+            Top="200" Left="0"
             ShowInTaskbar="False"
             Height="620" Width="770"
             WindowStyle="None"
@@ -433,7 +433,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="10"
                                     FontWeight="Light"
                                     Margin="10,5,0,0"/>
@@ -441,7 +441,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="8"
                                     FontWeight="Light"
                                     Margin="10,0,0,0"/>
@@ -467,7 +467,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="10"
                                     FontWeight="Light"
                                     Margin="10,5,0,0"/>
@@ -475,7 +475,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="8"
                                     FontWeight="Light"
                                     Margin="10,0,0,0"/>
@@ -501,7 +501,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="10"
                                     FontWeight="Light"
                                     Margin="10,5,0,0"/>
@@ -509,7 +509,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="8"
                                     FontWeight="Light"
                                     Margin="10,0,0,0"/>
@@ -535,7 +535,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="10"
                                     FontWeight="Light"
                                     Margin="10,5,0,0"/>
@@ -543,7 +543,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="8"
                                     FontWeight="Light"
                                     Margin="10,0,0,0"/>
@@ -569,7 +569,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="10"
                                     FontWeight="Light"
                                     Margin="10,5,0,0"/>
@@ -577,7 +577,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="8"
                                     FontWeight="Light"
                                     Margin="10,0,0,0"/>
@@ -603,7 +603,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="10"
                                     FontWeight="Light"
                                     Margin="10,5,0,0"/>
@@ -611,7 +611,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="8"
                                     FontWeight="Light"
                                     Margin="10,0,0,0"/>
@@ -637,7 +637,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="10"
                                     FontWeight="Light"
                                     Margin="10,5,0,0"/>
@@ -645,7 +645,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="8"
                                     FontWeight="Light"
                                     Margin="10,0,0,0"/>
@@ -671,7 +671,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="10"
                                     FontWeight="Light"
                                     Margin="10,5,0,0"/>
@@ -679,7 +679,7 @@
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
-                                    Foreground="White"
+                                    Foreground="Black"
                                     FontSize="8"
                                     FontWeight="Light"
                                     Margin="10,0,0,0"/>
@@ -842,9 +842,14 @@
 
                 <Grid Margin="0,0,0,0">
 
-                    <lvc:CartesianChart Grid.Row="1" DataTooltip="{x:Null}">
+                    <lvc:CartesianChart x:Name="HeatMapRanking"
+                                        DataClick="HeatMapRanking_DataClick"
+                                        Hoverable="True"
+                                        Grid.Row="1" DataTooltip="{x:Null}"
+                                        
+                                        >
                         <lvc:CartesianChart.Series>
-                            <lvc:HeatSeries Values="{Binding Values}" DataLabels="True">
+                            <lvc:HeatSeries Values="{Binding Values}" DataLabels="False" >
 
                                 <!--
                     The GradientStopCollection is optional to define a custom gradient
@@ -860,21 +865,27 @@
                                     
                                     <GradientStop Offset=".6" Color="#998FBC8F"></GradientStop>
                                     
-                                    <GradientStop Offset=".8" Color="#CD5C5C"></GradientStop>
-                                    
-                                    <GradientStop Offset="1" Color="Firebrick"></GradientStop>
+                                    <GradientStop Offset=".8" Color="#99CD5C5C"></GradientStop>
+
+                                    <GradientStop Offset="1" Color="#CD5C5C"></GradientStop>
                                 </lvc:HeatSeries.GradientStopCollection>
                             </lvc:HeatSeries>
                         </lvc:CartesianChart.Series>
                         <lvc:CartesianChart.AxisX >
-                            <lvc:Axis Labels="{Binding variants}" LabelsRotation="-15">
+                            <lvc:Axis Labels="{Binding variants}" 
+                                      LabelsRotation="-15"
+                                      Foreground="Black"
+                                      FontWeight="Light"
+                                      >
                                 <lvc:Axis.Separator>
                                     <lvc:Separator Step="1"></lvc:Separator>
                                 </lvc:Axis.Separator>
                             </lvc:Axis>
                         </lvc:CartesianChart.AxisX>
                         <lvc:CartesianChart.AxisY>
-                            <lvc:Axis Labels="{Binding performanceIndicators}"></lvc:Axis>
+                            <lvc:Axis Labels="{Binding performanceIndicators}"
+                                      Foreground="Black"
+                                      FontWeight="Light"></lvc:Axis>
                         </lvc:CartesianChart.AxisY>
                     </lvc:CartesianChart>
 

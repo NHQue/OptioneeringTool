@@ -86,6 +86,7 @@
     <Compile Include="Classes\Members\Slab.cs" />
     <Compile Include="Classes\PreDim.cs" />
     <Compile Include="Classes\BuildingResults.cs" />
+    <Compile Include="Classes\RankingSystem.cs" />
     <Compile Include="Classes\StructGrid.cs" />
     <Compile Include="Classes\Members\Beam.cs" />
     <Compile Include="Classes\BuildingGeometry.cs" />

@@ -424,21 +424,39 @@ namespace B_GOpt.Classes
         }
 
 
-        public RhinoList<Brep> GetCoreWalls(RhinoList<Brep> cores, RhinoDoc doc)
+        public RhinoList<Brep> GetCoreWalls(RhinoList<Brep> cores, RhinoList<Brep> slabs, RhinoDoc doc)
         {
-
             RhinoList<Rhino.Geometry.Brep> coreBreps = new RhinoList<Rhino.Geometry.Brep>();
+
+            //Split cores with last slab
+            double intersectionTolerance = doc.ModelAbsoluteTolerance;
+            Brep lastSlab = slabs[slabs.Count - 1];
+            RhinoList<Rhino.Geometry.Brep> splittedCoreBreps = new RhinoList<Rhino.Geometry.Brep>();
 
             for (int i = 0; i < cores.Count; i++)
             {
+                Brep[] splittedBreps = cores[i].Split(lastSlab, intersectionTolerance);
+                splittedCoreBreps.Add(splittedBreps[1]);
+            }
+
+            if (splittedCoreBreps != null)
+            {
+                cores = splittedCoreBreps; 
+            }
+
+
+            //Extract the single walls/faces
+            for (int i = 0; i < cores.Count; i++)
+            {
                 BrepFaceList coreFaces = cores[i].Faces;                                                //Gets all the faces from the core geometry
+
 
                 for (int j = 0; j < coreFaces.Count; j++)
                 {
                     Vector3d z = new Vector3d(0, 0, 1);
                     Vector3d neg_z = new Vector3d(0, 0, -1);
 
-                    if (coreFaces[j].NormalAt(1, 1) != z && coreFaces[j].NormalAt(1, 1) != neg_z)    //Deletes the upper and bottom face from the core geometry
+                    if (coreFaces[j].NormalAt(1, 1) != neg_z && coreFaces[j].NormalAt(1, 1) != z)      //Deletes the upper and bottom face from the core geometry
                     {
                         Brep coreBrep = coreFaces[j].DuplicateFace(false);
                         coreBreps.Add(coreBrep);
@@ -449,15 +467,5 @@ namespace B_GOpt.Classes
 
             return coreBreps;
         }
-
-
-
-
-
-
-
-
-
-
-        }
+    }
 }
