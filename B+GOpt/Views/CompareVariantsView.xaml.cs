@@ -32,14 +32,16 @@ namespace B_GOpt.Views
     {
 
         //HeatMap
-        public ChartValues<HeatPoint> Values { get; set; }
+        public ChartValues<HeatPoint> HeatValues { get; set; }
         public string[] performanceIndicators { get; set; }
         public string[] variants { get; set; }
 
 
-        //Score ranking
-        public ChartValues<ObservableValue> ScoreValues { get; set; }
 
+
+        //Score ranking
+        public ChartValues<ObservableValue> MyValues { get; set; }
+        public SeriesCollection SeriesCollection { get; set; }
 
 
         readonly string fileName = "BuildingVariants.txt";
@@ -141,7 +143,7 @@ namespace B_GOpt.Views
 
             Random r = new Random();
 
-            Values = new ChartValues<HeatPoint>
+            HeatValues = new ChartValues<HeatPoint>
             {
                 //X means building variant
                 //Y is the performance
@@ -216,44 +218,47 @@ namespace B_GOpt.Views
             };
 
 
-            //new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
-            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
-            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
-            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
-            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
-            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
-            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
-            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0))
-
-
 
 
             //Score diagram
 
-
-            ScoreValuesSeries = new SeriesCollection
+            MyValues = new ChartValues<ObservableValue>
             {
-                new LineSeries
-                {
-                     ScoreValues = new ChartValues<ObservableValue>
-                     {
-                        new ObservableValue(1),
-                        new ObservableValue(4),
-                        new ObservableValue(5),
-                        new ObservableValue(13),
-                        new ObservableValue(7),
-                        new ObservableValue(4),
-                        new ObservableValue(7),
-                        new ObservableValue(2)
-                     }
-                }
+                new ObservableValue(r.Next(1, 9)),
+                new ObservableValue(r.Next(1, 9)),
+                new ObservableValue(r.Next(1, 9)),
+                new ObservableValue(r.Next(1, 9)),
+                new ObservableValue(r.Next(1, 9)),
+                new ObservableValue(r.Next(1, 9)),
+                new ObservableValue(r.Next(1, 9)),
+                new ObservableValue(r.Next(1, 9))
             };
+
+            LineSeries lineSeries = new LineSeries
+            {
+                Values = MyValues,
+                StrokeThickness = 2,
+                LineSmoothness = 0,
+                Stroke = new SolidColorBrush(Colors.Black),
+                Fill = Brushes.Transparent,
+                PointGeometrySize = 0,
+                DataLabels = false
+            };
+
+            SeriesCollection = new SeriesCollection { lineSeries };
+
+
 
 
             DataContext = this;
         }
 
-        public SeriesCollection ScoreValuesSeries { get; set; }
+
+
+        
+
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -334,15 +339,35 @@ namespace B_GOpt.Views
         {
             if (SliderCostsValue != null)
             {
-                SliderCostsValue.Text = Math.Round(SliderCosts.Value, 0).ToString();
+                SliderCostsValue.Text = Math.Round(SliderCosts.Value, 0).ToString() + ",";
+
+                MyValues[0].Value = 10 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[1].Value = 2 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[2].Value = 2 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[3].Value = 6 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[4].Value = 4 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[5].Value = 7 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[6].Value = 1 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[7].Value = 8 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
             }
+
+            
         }
 
         private void SliderCO2_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             if (SliderCO2Value != null)
             {
-                SliderCO2Value.Text = Math.Round(SliderCO2.Value, 0).ToString();
+                SliderCO2Value.Text = Math.Round(SliderCO2.Value, 0).ToString() + ",";
+
+                MyValues[0].Value = 10 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[1].Value = 2 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[2].Value = 2 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[3].Value = 6 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[4].Value = 4 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[5].Value = 7 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[6].Value = 1 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[7].Value = 8 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
             }
         }
 
@@ -350,7 +375,16 @@ namespace B_GOpt.Views
         {
             if (SliderDisoptValue != null)
             {
-                SliderDisoptValue.Text = Math.Round(SliderDisopt.Value, 0).ToString();
+                SliderDisoptValue.Text = Math.Round(SliderDisopt.Value, 0).ToString() + ",";
+
+                MyValues[0].Value = 10 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[1].Value = 2 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[2].Value = 2 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[3].Value = 6 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[4].Value = 4 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[5].Value = 7 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[6].Value = 1 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[7].Value = 8 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
             }
         }
 
@@ -359,6 +393,15 @@ namespace B_GOpt.Views
             if (SliderAreaValue != null)
             {
                 SliderAreaValue.Text = Math.Round(SliderArea.Value, 0).ToString();
+
+                MyValues[0].Value = 10 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[1].Value = 2 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[2].Value = 2 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[3].Value = 6 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[4].Value = 4 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[5].Value = 7 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[6].Value = 1 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
+                MyValues[7].Value = 8 * SliderCosts.Value * SliderArea.Value * SliderCO2.Value * SliderDisopt.Value;
             }
         }
     }

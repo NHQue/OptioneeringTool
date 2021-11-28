@@ -874,7 +874,7 @@
                                             Margin="5,20,5,0"
                                             DataTooltip="{x:Null}">
                                 <lvc:CartesianChart.Series>
-                                    <lvc:HeatSeries Values="{Binding Values}" DataLabels="False">
+                                    <lvc:HeatSeries Values="{Binding HeatValues}" DataLabels="False">
                                         <lvc:HeatSeries.GradientStopCollection>
                                             <GradientStop Offset="0" Color="#2F4F4F"></GradientStop>
                                             <GradientStop Offset=".33" Color="#992F4F4F"></GradientStop>
@@ -961,7 +961,7 @@
                                         </Slider>
 
                                         <TextBlock  x:Name="SliderCostsValue"
-                                                    Text="1"
+                                                    Text="1,"
                                                     Foreground="Black"
                                                     FontSize="10"
                                                     FontWeight="Normal"
@@ -975,10 +975,11 @@
                                     <StackPanel Orientation="Horizontal"
                                                 Margin="0,0,5,0">
 
-                                        <TextBlock  Text="CO2"
+                                        <TextBlock  
                                                     FontSize="10"
                                                     FontWeight="Normal"
                                                     Background="Transparent">
+                                                    CO<Run BaselineAlignment="Subscript" FontSize="10">2</Run>
                                         </TextBlock>
 
                                         <Slider 
@@ -989,7 +990,7 @@
                                         </Slider>
 
                                         <TextBlock  x:Name="SliderCO2Value"
-                                                    Text="1"
+                                                    Text="1,"
                                                     Foreground="Black"
                                                     FontSize="9"
                                                     FontWeight="Normal"
@@ -1017,7 +1018,7 @@
                                         </Slider>
 
                                         <TextBlock  x:Name="SliderDisoptValue"
-                                                    Text="1"
+                                                    Text="1,"
                                                     Foreground="Black"
                                                     FontSize="10"
                                                     FontWeight="Normal"
@@ -1054,48 +1055,45 @@
                                         </TextBlock>
 
                                     </StackPanel>
-                                    
+
                                 </StackPanel>
 
                                 <Grid>
-                                    <lvc:CartesianChart Name="Chart" 
-                                                        Height="70"
-                                                        Margin="1">
-                                        <lvc:CartesianChart.Series>
-                                            <lvc:LineSeries Values="{Binding ScoreValues}" LineSmoothness="0" StrokeThickness="1" 
-                                                            DataLabels="True" FontSize="4" Foreground="#6B303030"
-                                                            Stroke="Black" Fill="Transparent" PointGeometrySize="0"/>
-                                        </lvc:CartesianChart.Series>
-                                        
-                                        <lvc:CartesianChart.AxisX>
-                                            <lvc:Axis IsEnabled="True" 
-                                                      ShowLabels="True"
-                                                      Labels="{Binding variants}" 
-                                                      FontSize="8">
+                                    <lvc:CartesianChart Series="{Binding SeriesCollection}" 
+                                                        LegendLocation="None"
+                                                        Height="70">
 
+                                        <lvc:CartesianChart.AxisX >
+                                            <lvc:Axis   Labels="{Binding variants}" 
+                                                        LabelsRotation="-15"
+                                                        FontSize="9"
+                                                        Foreground="Black"
+                                                        FontWeight="Normal"
+                                                        Opacity=".8">
                                                 <lvc:Axis.Separator>
                                                     <lvc:Separator Step="1">
                                                     </lvc:Separator>
                                                 </lvc:Axis.Separator>
-
                                             </lvc:Axis>
-
                                         </lvc:CartesianChart.AxisX>
                                         
                                         <lvc:CartesianChart.AxisY>
-                                            <lvc:Axis Foreground="White" FontSize="4">
-                                                <lvc:Axis.Separator>
-                                                    <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="2" Step="1" />
-                                                </lvc:Axis.Separator>
+                                            <lvc:Axis 
+                                              FontSize="9"
+                                              Foreground="Black"
+                                              FontWeight="Normal"
+                                              ShowLabels="False"
+                                              Opacity=".8">
                                             </lvc:Axis>
                                         </lvc:CartesianChart.AxisY>
-                                        
+
+
+
+
                                     </lvc:CartesianChart>
-
-
                                 </Grid>
-                                
-                                
+
+
 
                             </StackPanel>
 
@@ -1103,36 +1101,11 @@
 
                     </Border>
 
-
-
-
-
-
-                    
-
-                    
-                    
-
-
                 </StackPanel>
                 
             </Grid>
             
             
-            
-            
-            
-
-
- 
-
-
-         
-
-            
-
-
-
 
 
 
