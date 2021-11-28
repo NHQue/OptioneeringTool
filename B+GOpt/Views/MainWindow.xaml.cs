@@ -759,6 +759,8 @@ namespace B_GOpt.Views
                     double area = floorSlabs[i].GetArea();
                     surfaceArea = surfaceArea + area;
                 }
+                surfaceArea = Math.Round(surfaceArea, 0);
+
                 slabMass = surfaceArea * crossSectionSlab;
 
                 for (int i = 0; i < innerCol.Count; i++)
@@ -793,7 +795,7 @@ namespace B_GOpt.Views
 
                 //Reinforcement calculation
                 double[] reinfMass = BuildingResults.CalculateReinforcement(slabMass, colMass, beamMass, coreMass, foundationMass, material);
-                double[] reinfCarbon = LCACalculation.CalculateReinforcement(reinfMass, material);
+                double[] reinfCarbon = LCACalculation.CalculateReinforcementLCA(reinfMass, material);
 
 
 
@@ -818,8 +820,8 @@ namespace B_GOpt.Views
                 //Weight calculation
                 //------------------------------------------------------------------------------------------------------------------------------------------------------
 
-                double totalWeight =    (BuildingResults.CalculateWeight(slabMass, material ) + BuildingResults.CalculateWeight(colMass, material) + BuildingResults.CalculateWeight(beamMass, material) +
-                                         BuildingResults.CalculateWeight(coreMass, material) + BuildingResults.CalculateWeight(foundationMass, material));
+                double totalWeight =   Math.Round((BuildingResults.CalculateWeight(slabMass, material ) + BuildingResults.CalculateWeight(colMass, material) + BuildingResults.CalculateWeight(beamMass, material) +
+                                         BuildingResults.CalculateWeight(coreMass, material) + BuildingResults.CalculateWeight(foundationMass, material)), 0);
 
 
 
@@ -827,17 +829,21 @@ namespace B_GOpt.Views
                 //Prompting the results to the dashboard
                 //-------------------------------------------------------------------------------------------
 
-                TextBlockSurfaceAreaValue.Text = Math.Round(surfaceArea, 0).ToString() + "  m" + ("\u00B2");
+                TextBlockSurfaceAreaValue.Text = surfaceArea.ToString() + "  m" + ("\u00B2");
                 TextBlockFarValue.Text = Math.Round(baseSrf.GetArea() / surfaceArea, 2).ToString();
                 TextBlockClearFloorHeightValue.Text = (actFloorHeight - slabsSlabs[1].Height).ToString() + "  m";
-                TextBlockWeightValue.Text = Math.Round(totalWeight, 0).ToString() + " t";
+                TextBlockWeightValue.Text = totalWeight.ToString() + " t";
                 TextBlockEmbodiedCO2Value.Text = embodiedCO2Total.ToString() + "  kg CO" + ("\u2082") + "e";
 
 
 
                 //Saving variant
                 //------------------------------------------------------------------------------------------------------------------------------------------------------
-                buildingVariant = new BuildingVariant(brep, 0, material, structSystem, embodiedCO2Total, actXSpac, actYSpac, 0, surfaceArea, totalWeight);
+                buildingVariant = new BuildingVariant(brep, material, MyFunctions.EvaluateSystem(material, structSystem), embodiedCO2Total, actXSpac, actYSpac, 5210198, surfaceArea, totalWeight);
+
+                RhinoApp.WriteLine(buildingVariant.ToTextFile());
+                RhinoApp.WriteLine(buildingVariant.ToTextFile1());
+
             }
         }
 
@@ -885,7 +891,7 @@ namespace B_GOpt.Views
         private void ButtonSaveVariant_Click(object sender, RoutedEventArgs e)
         {
             //BuildingVariant variant = new BuildingVariant(brep, 1, material, "Plate", 1000000, actXSpac, actYSpac, 51000000, surfaceArea, 34000000);
-            buildingVariant.DefinedStructSystem = MyFunctions.EvaluateSystem(material, structSystem);
+            //buildingVariant.DefinedStructSystem = MyFunctions.EvaluateSystem(material, structSystem);
             buildingVariants.Add(buildingVariant);
 
 
@@ -895,11 +901,13 @@ namespace B_GOpt.Views
 
             List<string> lines = new List<string>();
             lines = File.ReadAllLines(filePath).ToList();
-            string variantInfo = buildingVariant.ToString();
+
+            string variantInfo = buildingVariant.ToTextFile();
+
             lines.Add(variantInfo);
             File.WriteAllLines(filePath, lines);
 
-            //RhinoApp.WriteLine(variantInfo);
+            RhinoApp.WriteLine(variantInfo);
 
 
             ////Reset all variables for the next variant

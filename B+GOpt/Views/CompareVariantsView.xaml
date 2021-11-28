@@ -221,7 +221,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Thumb">
-                        <Ellipse Height="10" Width="10" Fill="Black"></Ellipse>
+                        <Ellipse Height="5" Width="5" Fill="Black"></Ellipse>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -252,14 +252,17 @@
             <Setter Property="OverridesDefaultStyle" Value="true" />
             <Style.Triggers>
                 <Trigger Property="Orientation" Value="Horizontal">
-                    <Setter Property="MinHeight" Value="21" />
-                    <Setter Property="MinWidth" Value="60" />
+                    <Setter Property="MinHeight" Value="11" />
+                    <Setter Property="MinWidth" Value="20" />
                     <Setter Property="Template" Value="{StaticResource Slider}" />
                 </Trigger>
             </Style.Triggers>
         </Style>
 
     </Window.Resources>
+    
+    
+    
 
     <Border Background="WhiteSmoke"
             CornerRadius="20"
@@ -411,15 +414,20 @@
 
             <Grid Grid.Column="2"
                   Grid.Row="2"
-                  Grid.RowSpan="2">
+                  Grid.RowSpan="2"
+                  Margin="0,0,0,0">
                 <StackPanel Orientation="Vertical">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="Margin" Value="0,4.5,0,0"/>
+                        </Style>
+                    </StackPanel.Resources>
 
                     <Border 
-                            Height="55" Width="260"
+                            Height="55"
                             CornerRadius="10"
-                            Margin="0,0,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Stretch">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -435,25 +443,25 @@
                                     Text=""
                                     Foreground="Black"
                                     FontSize="10"
-                                    FontWeight="Light"
+                                    FontWeight="Normal"
                                     Margin="10,5,0,0"/>
                             <TextBlock  x:Name="TextBlockResultsVariant1"
                                     VerticalAlignment="Top"
                                     HorizontalAlignment="Left"
                                     Text=""
                                     Foreground="Black"
-                                    FontSize="8"
-                                    FontWeight="Light"
+                                    Opacity=".9"
+                                    FontSize="9"
+                                    FontWeight="Normal"
                                     Margin="10,0,0,0"/>
                         </StackPanel>
                     </Border>
 
                     <Border 
-                            Height="55" Width="260"
+                            Height="55" 
                             CornerRadius="10"
-                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Stretch">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -483,11 +491,10 @@
                     </Border>
 
                     <Border 
-                            Height="55" Width="260"
+                            Height="55"
                             CornerRadius="10"
-                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Stretch">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -517,11 +524,10 @@
                     </Border>
 
                     <Border 
-                            Height="55" Width="260"
+                            Height="55" 
                             CornerRadius="10"
-                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Stretch">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -551,11 +557,10 @@
                     </Border>
 
                     <Border 
-                            Height="55" Width="260"
+                            Height="55" 
                             CornerRadius="10"
-                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Stretch">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -585,11 +590,10 @@
                     </Border>
 
                     <Border 
-                            Height="55" Width="260"
+                            Height="55" 
                             CornerRadius="10"
-                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Stretch">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -619,11 +623,10 @@
                     </Border>
 
                     <Border 
-                            Height="55" Width="260"
+                            Height="55"
                             CornerRadius="10"
-                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Stretch">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -653,11 +656,10 @@
                     </Border>
 
                     <Border 
-                            Height="55" Width="260"
+                            Height="55"
                             CornerRadius="10"
-                            Margin="0,5,0,0"
                             VerticalAlignment="Top"
-                            HorizontalAlignment="Left">
+                            HorizontalAlignment="Stretch">
 
                         <Border.Background>
                             <LinearGradientBrush StartPoint="0,0"
@@ -693,52 +695,50 @@
             </Grid>
 
 
-            <Grid Grid.Column="2" Grid.Row="2"
-                  Grid.RowSpan="2" Grid.ColumnSpan="3"
-                  Height="250"
-                  Width="370"
-                  HorizontalAlignment="Right"
-                  VerticalAlignment="Top"
-                  Margin="0,0,0,0">
+            <Grid Grid.Column="4" Grid.Row="1"
+                  Grid.RowSpan="3">
 
 
+                <StackPanel Orientation="Vertical">
 
-                <Grid Height="200"
-                      Width="330"
-                      HorizontalAlignment="Right"
-                      VerticalAlignment="Top"
-                      Margin="0,0,0,0">
+                        <Border 
+                                Background="White"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Stretch"
+                                BorderThickness="2"
+                                Opacity=".8"
+                                Margin="0,0,0,0"
+                                Height="190"
+                                CornerRadius="10"
+                                >
 
-                    <Border BorderBrush="Black"
-                            VerticalAlignment="Top"
-                            HorizontalAlignment="Right"
-                            BorderThickness="1"
-                            Margin="60,0,0,0"
-                            Height="155"
-                            Width="250">
-                        <Image
-                           Source="../EmbeddedResources/Images/Building.PNG"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Top"
-                           Margin="0,0,0,0">
-                        </Image>
-                    </Border>
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0"
+                                             EndPoint="1,2" Opacity=".6">
+                                <GradientStop Color="Black" Offset="0.0"/>
+                                <GradientStop Color="Black" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
 
-                    
+                        <Image  Source="../EmbeddedResources/Images/BUILDING.PNG"
+                                Margin="10,0,0,0"
+                                Opacity="0.8"/>
+
+                        </Border>
 
 
-                    <!--<Viewport3D
+                        <!--<Viewport3D
                         x:Name="ViewportBuildingPicto"
                         RenderOptions.BitmapScalingMode="HighQuality"
                         Focusable="True">-->
 
-                    <!--<ModelVisual3D x:Name="Model">
+                        <!--<ModelVisual3D x:Name="Model">
 
                         </ModelVisual3D>
 
                         -->
-                    <!-- Camera -->
-                    <!--
+                        <!-- Camera -->
+                        <!--
                         <Viewport3D.Camera>
                             <PerspectiveCamera x:Name="Camera"
                                Position="0,0,0"
@@ -752,23 +752,31 @@
                     </Viewport3D>-->
 
 
-                    <!--<Viewbox>
+                        <!--<Viewbox>
                         <Canvas Width="321" Height="201">
 
-                            --><!-- The Viewport3D provides a rendering surface for 3-D visual content. --><!--
+                            -->
+                        <!-- The Viewport3D provides a rendering surface for 3-D visual content. -->
+                        <!--
                             <Viewport3D ClipToBounds="True" Width="150" Height="150" Canvas.Left="98" Canvas.Top="21">
 
-                                --><!-- Defines the camera used to view the 3D object. --><!--
+                                -->
+                        <!-- Defines the camera used to view the 3D object. -->
+                        <!--
                                 <Viewport3D.Camera>
                                     <PerspectiveCamera Position="0,0,2" LookDirection="0,0,-1" FieldOfView="60" />
                                 </Viewport3D.Camera>
 
-                                --><!-- The ModelVisual3D children contain the 3D models --><!--
+                                -->
+                        <!-- The ModelVisual3D children contain the 3D models -->
+                        <!--
                                 <Viewport3D.Children>
 
-                                    --><!-- This ModelVisual3D defines the light cast in the scene. Without light, the 3D 
+                                    -->
+                        <!-- This ModelVisual3D defines the light cast in the scene. Without light, the 3D 
                  object cannot be seen. Also, the direction of the lights affect shadowing. If desired,
-                 you can create multiple lights with different colors that shine from different directions. --><!--
+                 you can create multiple lights with different colors that shine from different directions. -->
+                        <!--
                                     <ModelVisual3D>
                                         <ModelVisual3D.Content>
                                             <DirectionalLight Color="#FFFFFF" Direction="-0.612372,-0.5,-0.612372" />
@@ -778,7 +786,9 @@
                                         <ModelVisual3D.Content>
                                             <GeometryModel3D>
 
-                                                --><!-- The geometry specifies the shape of the 3D plane. In this sample, a flat sheet is created. --><!--
+                                                -->
+                        <!-- The geometry specifies the shape of the 3D plane. In this sample, a flat sheet is created. -->
+                        <!--
                                                 <GeometryModel3D.Geometry>
                                                     <MeshGeometry3D
                      TriangleIndices="0,1,2 3,4,5 "
@@ -787,8 +797,10 @@
                      Positions="-0.5,-0.5,0.5 0.5,-0.5,0.5 0.5,0.5,0.5 0.5,0.5,0.5 -0.5,0.5,0.5 -0.5,-0.5,0.5 " />
                                                 </GeometryModel3D.Geometry>
 
-                                                --><!-- The material specifies the material applied to the 3D object. In this sample a linear gradient 
-                       covers the surface of the 3D object.--><!--
+                                                -->
+                        <!-- The material specifies the material applied to the 3D object. In this sample a linear gradient 
+                       covers the surface of the 3D object.-->
+                        <!--
                                                 <GeometryModel3D.Material>
                                                     <MaterialGroup>
                                                         <DiffuseMaterial>
@@ -806,8 +818,10 @@
                                                     </MaterialGroup>
                                                 </GeometryModel3D.Material>
 
-                                                --><!-- Apply a transform to the object. In this sample, a rotation transform is applied, rendering the 
-                       3D object rotated. --><!--
+                                                -->
+                        <!-- Apply a transform to the object. In this sample, a rotation transform is applied, rendering the 
+                       3D object rotated. -->
+                        <!--
                                                 <GeometryModel3D.Transform>
                                                     <RotateTransform3D>
                                                         <RotateTransform3D.Rotation>
@@ -824,84 +838,298 @@
                         </Canvas>
                     </Viewbox>-->
 
-                </Grid>
-
-            </Grid>
 
 
 
-            <Grid 
-                  Grid.Column="2" Grid.Row="3"
-                  Grid.RowSpan="2" Grid.ColumnSpan="3"
-                  Height="250"
-                  Width="370"
-                  HorizontalAlignment="Right"
-                  VerticalAlignment="Top"
-                  Margin="0,40,0,0">
+                    <Border 
+                                Background="White"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Stretch"
+                                BorderThickness="2"
+                                Opacity=".8"
+                                Margin="0,4,0,0"
+                                Height="175"
+                                CornerRadius="10"
+                                >
+
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0"
+                                             EndPoint="1,2" Opacity=".6">
+                                <GradientStop Color="Black" Offset="0.0"/>
+                                <GradientStop Color="Black" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
+
+                        <Grid Margin="5,5,5,5"
+                          Background="Transparent"
+                          Height="160"
+                          >
+
+                            <TextBlock Text="Heat Map"
+                                   FontSize="12"
+                                   FontWeight="Normal">
+                            </TextBlock>
+
+                            <lvc:CartesianChart Grid.Row="1"
+                                            Margin="5,20,5,0"
+                                            DataTooltip="{x:Null}">
+                                <lvc:CartesianChart.Series>
+                                    <lvc:HeatSeries Values="{Binding Values}" DataLabels="False">
+                                        <lvc:HeatSeries.GradientStopCollection>
+                                            <GradientStop Offset="0" Color="#2F4F4F"></GradientStop>
+                                            <GradientStop Offset=".33" Color="#992F4F4F"></GradientStop>
+
+                                            <GradientStop Offset=".66" Color="#99CD5C5C"></GradientStop>
+                                            <GradientStop Offset="1" Color="#CD5C5C"></GradientStop>
+                                        </lvc:HeatSeries.GradientStopCollection>
+                                    </lvc:HeatSeries>
+                                </lvc:CartesianChart.Series>
+                                <lvc:CartesianChart.AxisX >
+                                    <lvc:Axis Labels="{Binding variants}" 
+                                              LabelsRotation="-15"
+                                              FontSize="9"
+                                              Foreground="Black"
+                                              FontWeight="Normal"
+                                              Opacity=".8">
+                                        <lvc:Axis.Separator>
+                                            <lvc:Separator Step="1">
+                                            </lvc:Separator>
+                                        </lvc:Axis.Separator>
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisX>
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis Labels="{Binding performanceIndicators}"
+                                              FontSize="9"
+                                              Foreground="Black"
+                                              FontWeight="Normal"
+                                              Opacity=".8">
+                                    </lvc:Axis>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
+              
+                        </Grid>
+
+                    </Border>
 
 
-                <Grid Margin="0,0,0,0">
 
-                    <lvc:CartesianChart x:Name="HeatMapRanking"
-                                        DataClick="HeatMapRanking_DataClick"
-                                        Hoverable="True"
-                                        Grid.Row="1" DataTooltip="{x:Null}"
+                    <Border 
+                                Background="White"
+                                VerticalAlignment="Top"
+                                HorizontalAlignment="Stretch"
+                                BorderThickness="2"
+                                Opacity=".8"
+                                Margin="0,5,0,0"
+                                Height="115"
+                                CornerRadius="10"
+                                >
+
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0"
+                                             EndPoint="1,2" Opacity=".6">
+                                <GradientStop Color="Black" Offset="0.0"/>
+                                <GradientStop Color="Black" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
+
+                        <Grid Margin="5,5,5,5">
+
+                            <StackPanel Orientation="Vertical">
+
+                                <TextBlock Text="Utility Analysis"
+                                   FontSize="12"
+                                   FontWeight="Normal"
+                                   Background="Transparent">
+                                </TextBlock>
+
+                                <StackPanel Orientation="Horizontal">
+
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="0,0,5,0">
+
+                                        <TextBlock  Text="Costs"
+                                                    FontSize="10"
+                                                    FontWeight="Normal"
+                                                    Background="Transparent">
+                                        </TextBlock>
+
+                                        <Slider 
+                                                    Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Center" 
+                                                    Value="1." Width="20" Margin="5,0,5,0"
+                                                    Minimum="1" Maximum="9"
+                                                    x:Name="SliderCosts" ValueChanged="SliderCosts_ValueChanged">
+                                        </Slider>
+
+                                        <TextBlock  x:Name="SliderCostsValue"
+                                                    Text="1"
+                                                    Foreground="Black"
+                                                    FontSize="10"
+                                                    FontWeight="Normal"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0,0,0,0">
+                                        </TextBlock>
+
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="0,0,5,0">
+
+                                        <TextBlock  Text="CO2"
+                                                    FontSize="10"
+                                                    FontWeight="Normal"
+                                                    Background="Transparent">
+                                        </TextBlock>
+
+                                        <Slider 
+                                                    Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Center" 
+                                                    Value="1." Width="20" Margin="5,0,5,0"
+                                                    Minimum="1" Maximum="9"
+                                                    x:Name="SliderCO2" ValueChanged="SliderCO2_ValueChanged">
+                                        </Slider>
+
+                                        <TextBlock  x:Name="SliderCO2Value"
+                                                    Text="1"
+                                                    Foreground="Black"
+                                                    FontSize="9"
+                                                    FontWeight="Normal"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0,0,0,0">
+                                        </TextBlock>
+
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal"
+                                                Margin="0,0,5,0">
+
+                                        <TextBlock  Text="Dis. Opt."
+                                                    FontSize="10"
+                                                    FontWeight="Normal"
+                                                    Background="Transparent">
+                                        </TextBlock>
+
+                                        <Slider 
+                                                    Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Center" 
+                                                    Value="1." Width="20" Margin="5,0,5,0"
+                                                    Minimum="1" Maximum="9"
+                                                    x:Name="SliderDisopt" ValueChanged="SliderDisopt_ValueChanged">
+                                        </Slider>
+
+                                        <TextBlock  x:Name="SliderDisoptValue"
+                                                    Text="1"
+                                                    Foreground="Black"
+                                                    FontSize="10"
+                                                    FontWeight="Normal"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0,0,0,0">
+                                        </TextBlock>
+
+                                    </StackPanel>
+
+                                    <StackPanel Orientation="Horizontal">
+
+                                        <TextBlock  Text="Area"
+                                                    FontSize="10"
+                                                    FontWeight="Normal"
+                                                    Background="Transparent">
+                                        </TextBlock>
+
+                                        <Slider 
+                                                    Style="{StaticResource Horizontal_Slider}" VerticalAlignment="Center" 
+                                                    Value="1." Width="20" Margin="5,0,5,0"
+                                                    Minimum="1" Maximum="9"
+                                                    x:Name="SliderArea" ValueChanged="SliderArea_ValueChanged">
+                                        </Slider>
+
+                                        <TextBlock  x:Name="SliderAreaValue"
+                                                    Text="1"
+                                                    Foreground="Black"
+                                                    FontSize="10"
+                                                    FontWeight="Normal"
+                                                    HorizontalAlignment="Left"
+                                                    VerticalAlignment="Center"
+                                                    Margin="0,0,0,0">
+                                        </TextBlock>
+
+                                    </StackPanel>
+                                    
+                                </StackPanel>
+
+                                <Grid>
+                                    <lvc:CartesianChart Name="Chart" 
+                                                        Height="70"
+                                                        Margin="1">
+                                        <lvc:CartesianChart.Series>
+                                            <lvc:LineSeries Values="{Binding ScoreValues}" LineSmoothness="0" StrokeThickness="1" 
+                                                            DataLabels="True" FontSize="4" Foreground="#6B303030"
+                                                            Stroke="Black" Fill="Transparent" PointGeometrySize="0"/>
+                                        </lvc:CartesianChart.Series>
                                         
-                                        >
-                        <lvc:CartesianChart.Series>
-                            <lvc:HeatSeries Values="{Binding Values}" DataLabels="False" >
+                                        <lvc:CartesianChart.AxisX>
+                                            <lvc:Axis IsEnabled="True" 
+                                                      ShowLabels="True"
+                                                      Labels="{Binding variants}" 
+                                                      FontSize="8">
 
-                                <!--
-                    The GradientStopCollection is optional to define a custom gradient
-                    If this property is not specified, LiveCharts will set a gradient
-                    -->
+                                                <lvc:Axis.Separator>
+                                                    <lvc:Separator Step="1">
+                                                    </lvc:Separator>
+                                                </lvc:Axis.Separator>
 
-                                <lvc:HeatSeries.GradientStopCollection>
-                                    <GradientStop Offset="0" Color="DarkSlateGray"></GradientStop>
-                                   
-                                    <GradientStop Offset=".2" Color="#992F4F4F"></GradientStop>
-                                    
-                                    <GradientStop Offset=".4" Color="DarkSeaGreen"></GradientStop>
-                                    
-                                    <GradientStop Offset=".6" Color="#998FBC8F"></GradientStop>
-                                    
-                                    <GradientStop Offset=".8" Color="#99CD5C5C"></GradientStop>
+                                            </lvc:Axis>
 
-                                    <GradientStop Offset="1" Color="#CD5C5C"></GradientStop>
-                                </lvc:HeatSeries.GradientStopCollection>
-                            </lvc:HeatSeries>
-                        </lvc:CartesianChart.Series>
-                        <lvc:CartesianChart.AxisX >
-                            <lvc:Axis Labels="{Binding variants}" 
-                                      LabelsRotation="-15"
-                                      Foreground="Black"
-                                      FontWeight="Light"
-                                      >
-                                <lvc:Axis.Separator>
-                                    <lvc:Separator Step="1"></lvc:Separator>
-                                </lvc:Axis.Separator>
-                            </lvc:Axis>
-                        </lvc:CartesianChart.AxisX>
-                        <lvc:CartesianChart.AxisY>
-                            <lvc:Axis Labels="{Binding performanceIndicators}"
-                                      Foreground="Black"
-                                      FontWeight="Light"></lvc:Axis>
-                        </lvc:CartesianChart.AxisY>
-                    </lvc:CartesianChart>
+                                        </lvc:CartesianChart.AxisX>
+                                        
+                                        <lvc:CartesianChart.AxisY>
+                                            <lvc:Axis Foreground="White" FontSize="4">
+                                                <lvc:Axis.Separator>
+                                                    <lvc:Separator StrokeThickness="1" Stroke="#8EFFFFFF" StrokeDashArray="2" Step="1" />
+                                                </lvc:Axis.Separator>
+                                            </lvc:Axis>
+                                        </lvc:CartesianChart.AxisY>
+                                        
+                                    </lvc:CartesianChart>
 
 
-                    <!--<lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Bottom">
-                        <lvc:CartesianChart.AxisY>
-                            <lvc:Axis Title="Sales" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
-                        </lvc:CartesianChart.AxisY>
-                        <lvc:CartesianChart.AxisX>
-                            <lvc:Axis Title="Month" Labels="{Binding Labels}"></lvc:Axis>
-                        </lvc:CartesianChart.AxisX>
-                    </lvc:CartesianChart>-->
+                                </Grid>
+                                
+                                
 
-                </Grid>
+                            </StackPanel>
 
+                        </Grid>
+
+                    </Border>
+
+
+
+
+
+
+                    
+
+                    
+                    
+
+
+                </StackPanel>
+                
             </Grid>
+            
+            
+            
+            
+            
+
+
+ 
+
+
+         
+
+            
 
 
 

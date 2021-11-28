@@ -221,7 +221,17 @@
     </Window.Resources>
 
     <Border Background="WhiteSmoke"
-            CornerRadius="20">
+            CornerRadius="20"
+            BorderThickness="1"
+            >
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,2" Opacity=".3">
+                <GradientStop Color="Black" Offset="0.0"/>
+                <GradientStop Color="Black" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+
+
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="50"/>

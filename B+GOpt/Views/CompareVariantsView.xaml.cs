@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ using System.Windows.Shapes;
 using B_GOpt.Classes;
 using LiveCharts;
 using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 using Microsoft.Win32;
 using Rhino;
 
@@ -26,12 +28,19 @@ namespace B_GOpt.Views
     /// <summary>
     /// Interaction logic for CompareVariantsView.xaml
     /// </summary>
-    public partial class CompareVariantsView : Window
+    public partial class CompareVariantsView : Window, INotifyPropertyChanged
     {
 
+        //HeatMap
         public ChartValues<HeatPoint> Values { get; set; }
         public string[] performanceIndicators { get; set; }
         public string[] variants { get; set; }
+
+
+        //Score ranking
+        public ChartValues<ObservableValue> ScoreValues { get; set; }
+
+
 
         readonly string fileName = "BuildingVariants.txt";
 
@@ -188,10 +197,10 @@ namespace B_GOpt.Views
 
             performanceIndicators = new[]
             {
-                "Surface Area",
-                "Disassembly options",
+                "Area",
+                "Dis. Opt.",
                 "Costs",
-                "Embodied Carbon"
+                "Emb. CO" + ("\u2082")
             };
 
             variants = new[]
@@ -206,9 +215,53 @@ namespace B_GOpt.Views
                 "Var 8"
             };
 
+
+            //new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
+            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
+            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
+            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
+            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
+            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
+            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0)),
+            //            new ObservableValue(r.Next(1, 9) * Math.Round(SliderCO2.Value, 0) * Math.Round(SliderCosts.Value, 0) * Math.Round(SliderArea.Value, 0) * Math.Round(SliderDisopt.Value, 0))
+
+
+
+
+            //Score diagram
+
+
+            ScoreValuesSeries = new SeriesCollection
+            {
+                new LineSeries
+                {
+                     ScoreValues = new ChartValues<ObservableValue>
+                     {
+                        new ObservableValue(1),
+                        new ObservableValue(4),
+                        new ObservableValue(5),
+                        new ObservableValue(13),
+                        new ObservableValue(7),
+                        new ObservableValue(4),
+                        new ObservableValue(7),
+                        new ObservableValue(2)
+                     }
+                }
+            };
+
+
             DataContext = this;
         }
-        
+
+        public SeriesCollection ScoreValuesSeries { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -274,5 +327,39 @@ namespace B_GOpt.Views
 
         }
 
+
+
+
+        private void SliderCosts_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (SliderCostsValue != null)
+            {
+                SliderCostsValue.Text = Math.Round(SliderCosts.Value, 0).ToString();
+            }
+        }
+
+        private void SliderCO2_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (SliderCO2Value != null)
+            {
+                SliderCO2Value.Text = Math.Round(SliderCO2.Value, 0).ToString();
+            }
+        }
+
+        private void SliderDisopt_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (SliderDisoptValue != null)
+            {
+                SliderDisoptValue.Text = Math.Round(SliderDisopt.Value, 0).ToString();
+            }
+        }
+
+        private void SliderArea_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (SliderAreaValue != null)
+            {
+                SliderAreaValue.Text = Math.Round(SliderArea.Value, 0).ToString();
+            }
+        }
     }
 }

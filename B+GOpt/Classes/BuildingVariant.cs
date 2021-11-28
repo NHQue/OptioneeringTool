@@ -44,16 +44,14 @@ namespace B_GOpt.Classes
 
         }
 
-        public BuildingVariant(Brep brep, int index, string material, string definedstructSystem, double embodiedCO2,
+        public BuildingVariant(Brep brep, string material, string definedstructSystem, double embodiedCO2,
                                double actXSpac, double actYSpac, double costs, double surfaceArea, double weight)
         {
             Brep = brep;
-            Index = index;
             Material = material;
             DefinedStructSystem = definedstructSystem;
             ActXSpac = actXSpac*100;
             ActYSpac = actYSpac*100;
-            Grid = String.Format($"{actXSpac} x {actYSpac}"); 
             EmbodiedCO2 = embodiedCO2;
             Costs = costs;
             SurfaceArea = surfaceArea;
@@ -74,10 +72,19 @@ namespace B_GOpt.Classes
         /// This method prints the information of the class's object seperated by values to save it in the text file 
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
+        public string ToTextFile()
         {
             return String.Format($"{Material},{DefinedStructSystem},{ActXSpac},{ActYSpac},{EmbodiedCO2},{Costs},{SurfaceArea},{Weight}");
         }
+
+
+        public string ToTextFile1()
+        {
+            return String.Format($"Material: {Material}, StructSystem: {DefinedStructSystem}, XSpan: {ActXSpac}, YSpan: {ActYSpac}, Carbon: {EmbodiedCO2}, Costs: {Costs}, Area: {SurfaceArea}, Weight{Weight}");
+        }
+
+
+
 
         /// <summary>
         /// This method prints the information of the class's object to visualize it in the UI TextBlocks
@@ -85,9 +92,9 @@ namespace B_GOpt.Classes
         /// <returns></returns>
         public string ToResult()
         {
-            return String.Format($"Material: {Material}, System: {DefinedStructSystem}, Grid: {ActXSpac/100}  m x {ActYSpac/100} m ," + System.Environment.NewLine + 
-                                 $"Embodied Carbon: {EmbodiedCO2}" + $" kg CO" + ("\u2082") + $"e" + $", Costs: {Costs} EUR," + System.Environment.NewLine + 
-                                 $"Surface Area: {SurfaceArea}" + $" m" + ($"\u00B2") + $", Weight: {Weight} t");
+            return String.Format($"Material: {Material}, System: {DefinedStructSystem}, Grid: {ActXSpac/100} x {ActYSpac/100} m ," + $"Costs: {Math.Round(Costs/1000000, 3)} m. EUR," + System.Environment.NewLine +
+                                 $"Embodied CO" + ("\u2082") + $": {EmbodiedCO2}" + " kg CO" + ("\u2082") + $"e, Surface Area: {SurfaceArea} m" + ("\u00B2") + $", Weight: {Weight} t");
+
         }
     }
 }
