@@ -572,16 +572,57 @@ namespace B_GOpt.Classes
 
 
 
-        public static void BaseStructGrid(string material, Brep building, double actXSpac , double actYSpac, RhinoDoc doc)
+        /// <summary>
+        /// This method checks if a structure has primary beams
+        /// </summary>
+        /// <param name="material"></param>
+        /// <param name="structSystem"></param>
+        /// <returns></returns>
+        public static bool HasPrimBeam(string material, string structSystem)
         {
-      
-
-
-
+            if (material == "Concrete" && structSystem == "Plate")
+                return false;
+            else
+                return true;
         }
 
 
-
-
+        /// <summary>
+        /// This method checks if a structure has secondary beams
+        /// </summary>
+        /// <param name="material"></param>
+        /// <param name="structSystem"></param>
+        /// <returns></returns>
+        public static bool HasSecBeam(string material, string structSystem)
+        {
+            if (material == "Concrete")
+            {
+                return false;
+            }
+            else if (material == "Steel")
+            {
+                return true;
+            }
+            else if (material == "Timber")
+            {
+                if (structSystem == "Plate")
+                {
+                    return false;
+                }
+                else
+                    return true;
+            }
+            else if (material == "Hybrid")
+            {
+                if (structSystem == "Plate")
+                {
+                    return false;
+                }
+                else
+                    return true;
+            }
+            else
+                return false;
+        }
     }
 }

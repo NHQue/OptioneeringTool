@@ -49,6 +49,7 @@ namespace B_GOpt.Views
         double totalLoad;
         string material;
         string structSystem;
+        string primaryDir;
 
         public double actXSpac;
         public double actYSpac;
@@ -81,9 +82,13 @@ namespace B_GOpt.Views
 
             docform = doc;
 
+
             //Prompt project name
-            string projectName = RhinoDoc.ActiveDoc.Name;
-            TextBlockProject.Text = "Project: " + projectName.Substring(projectName.Length - 3);
+            string rhinoDocName = RhinoDoc.ActiveDoc.Name;
+            string projectName = System.IO.Path.GetFileNameWithoutExtension(rhinoDocName);
+
+            TextBlockProject.Text = "Project: " + projectName;
+
 
             //Clear textfile
             string filePath = System.IO.Path.Combine(Environment.CurrentDirectory, fileName);
@@ -153,91 +158,6 @@ namespace B_GOpt.Views
                             + "(" + (Math.Round(chartPoint.Participation, 3) * 100).ToString() + "% of the building's structure)");
         }
 
-
-
-        #region Update sliders
-        private void SliderLoad_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (SliderLoadValue != null)
-            {
-                SliderLoadValue.Text = Math.Round(SliderLoad.Value, 1).ToString() + " kN/m²";
-            }
-        }
-
-        private void SliderFloorHeight_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (SliderFloorHeightValue != null)
-            {
-                SliderFloorHeightValue.Text = Math.Round(SliderFloorHeight.Value, 2).ToString() + " m";
-            }
-        }
-
-        private void SliderXSpac_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (SliderXSpacValue != null)
-            {
-                SliderXSpacValue.Text = Math.Round(SliderXSpac.Value, 2).ToString() + " m";
-            }
-        }
-
-        private void SliderYSpac_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (SliderYSpacValue != null)
-            {
-                SliderYSpacValue.Text = Math.Round(SliderYSpac.Value, 2).ToString() + " m";
-            }
-        }
-
-        private void SliderDistance_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            if (SliderDistanceValue != null)
-            {
-                SliderDistanceValue.Text = Math.Round(SliderDistance.Value, 2).ToString() + " m";
-            }
-        }
-        #endregion
-
-
-
-
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                DragMove();
-            }
-        }
-
-        private void ButtonMinimize_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.MainWindow.WindowState = WindowState.Minimized;
-        }
-
-        private void ButtonClose_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-
-
-        private void ButtonCompareVariants_Click(object sender, RoutedEventArgs e)
-        {
-            //Open window
-            //-------------------------------------------------------------------------------------------------------------
-
-            //var dialog = new Views.SampleCsWpfDialog();
-            //dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
-            //dialog.ShowDialog();
-
-            var dialogCompare = new Views.CompareVariantsView();
-            //dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
-            //dialog.ShowDialog();
-
-            new System.Windows.Interop.WindowInteropHelper(dialogCompare).Owner = Rhino.RhinoApp.MainWindowHandle();
-            WindowInteropHelper wih = new WindowInteropHelper(dialogCompare);
-            wih.Owner = Rhino.RhinoApp.MainWindowHandle();
-            dialogCompare.Show();
-        }
 
         private void ButtonCalculate_Click(object sender, RoutedEventArgs e)
         {
@@ -406,7 +326,7 @@ namespace B_GOpt.Views
                     crossSectionSlab = 1;
                 }
 
-                RhinoApp.WriteLine("SlabHeight: " + crossSectionSlab + " [m]");
+                //RhinoApp.WriteLine("SlabHeight: " + crossSectionSlab + " [m]");
 
 
                 //Calculating total load
@@ -426,18 +346,29 @@ namespace B_GOpt.Views
 
                     secondaryBeamLines = StructGrid.SecondaryBeams(bBox, actXSpac, actYSpac, yGridLines, xGridLines, beamDistance, docform);
 
+
+                    //These int lines are only for outer Column creation
+                    RhinoList<Rhino.Geometry.Line> xIntLinesOutCol = StructGrid.XIntLines(xGridLines, slabEdgeCurves[i], docform);
+                    RhinoList<Rhino.Geometry.Line> yIntLinesOutCol = StructGrid.YIntLines(yGridLines, slabEdgeCurves[i], docform);
+
+
                     if (structSystem == "Beam" )
                     {
                         if (actXSpac < actYSpac)
                         {
+                            primaryDir = "YDir";
                             xGridLines.AddRange(secondaryBeamLines);
                         }
                         else
+                        {
+                            primaryDir = "XDir";
                             yGridLines.AddRange(secondaryBeamLines);
+                        }
                     }
 
                     RhinoList<Rhino.Geometry.Line> xIntLines = StructGrid.XIntLines(xGridLines, slabEdgeCurves[i], docform);
                     RhinoList<Rhino.Geometry.Line> yIntLines = StructGrid.YIntLines(yGridLines, slabEdgeCurves[i], docform);
+
 
                     //xBeams as SingleSpanBeams, yBeams as ContinousBeams
                     if (actXSpac < actYSpac)
@@ -453,7 +384,7 @@ namespace B_GOpt.Views
                                 if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(xBeamsIt[j]);
-                                    Beam xBeam = new Beam(lineCurve, "Secondary", i, totalLoad, actYSpac);
+                                    Beam xBeam = new Beam(lineCurve, "Secondary", i, totalLoad, actYSpac, 0);
                                     beamsInXDir.Add(xBeam);
 
                                     xBeams.Add(intersectedLines[k]);
@@ -470,7 +401,7 @@ namespace B_GOpt.Views
                                 if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(yIntLines[j]);
-                                    Beam yBeam = new Beam(lineCurve, "Primary", i, totalLoad, actXSpac);
+                                    Beam yBeam = new Beam(lineCurve, "Primary", i, totalLoad, actXSpac, 0);
                                     beamsInYDir.Add(yBeam);
 
                                     yBeams.Add(intersectedLines[k]);
@@ -507,7 +438,7 @@ namespace B_GOpt.Views
                                 if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(intersectedLines[k]);
-                                    Beam xBeam = new Beam(lineCurve, "Primary", i, totalLoad, actXSpac);
+                                    Beam xBeam = new Beam(lineCurve, "Primary", i, totalLoad, actXSpac, 0);
                                     beamsInXDir.Add(xBeam);
 
                                     xBeams.Add(intersectedLines[k]);
@@ -526,7 +457,7 @@ namespace B_GOpt.Views
                                 if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(yBeamsIt[j]);
-                                    Beam yBeam = new Beam(lineCurve, "Secondary", i, totalLoad, actYSpac);
+                                    Beam yBeam = new Beam(lineCurve, "Secondary", i, totalLoad, actYSpac, 0);
                                     beamsInYDir.Add(yBeam);
 
                                     yBeams.Add(intersectedLines[k]);
@@ -554,11 +485,11 @@ namespace B_GOpt.Views
 
 
                     //OuterColumns
-                    List<Rhino.Geometry.Line> outerColumnsIt = StructGrid.OuterColumns(xIntLines, yIntLines, actFloorHeight, docform);
+                    List<Rhino.Geometry.Line> outerColumnsIt = StructGrid.OuterColumns(xIntLinesOutCol, yIntLinesOutCol, actFloorHeight, docform);
                     for (int j = 0; j < outerColumnsIt.Count; j++)
                     {
                         LineCurve lineCurve = new LineCurve(outerColumnsIt[j]);
-                        Column col = new Column(lineCurve, i, nStorey, totalLoad, actXSpac, actYSpac, 0);
+                        Column col = new Column(lineCurve, i, nStorey, totalLoad/2, actXSpac, actYSpac, 0);
                         outerCol.Add(col);
 
                         outerColumns.Add(outerColumnsIt[j]);
@@ -569,7 +500,7 @@ namespace B_GOpt.Views
                     for (int j = 0; j < edgeColumnsIt.Count; j++)
                     {
                         LineCurve lineCurve = new LineCurve(edgeColumnsIt[j]);
-                        Column col = new Column(lineCurve, i, nStorey, totalLoad, actXSpac, actYSpac, 0);
+                        Column col = new Column(lineCurve, i, nStorey, totalLoad/2, actXSpac, actYSpac, 0);
                         edgeCol.Add(col);
 
                         edgeColumns.Add(edgeColumnsIt[j]);
@@ -592,27 +523,63 @@ namespace B_GOpt.Views
                 //Adds the elements to the Rhino Document
                 //--------------------------------------------------------------------------------------
 
-                #region Adding to RhinoDoc Region
-                Layer layerXBeams = MyFunctions.SetLayer(docform, "XBeams", System.Drawing.Color.Salmon);
-                layers.Add(layerXBeams);
+                #region REGION: Adding to RhinoDoc 
 
-                //for (int i = 0; i < xBeams.Count; i++)
-                //{
-                //    docform.Objects.AddLine(xBeams[i]);
-                //}
+                Layer layerPrimaryBeams = MyFunctions.SetLayer(docform, "PrimaryBeams", System.Drawing.Color.Salmon);
+                layers.Add(layerPrimaryBeams);
 
-                Layer layerYBeams = MyFunctions.SetLayer(docform, "YBeams", System.Drawing.Color.IndianRed);
-                layers.Add(layerYBeams);
+                if (StructGrid.HasPrimBeam(material, structSystem))
+                {
+                    if (primaryDir == "XDir")
+                    {
+                        for (int i = 0; i < xBeams.Count; i++)
+                        {
+                            docform.Objects.AddLine(xBeams[i]);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < yBeams.Count; i++)
+                        {
+                            docform.Objects.AddLine(yBeams[i]);
+                        }
+                    }
+                }
 
-                //for (int i = 0; i < yBeams.Count; i++)
-                //{
-                //    docform.Objects.AddLine(yBeams[i]);
-                //}
 
-                //for (int i = 0; i < edgeBeams.Count; i++)
-                //{
-                //    docform.Objects.AddCurve(edgeBeams[i]);
-                //}
+                Layer layerSecondaryBeams = MyFunctions.SetLayer(docform, "SecondaryBeams", System.Drawing.Color.Salmon);
+                layers.Add(layerSecondaryBeams);
+
+                if (StructGrid.HasSecBeam(material, structSystem))
+                {
+                    if (primaryDir != "XDir")
+                    {
+                        for (int i = 0; i < xBeams.Count; i++)
+                        {
+                            docform.Objects.AddLine(xBeams[i]);
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < yBeams.Count; i++)
+                        {
+                            docform.Objects.AddLine(yBeams[i]);
+                        }
+                    }
+                }
+
+
+                Layer layerEdgeBeams = MyFunctions.SetLayer(docform, "SecondaryBeams", System.Drawing.Color.Tomato);
+                layers.Add(layerEdgeBeams);
+
+                if (material != "Concrete" && structSystem != "Plate")
+                {
+                    for (int i = 0; i < edgeBeams.Count; i++)
+                    {
+                        docform.Objects.AddCurve(edgeBeams[i]);
+                    }
+                }
+
 
                 Layer layerOuterColumn = MyFunctions.SetLayer(docform, "OuterColumn", System.Drawing.Color.Cyan);
                 layers.Add(layerOuterColumn);
@@ -653,8 +620,8 @@ namespace B_GOpt.Views
                     docform.Objects.AddBrep(floorSlabs[i]);
                 }
 
-                Layer layerCore = MyFunctions.SetLayer(docform, "Core", System.Drawing.Color.DarkKhaki);
-                layers.Add(layerCore);
+                Layer layerCoreWalls = MyFunctions.SetLayer(docform, "CoreWalls", System.Drawing.Color.DarkKhaki);
+                layers.Add(layerCoreWalls);
 
                 for (int i = 0; i < coreBreps.Count; i++)
                 {
@@ -670,6 +637,7 @@ namespace B_GOpt.Views
                 //{
                 //    docform.Objects.AddCurve(beamsInYDir[i].ToNurbsCurve());
                 //}
+
                 #endregion
 
 
@@ -741,6 +709,45 @@ namespace B_GOpt.Views
                 //Core walls
                 double crossSectionCoreWall = PreDim.CoreWalls();
 
+                //Primary Beams
+                if (StructGrid.HasPrimBeam(material, structSystem))
+                {
+                    if (actXSpac < actYSpac)
+                    {
+                        for (int i = 0; i < beamsInXDir.Count; i++)
+                        {
+                            beamsInXDir[i].Area = PreDim.Beam(material, beamsInXDir[i].Load, beamsInXDir[i].Length);
+                        }
+                    }
+                    else
+                        for (int i = 0; i < beamsInXDir.Count; i++)
+                        {
+                            beamsInYDir[i].Area = PreDim.Beam(material, beamsInXDir[i].Load, beamsInXDir[i].Length);
+                        }
+                }
+
+                //Secondary Beams
+                if (StructGrid.HasSecBeam(material, structSystem))
+                {
+                    if (actXSpac < actYSpac)
+                    {
+                        for (int i = 0; i < beamsInXDir.Count; i++)
+                        {
+                            beamsInXDir[i].Area = PreDim.Beam(material, beamsInXDir[i].Load, beamsInXDir[i].Length);
+                        }
+                    }
+                    else
+                        for (int i = 0; i < beamsInXDir.Count; i++)
+                        {
+                            beamsInYDir[i].Area = PreDim.Beam(material, beamsInXDir[i].Load, beamsInXDir[i].Length);
+                        }
+                }
+
+                RhinoApp.WriteLine($"Slab Dimension: {crossSectionSlab}, Floor Plate Dimension: {crossSectionGroundSlab}, " +
+                                   $"Column Dimension (inner, base floor): {innerCol[1].Area}, Column Dimension(outer, base floor): { innerCol[1].Area}," + 
+                                   $"X Beam dimension: {beamsInXDir[1].Area}, Y Beam dimension: { beamsInYDir[1].Area}");
+
+
 
 
 
@@ -779,6 +786,16 @@ namespace B_GOpt.Views
                 }
                 double colMass = innerColMass + outerColMass + edgeColMass;
 
+                for (int i = 0; i < beamsInXDir.Count; i++)
+                {
+                    beamMass = beamMass + beamsInXDir[i].Area * beamsInXDir[i].Length;
+                }
+
+                for (int i = 0; i < beamsInYDir.Count; i++)
+                {
+                    beamMass = beamMass + beamsInYDir[i].Area * beamsInYDir[i].Length;
+                }
+
                 double coreArea = 0;
                 for (int i = 0; i < coreBreps.Count; i++)
                 {
@@ -804,16 +821,18 @@ namespace B_GOpt.Views
 
                 valueEmbodiedCO2Slabs.Value = Math.Round((LCACalculation.CalculateLCA(slabMass, material) + reinfCarbon[0]), 0);
                 valueEmbodiedCO2Col.Value = Math.Round((LCACalculation.CalculateLCA(colMass, material) + reinfCarbon[1]), 0);
-                valueEmbodiedCO2Beams.Value = 0;
+                valueEmbodiedCO2Beams.Value = Math.Round(LCACalculation.CalculateLCA(beamMass, material), 0);
+
                 valueEmbodiedCO2Cores.Value = Math.Round((LCACalculation.CalculateLCA(coreMass, material) + reinfCarbon[3]), 0);
                 valueEmbodiedCO2Foundations.Value = Math.Round((LCACalculation.CalculateLCA(foundationMass, material) + reinfCarbon[4]), 0);
 
                 embodiedCO2Total = valueEmbodiedCO2Slabs.Value + valueEmbodiedCO2Col.Value + valueEmbodiedCO2Beams.Value + 
                                    valueEmbodiedCO2Foundations.Value + valueEmbodiedCO2Cores.Value;
 
+                
 
-                RhinoApp.WriteLine($"Reinforcement Mass: Slabs {reinfMass[0]} m3, Columns {reinfMass[1]} m3, Beams {reinfMass[2]} m3, Cores {reinfMass[3]} m3, Foundations {reinfMass[4]} m3");
-                RhinoApp.WriteLine($"Reinforcement Carbon: Slabs {reinfCarbon[0]} kg, Columns {reinfCarbon[1]} kg, Beams {reinfCarbon[2]} kg, Cores {reinfCarbon[3]} kg, Foundations {reinfCarbon[4]} kg");
+                RhinoApp.WriteLine($"Reinforcement Mass: Slabs {Math.Round(reinfMass[0]), 1} m3, Columns {Math.Round(reinfMass[1], 1)} m3, Beams {Math.Round(reinfMass[2], 1)} m3, Cores {Math.Round(reinfMass[3], 1)} m3, Foundations {Math.Round(reinfMass[4], 1)} m3");
+                RhinoApp.WriteLine($"Reinforcement Carbon: Slabs {Math.Round(reinfCarbon[0], 0)} kg, Columns {Math.Round(reinfCarbon[1], 0)} kg, Beams {Math.Round(reinfCarbon[2], 0)} kg, Cores {Math.Round(reinfCarbon[3], 0)} kg, Foundations {Math.Round(reinfCarbon[4], 0)} kg");
 
 
 
@@ -923,9 +942,81 @@ namespace B_GOpt.Views
         }
 
 
+        private void ButtonClearValues_Click(object sender, RoutedEventArgs e)
+        {
+            //Reset the dashboard
+            //-----------------------------------------------------------------------------------------------------------------
+            TextBlockBuildingProps.Text = "";
+            TextBlockBuildingPropsTitle.Text = "";
+            TextBlockClearFloorHeightValue.Text = "-";
+            TextBlockCostsValue.Text = "-";
+            TextBlockEmbodiedCO2Value.Text = "-";
+            TextBlockFarValue.Text = "-";
+            TextBlockSurfaceAreaValue.Text = "-";
+            TextBlockWeightValue.Text = "-";
 
 
-        #region Checked status of different Material Buttons
+            valueEmbodiedCO2Slabs.Value = 0;
+            valueEmbodiedCO2Col.Value = 0;
+            valueEmbodiedCO2Beams.Value = 0;
+            valueEmbodiedCO2Foundations.Value = 0;
+            valueEmbodiedCO2Cores.Value = 0;
+
+            embodiedCO2Total = 0;
+            surfaceArea = 0;
+            far = 0;
+
+
+            //Clear all layers and lists
+            //-----------------------------------------------------------------------------------------------------------------
+
+            Layer layerDefault = MyFunctions.SetLayer(docform, "DefaultLayer", System.Drawing.Color.Black);
+
+            for (int i = 0; i < layers.Count; i++)
+            {
+                RhinoDoc.ActiveDoc.Layers.Purge(layers[i].Id, true);
+            }
+
+
+            //Show selected objects (building geometry and cores) back to normal
+            //-----------------------------------------------------------------------------------------------------------------
+
+            for (int i = 0; i < ids.Count; i++)
+            {
+                RhinoDoc.ActiveDoc.Objects.Show(ids[i], true);
+            }
+
+
+            //Show selected objects (building geometry and cores) back to normal
+            //-----------------------------------------------------------------------------------------------------------------
+
+            Rhino.Display.DisplayModeDescription wireframe = Rhino.Display.DisplayModeDescription.FindByName("Wireframe");
+            Rhino.RhinoDoc.ActiveDoc.Views.ActiveView.ActiveViewport.DisplayMode = wireframe;
+        }
+
+        private void ButtonCompareVariants_Click(object sender, RoutedEventArgs e)
+        {
+            //Open window
+            //-------------------------------------------------------------------------------------------------------------
+
+            //var dialog = new Views.SampleCsWpfDialog();
+            //dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
+            //dialog.ShowDialog();
+
+            var dialogCompare = new Views.CompareVariantsView();
+            //dialog.ShowSemiModal(RhinoApp.MainWindowHandle());
+            //dialog.ShowDialog();
+
+            new System.Windows.Interop.WindowInteropHelper(dialogCompare).Owner = Rhino.RhinoApp.MainWindowHandle();
+            WindowInteropHelper wih = new WindowInteropHelper(dialogCompare);
+            wih.Owner = Rhino.RhinoApp.MainWindowHandle();
+            dialogCompare.Show();
+        }
+
+
+
+
+        #region REGION: Checked status of different Material Buttons
         private void RadioButtonSteelMat_Checked(object sender, RoutedEventArgs e)
         {
             material = "Steel";
@@ -1006,54 +1097,72 @@ namespace B_GOpt.Views
             RhinoApp.WriteLine(path);
         }
 
-        private void ButtonClearValues_Click(object sender, RoutedEventArgs e)
+
+        #region REGION: Update sliders
+        private void SliderLoad_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            //Reset the dashboard
-            //-----------------------------------------------------------------------------------------------------------------
-            TextBlockBuildingProps.Text = "";
-            TextBlockBuildingPropsTitle.Text = "";
-            TextBlockClearFloorHeightValue.Text = "-";
-            TextBlockCostsValue.Text = "-";
-            TextBlockEmbodiedCO2Value.Text = "-";
-            TextBlockFarValue.Text = "-";
-            TextBlockSurfaceAreaValue.Text = "-";
-            TextBlockWeightValue.Text = "-";
-
-
-            valueEmbodiedCO2Slabs.Value = 0;
-            valueEmbodiedCO2Col.Value = 0;
-            valueEmbodiedCO2Beams.Value = 0;
-            valueEmbodiedCO2Foundations.Value = 0;
-            valueEmbodiedCO2Cores.Value = 0;
-
-            embodiedCO2Total = 0;
-            surfaceArea = 0;
-            far = 0;
-
-
-            //Clear all layers and lists
-            //-----------------------------------------------------------------------------------------------------------------
-            for (int i = 0; i < layers.Count; i++)
+            if (SliderLoadValue != null)
             {
-                RhinoDoc.ActiveDoc.Layers.Purge(layers[i].Id, true);
+                SliderLoadValue.Text = Math.Round(SliderLoad.Value, 1).ToString() + " kN/m²";
             }
-
-
-            //Show selected objects (building geometry and cores) back to normal
-            //-----------------------------------------------------------------------------------------------------------------
-
-            for (int i = 0; i < ids.Count; i++)
-            {
-                RhinoDoc.ActiveDoc.Objects.Show(ids[i], true);
-            }
-
-
-            //Show selected objects (building geometry and cores) back to normal
-            //-----------------------------------------------------------------------------------------------------------------
-
-            Rhino.Display.DisplayModeDescription wireframe = Rhino.Display.DisplayModeDescription.FindByName("Wireframe");
-            Rhino.RhinoDoc.ActiveDoc.Views.ActiveView.ActiveViewport.DisplayMode = wireframe;
         }
+
+        private void SliderFloorHeight_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (SliderFloorHeightValue != null)
+            {
+                SliderFloorHeightValue.Text = Math.Round(SliderFloorHeight.Value, 2).ToString() + " m";
+            }
+        }
+
+        private void SliderXSpac_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (SliderXSpacValue != null)
+            {
+                SliderXSpacValue.Text = Math.Round(SliderXSpac.Value, 2).ToString() + " m";
+            }
+        }
+
+        private void SliderYSpac_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (SliderYSpacValue != null)
+            {
+                SliderYSpacValue.Text = Math.Round(SliderYSpac.Value, 2).ToString() + " m";
+            }
+        }
+
+        private void SliderDistance_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (SliderDistanceValue != null)
+            {
+                SliderDistanceValue.Text = Math.Round(SliderDistance.Value, 2).ToString() + " m";
+            }
+        }
+        #endregion
+
+
+
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
+
+        private void ButtonMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.MainWindow.WindowState = WindowState.Minimized;
+        }
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+
+
 
     }
 }

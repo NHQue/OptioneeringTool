@@ -24,9 +24,11 @@ namespace B_GOpt.Classes
 
         public int Storey { get; set; }
 
-        private double Load { get; set; }
+        public double Load { get; set; }
 
-        private string CrossSection { get; set; }
+        public string CrossSection { get; set; }
+
+        public double Area { get; set; }
 
 
         //Constructors
@@ -36,13 +38,14 @@ namespace B_GOpt.Classes
 
         }
 
-        public Beam(LineCurve lineCurve, string type, int storey, double load, double loadedLength)
+        public Beam(LineCurve lineCurve, string type, int storey, double load, double loadedLength, double area)
         {
             LineCurve = lineCurve;
             Length = lineCurve.GetLength();
             Type = type;
             Storey = storey;
             Load = load * loadedLength;     // kN/m
+            Area = area; 
         }
 
 
