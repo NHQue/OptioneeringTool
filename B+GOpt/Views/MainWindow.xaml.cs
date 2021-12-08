@@ -197,6 +197,12 @@ namespace B_GOpt.Views
                 int nspacX = Convert.ToInt32(Math.Floor(buildingGeom.BuildingLength(brep) / valueSpacX));
                 int nspacY = Convert.ToInt32(Math.Floor(buildingGeom.BuildingWidth(brep) / valueSpacY));
 
+                if (actXSpac < actYSpac)
+                    primaryDir = "YDir";
+                else
+                    primaryDir = "XDir";
+
+
                 string buildingInfo = String.Format($"Building Dimensions: Building Height - {buildingGeom.BuildingHeight(brep)} m; Building Length - {buildingGeom.BuildingLength(brep)} m; Building Width: {buildingGeom.BuildingWidth(brep)} m; " +
                                                     $"Actual FloorHeight - {actFloorHeight} m; Actual x-Spacing - {actXSpac} m; Actual y-Spacing - {actYSpac} m; " +
                                                     $"Storey Count - {nStorey}; Divisions in x-Direction - {nspacX}; Divisions in y-Direction - {nspacY}");
@@ -243,6 +249,12 @@ namespace B_GOpt.Views
                 RhinoList<Rhino.Geometry.Line> yGridLines = StructGrid.YGridLines(bBox, nspacX, docform);
 
                 RhinoList<Rhino.Geometry.Line> secondaryBeamLines = StructGrid.SecondaryBeams(bBox, actXSpac, actYSpac, yGridLines, xGridLines, beamDistance, docform);
+
+
+                for (int i = 0; i < secondaryBeamLines.Count; i++)
+                {
+                    docform.Objects.AddLine(secondaryBeamLines[i]);
+                }
 
                 RhinoList<Rhino.Geometry.Line> xBeams = new RhinoList<Rhino.Geometry.Line>();
                 RhinoList<Rhino.Geometry.Line> yBeams = new RhinoList<Rhino.Geometry.Line>();
@@ -353,16 +365,22 @@ namespace B_GOpt.Views
                     secondaryBeamLines = StructGrid.SecondaryBeams(bBox, actXSpac, actYSpac, yGridLines, xGridLines, beamDistance, docform);
 
 
+                    //for (int j = 0; j < secondaryBeamLines.Count; j++)
+                    //{
+                    //    docform.Objects.AddLine(secondaryBeamLines[j]);
+                    //}
+
+
+
+
+
+
+
+
                     //These int lines are only for Column creation
                     RhinoList<Rhino.Geometry.Line> xIntLinesOutCol = StructGrid.XIntLines(xGridLines, slabEdgeCurves[i], docform);
                     RhinoList<Rhino.Geometry.Line> yIntLinesOutCol = StructGrid.YIntLines(yGridLines, slabEdgeCurves[i], docform);
 
-
-
-                    if (actXSpac < actYSpac)
-                        primaryDir = "YDir";
-                    else
-                        primaryDir = "XDir";
 
 
                     if (structSystem == "Beam" )
@@ -378,7 +396,28 @@ namespace B_GOpt.Views
                     }
 
                     RhinoList<Rhino.Geometry.Line> xIntLines = StructGrid.XIntLines(xGridLines, slabEdgeCurves[i], docform);
+
                     RhinoList<Rhino.Geometry.Line> yIntLines = StructGrid.YIntLines(yGridLines, slabEdgeCurves[i], docform);
+
+
+
+
+
+                    //if (primaryDir == "YDir")
+                    //{
+                    //    for (int j = 0; j < xIntLines.Count; j++)
+                    //    {
+                    //        docform.Objects.AddLine(xIntLines[j]);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    for (int j = 0; j < yIntLines.Count; j++)
+                    //    {
+                    //        docform.Objects.AddLine(yIntLines[j]);
+                    //    }
+                    //}
+
 
 
                     //Pimary Direction is YDir
@@ -1004,8 +1043,12 @@ namespace B_GOpt.Views
         {
             //Reset the dashboard
             //-----------------------------------------------------------------------------------------------------------------
-            TextBlockBuildingProps.Text = "";
             TextBlockBuildingPropsTitle.Text = "";
+            TextBlockBuildingProps.Text = "";
+
+            TextBlockLoadPropsTitle.Text = "";
+            TextBlockLoadProps.Text = "";
+
             TextBlockClearFloorHeightValue.Text = "-";
             TextBlockCostsValue.Text = "-";
             TextBlockEmbodiedCO2Value.Text = "-";

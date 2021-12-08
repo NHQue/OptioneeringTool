@@ -87,6 +87,7 @@ namespace B_GOpt.Classes
 
             int countNumber = 1;
 
+            //This works
             if (actXSpac > actYSpac)
             {
                 Line[] edges = bbox.GetEdges();
@@ -121,6 +122,7 @@ namespace B_GOpt.Classes
                 }
             }
 
+            //This works NOT
             else
             {
                 Line[] edges = bbox.GetEdges();
@@ -137,6 +139,7 @@ namespace B_GOpt.Classes
                 List<Line> linesB = MyFunctions.SplitLineByLines(edges[3], gridLinesX);
 
                 countNumber = Convert.ToInt32(Math.Floor(actYSpac / distance));
+                double actDist = Math.Round(actXSpac / countNumber, 2);
 
                 for (int i = 0; i < linesA.Count; i++)
                 {
@@ -145,7 +148,7 @@ namespace B_GOpt.Classes
 
                     for (int j = 0; j < divPtsX1.Length; j++)
                     {
-                        Line line = new Line(divPtsX3[j], divPtsX3[j]);
+                        Line line = new Line(divPtsX1[j], divPtsX3[j]);
                         secondaryBeams.Add(line);
                         //doc.Objects.AddLine(line);
                     }
