@@ -475,6 +475,24 @@ namespace B_GOpt
 
 
 
+
+        public static bool IsLineInsideBuilding(Brep brep, Line line, RhinoDoc doc)
+        {
+            double tolerance = doc.ModelAbsoluteTolerance;
+            bool strictlyIn = false;
+
+            line.ToNurbsCurve().Domain = new Interval(0, 1);
+            Point3d midPt = new Point3d(line.PointAt(0.5));
+
+            if (brep.IsPointInside(midPt, tolerance, strictlyIn))
+                return true;
+            else
+                return false;
+        }
+
+
+
+
         /// <summary>
         /// This method checks whether a line is inside a brep
         /// </summary>
@@ -482,7 +500,7 @@ namespace B_GOpt
         /// <param name="line"></param>
         /// <param name="doc"></param>
         /// <returns></returns>
-        public static bool IsLineInsideBreps(RhinoList<Brep> breps, Line line, RhinoDoc doc)
+        public static bool IsLineInsideCores(RhinoList<Brep> breps, Line line, RhinoDoc doc)
         {
             double tolerance = doc.ModelAbsoluteTolerance;
             bool strictlyIn = false;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rhino;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -51,15 +52,26 @@ namespace B_GOpt.Classes
         /// <param name="value"></param>
         /// <param name="material"></param>
         /// <returns></returns>
-        public static double CalculateLCA(double value, string material)
+        public static double CalculateLCA(double mass, string material)
         {
+            double embodiedCO2 = 0;
+
             if (material == "Concrete")
             {
-                double embodiedCO2 = value * C30_37_CEMI;
-                return embodiedCO2;
+                embodiedCO2 = mass * C30_37_CEMI;
+            }
+            else if(material == "Timber")
+            {
+                embodiedCO2 = mass * C30_37_CEMI;
+            }
+            else if (material == "Steel")
+            {
+                embodiedCO2 = mass * cltExclCS;
             }
             else
-                return 0; 
+                RhinoApp.WriteLine("Error: No material selected!");
+
+            return embodiedCO2; 
         }
 
 

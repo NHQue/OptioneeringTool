@@ -60,7 +60,6 @@ namespace B_GOpt.Views
         private ObservableValue valueEmbodiedCO2Foundations;
         private ObservableValue valueEmbodiedCO2Cores;
 
-
         double embodiedCO2Total = 0;
 
         public BuildingVariant buildingVariant = new BuildingVariant();
@@ -183,14 +182,6 @@ namespace B_GOpt.Views
 
                 int coreCount = cores.Count;
 
-                TextBlockBuildingPropsTitle.Text = "Building Dimensions";
-
-                TextBlockBuildingProps.Text =   $"Height: {buildingGeom.BuildingHeight(brep)} m" + System.Environment.NewLine +
-                                                $"Length: {buildingGeom.BuildingLength(brep)} m" + System.Environment.NewLine +
-                                                $"Width: {buildingGeom.BuildingWidth(brep)} m" + System.Environment.NewLine +
-                                                $"Volume: {volume} m" + ("\u00B3") + System.Environment.NewLine +
-                                                $"Cores: {coreCount}";
-
 
                 //double valueFloorHeight = tbarFloorHeight.Value / 100f;
                 double valueFloorHeight = SliderFloorHeight.Value;
@@ -206,9 +197,9 @@ namespace B_GOpt.Views
                 int nspacX = Convert.ToInt32(Math.Floor(buildingGeom.BuildingLength(brep) / valueSpacX));
                 int nspacY = Convert.ToInt32(Math.Floor(buildingGeom.BuildingWidth(brep) / valueSpacY));
 
-                string buildingInfo = String.Format($"Building Height: {buildingGeom.BuildingHeight(brep)} m; Building Length: {buildingGeom.BuildingLength(brep)} m; Building Width: {buildingGeom.BuildingWidth(brep)} m;" +
-                                                    $" Actual FloorHeight: {actFloorHeight} m; Actual x-Spacing: {actXSpac} m; Actual y-Spacing: {actYSpac} m;" +
-                                                    $" Storey Count: {nStorey}; Divisions in x-Direction: {nspacX}; Divisions in y-Direction: {nspacY}");
+                string buildingInfo = String.Format($"Building Dimensions: Building Height - {buildingGeom.BuildingHeight(brep)} m; Building Length - {buildingGeom.BuildingLength(brep)} m; Building Width: {buildingGeom.BuildingWidth(brep)} m; " +
+                                                    $"Actual FloorHeight - {actFloorHeight} m; Actual x-Spacing - {actXSpac} m; Actual y-Spacing - {actYSpac} m; " +
+                                                    $"Storey Count - {nStorey}; Divisions in x-Direction - {nspacX}; Divisions in y-Direction - {nspacY}");
 
                 RhinoApp.WriteLine(buildingInfo);
 
@@ -294,48 +285,63 @@ namespace B_GOpt.Views
                 //-------------------------------------------------------------------------------------------
 
                 double crossSectionSlab;
+                crossSectionSlab = PreDim.Slab(material, structSystem, actXSpac, actYSpac, totalLoad);
 
-                if (material == "Concrete")
-                {
-                    crossSectionSlab = PreDim.ConcreteSlab(actXSpac, actYSpac);
+                for (int i = 0; i < floorSlabs.Count; i++)
+                    slabsSlabs[i].Height = crossSectionSlab;
 
-                    for (int i = 0; i < floorSlabs.Count; i++)
-                    {
-                        slabsSlabs[i].Height = crossSectionSlab;
-                    }
+                double concretePlateHeight = 0;
+                if (material == "Concrete" && structSystem == "Beam")
+                    concretePlateHeight = crossSectionSlab;
 
-                    double gammaConcrete = 25;               //kN/m3
-                    deadLoadSlab = crossSectionSlab * gammaConcrete;
-                }
 
-                else if (material == "Timber")
-                {
-                    crossSectionSlab = PreDim.TimberSlab(actXSpac, actYSpac);
+                //if (material == "Concrete")
+                //{
+                //    crossSectionSlab = PreDim.ConcreteFlatSlab(actXSpac, actYSpac);
 
-                    for (int i = 0; i < floorSlabs.Count; i++)
-                    {
-                        slabsSlabs[i].Height = crossSectionSlab;
-                    }
+                //    for (int i = 0; i < floorSlabs.Count; i++)
+                //        slabsSlabs[i].Height = crossSectionSlab;
 
-                    double gammaCLT = 5;               //kN/m3
-                    deadLoadSlab = crossSectionSlab * gammaCLT;
-                }
+                //    double gammaConcrete = 25;               //kN/m3
+                //    deadLoadSlab = crossSectionSlab * gammaConcrete;
+                //}
 
-                else
-                {
-                    crossSectionSlab = 1;
-                }
+                //else if (material == "Timber")
+                //{
+                //    crossSectionSlab = PreDim.TimberSlab(actXSpac, actYSpac);
+
+                //    for (int i = 0; i < floorSlabs.Count; i++)
+                //        slabsSlabs[i].Height = crossSectionSlab;
+
+                //    double gammaCLT = 5;               //kN/m3
+                //    deadLoadSlab = crossSectionSlab * gammaCLT;
+                //}
+
+                //else
+                //    crossSectionSlab = 1;
 
                 //RhinoApp.WriteLine("SlabHeight: " + crossSectionSlab + " [m]");
 
 
+
+
+
                 //Calculating total load
+                deadLoadSlab = BuildingResults.CalculateSlabDeadLoad(material, crossSectionSlab);
                 totalLoad = liveLoad + deadLoadSlab + addDeadLoad;
 
+                RhinoApp.WriteLine($"Load: Live Load {liveLoad} kN/m2; Dead Load Slab {deadLoadSlab} kN/m2; Dead Load {addDeadLoad} kN/m2;"); 
 
-                //Creates the Grid 2D for all slabs
+
+
+                //----------------------------------------------------------------------------------------------------------------------------------------------
+                //----------------------------------------------------------------------------------------------------------------------------------------------
+                //CREATES THE GRID D FOR ALL SLABS
                 //Iteration variable i corresponds to the storey
-                //-------------------------------------------------------------------------------------------
+                //----------------------------------------------------------------------------------------------------------------------------------------------
+                //----------------------------------------------------------------------------------------------------------------------------------------------
+                
+
                 Rhino.Geometry.Transform xTrans = Rhino.Geometry.Transform.Translation(0, 0, actFloorHeight);
 
                 for (int i = 0; i < slabs.Count; i++)
@@ -347,21 +353,26 @@ namespace B_GOpt.Views
                     secondaryBeamLines = StructGrid.SecondaryBeams(bBox, actXSpac, actYSpac, yGridLines, xGridLines, beamDistance, docform);
 
 
-                    //These int lines are only for outer Column creation
+                    //These int lines are only for Column creation
                     RhinoList<Rhino.Geometry.Line> xIntLinesOutCol = StructGrid.XIntLines(xGridLines, slabEdgeCurves[i], docform);
                     RhinoList<Rhino.Geometry.Line> yIntLinesOutCol = StructGrid.YIntLines(yGridLines, slabEdgeCurves[i], docform);
 
 
+
+                    if (actXSpac < actYSpac)
+                        primaryDir = "YDir";
+                    else
+                        primaryDir = "XDir";
+
+
                     if (structSystem == "Beam" )
                     {
-                        if (actXSpac < actYSpac)
+                        if (primaryDir == "YDir")
                         {
-                            primaryDir = "YDir";
                             xGridLines.AddRange(secondaryBeamLines);
                         }
                         else
                         {
-                            primaryDir = "XDir";
                             yGridLines.AddRange(secondaryBeamLines);
                         }
                     }
@@ -370,6 +381,7 @@ namespace B_GOpt.Views
                     RhinoList<Rhino.Geometry.Line> yIntLines = StructGrid.YIntLines(yGridLines, slabEdgeCurves[i], docform);
 
 
+                    //Pimary Direction is YDir
                     //xBeams as SingleSpanBeams, yBeams as ContinousBeams
                     if (actXSpac < actYSpac)
                     {
@@ -381,7 +393,7 @@ namespace B_GOpt.Views
 
                             for (int k = 0; k < intersectedLines.Count; k++)
                             {
-                                if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
+                                if (!MyFunctions.IsLineInsideCores(cores, intersectedLines[k], docform) && MyFunctions.IsLineInsideBuilding(brep, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(xBeamsIt[j]);
                                     Beam xBeam = new Beam(lineCurve, "Secondary", i, totalLoad, actYSpac, 0);
@@ -398,7 +410,7 @@ namespace B_GOpt.Views
 
                             for (int k = 0; k < intersectedLines.Count; k++)
                             {
-                                if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
+                                if (!MyFunctions.IsLineInsideCores(cores, intersectedLines[k], docform) && MyFunctions.IsLineInsideBuilding(brep, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(yIntLines[j]);
                                     Beam yBeam = new Beam(lineCurve, "Primary", i, totalLoad, actXSpac, 0);
@@ -410,10 +422,10 @@ namespace B_GOpt.Views
                         }
 
                         //InnerColumns
-                        List<Rhino.Geometry.Line> innerColumnsIt = StructGrid.InnerColumns(xIntLines, yIntLines, actFloorHeight, docform);
+                        List<Rhino.Geometry.Line> innerColumnsIt = StructGrid.InnerColumns(xIntLinesOutCol, yIntLinesOutCol, actFloorHeight, docform);
                         for (int j = 0; j < innerColumnsIt.Count; j++)
                         {
-                            if (!MyFunctions.IsLineInsideBreps(cores, innerColumnsIt[j], docform))
+                            if (!MyFunctions.IsLineInsideCores(cores, innerColumnsIt[j], docform))
                             {
                                 LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
                                 Column col = new Column(lineCurve, i, nStorey, totalLoad, actXSpac, actYSpac, 0);
@@ -425,7 +437,7 @@ namespace B_GOpt.Views
                         }
                     }
 
-
+                    //Pimary Direction is XDir
                     //xBeams as ContinousBeams, yBeams as SingleSpanBeams
                     else
                     {
@@ -435,7 +447,7 @@ namespace B_GOpt.Views
 
                             for (int k = 0; k < intersectedLines.Count; k++)
                             {
-                                if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
+                                if (!MyFunctions.IsLineInsideCores(cores, intersectedLines[k], docform) && MyFunctions.IsLineInsideBuilding(brep, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(intersectedLines[k]);
                                     Beam xBeam = new Beam(lineCurve, "Primary", i, totalLoad, actXSpac, 0);
@@ -454,7 +466,7 @@ namespace B_GOpt.Views
 
                             for (int k = 0; k < intersectedLines.Count; k++)
                             {
-                                if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
+                                if (!MyFunctions.IsLineInsideCores(cores, intersectedLines[k], docform) && MyFunctions.IsLineInsideBuilding(brep, intersectedLines[k], docform))
                                 {
                                     LineCurve lineCurve = new LineCurve(yBeamsIt[j]);
                                     Beam yBeam = new Beam(lineCurve, "Secondary", i, totalLoad, actYSpac, 0);
@@ -466,11 +478,12 @@ namespace B_GOpt.Views
                         }
 
 
+
                         //InnerColumns
-                        List<Rhino.Geometry.Line> innerColumnsIt = StructGrid.InnerColumns(yIntLines, xIntLines, actFloorHeight, docform);
+                        List<Rhino.Geometry.Line> innerColumnsIt = StructGrid.InnerColumns(yIntLinesOutCol, xIntLinesOutCol, actFloorHeight, docform);
                         for (int j = 0; j < innerColumnsIt.Count; j++)
                         {
-                            if (!MyFunctions.IsLineInsideBreps(cores, innerColumnsIt[j], docform))
+                            if (!MyFunctions.IsLineInsideCores(cores, innerColumnsIt[j], docform))
                             {
                                 LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
                                 Column col = new Column(lineCurve, i, nStorey, totalLoad, actXSpac, actYSpac, 0);
@@ -520,10 +533,10 @@ namespace B_GOpt.Views
                 RhinoList<Brep> coreBreps = buildingGeom.GetCoreWalls(cores, slabs, docform);
 
 
+                #region REGION: Adding to RhinoDoc 
+
                 //Adds the elements to the Rhino Document
                 //--------------------------------------------------------------------------------------
-
-                #region REGION: Adding to RhinoDoc 
 
                 Layer layerPrimaryBeams = MyFunctions.SetLayer(docform, "PrimaryBeams", System.Drawing.Color.Salmon);
                 layers.Add(layerPrimaryBeams);
@@ -642,8 +655,6 @@ namespace B_GOpt.Views
 
 
 
-
-
                 //Hide selected objects (building geometry and cores) to visualize the structure
                 //-----------------------------------------------------------------------------------------------------------------
 
@@ -653,6 +664,7 @@ namespace B_GOpt.Views
                 }
 
 
+                #region Region Text-Dots
 
                 //Creating TextDots with some member data
                 //-----------------------------------------------------------------------------------------------------------------
@@ -683,6 +695,7 @@ namespace B_GOpt.Views
                 //    docform.Objects.AddTextDot(textDot);
                 //}
 
+                #endregion
 
 
 
@@ -694,11 +707,36 @@ namespace B_GOpt.Views
 
 
 
-                //Deleting all outer members
+                //Deleting all outer beams
+
+                if (xBeams != null)
+                {
+                    for (int i = 0; i < xBeams.Count; i++)
+                    {
+                        if (MyFunctions.IsLineInsideBuilding(brep, xBeams[i], docform))
+                        {
+                            xBeams.Remove(xBeams[i]);
+                            beamsInXDir.Remove(beamsInXDir[i]);
+                        }
+                    }
+                }
+
+                if (yBeams != null)
+                {
+                    for (int i = 0; i < yBeams.Count; i++)
+                    {
+                        if (MyFunctions.IsLineInsideBuilding(brep, yBeams[i], docform))
+                        {
+                            yBeams.Remove(yBeams[i]);
+                            beamsInYDir.Remove(beamsInYDir[i]);
+                        }
+                    }
+                }
 
 
 
 
+                #region Region Predimensioning
 
                 //Predimensioning
                 //------------------------------------------------------------------------------------------
@@ -710,49 +748,51 @@ namespace B_GOpt.Views
                 double crossSectionCoreWall = PreDim.CoreWalls();
 
                 //Primary Beams
-                if (StructGrid.HasPrimBeam(material, structSystem))
+                if (StructGrid.HasPrimBeam(material, structSystem))     //Checks if the structure has primary beams 
                 {
-                    if (actXSpac < actYSpac)
+                    if (primaryDir == "XDir")                            //Primary beams are in x-Direction 
                     {
                         for (int i = 0; i < beamsInXDir.Count; i++)
                         {
-                            beamsInXDir[i].Area = PreDim.Beam(material, beamsInXDir[i].Load, beamsInXDir[i].Length);
+                            beamsInXDir[i].Area = PreDim.Beam(material, beamsInXDir[i].Load, actXSpac, actYSpac, concretePlateHeight);
                         }
                     }
-                    else
-                        for (int i = 0; i < beamsInXDir.Count; i++)
+                    else                                                //Primary beams are in y-Direction 
+                        for (int i = 0; i < beamsInYDir.Count; i++)
                         {
-                            beamsInYDir[i].Area = PreDim.Beam(material, beamsInXDir[i].Load, beamsInXDir[i].Length);
+                            beamsInYDir[i].Area = PreDim.Beam(material, beamsInYDir[i].Load, actYSpac, actXSpac, concretePlateHeight);
                         }
                 }
 
                 //Secondary Beams
                 if (StructGrid.HasSecBeam(material, structSystem))
                 {
-                    if (actXSpac < actYSpac)
+                    if (primaryDir == "XDir")                           //Secondary beams are in y-Direction 
                     {
-                        for (int i = 0; i < beamsInXDir.Count; i++)
+                        for (int i = 0; i < beamsInYDir.Count; i++)
                         {
-                            beamsInXDir[i].Area = PreDim.Beam(material, beamsInXDir[i].Load, beamsInXDir[i].Length);
+                            beamsInYDir[i].Area = PreDim.Beam(material, beamsInYDir[i].Load, actYSpac, beamDistance, concretePlateHeight);
                         }
                     }
-                    else
+                    else                                               //Primary beams are in x-Direction 
                         for (int i = 0; i < beamsInXDir.Count; i++)
                         {
-                            beamsInYDir[i].Area = PreDim.Beam(material, beamsInXDir[i].Load, beamsInXDir[i].Length);
+                            beamsInXDir[i].Area = PreDim.Beam(material, beamsInXDir[i].Load, actXSpac, beamDistance, concretePlateHeight);
                         }
                 }
 
-                RhinoApp.WriteLine($"Slab Dimension: {crossSectionSlab}, Floor Plate Dimension: {crossSectionGroundSlab}, " +
-                                   $"Column Dimension (inner, base floor): {innerCol[1].Area}, Column Dimension(outer, base floor): { innerCol[1].Area}," + 
-                                   $"X Beam dimension: {beamsInXDir[1].Area}, Y Beam dimension: { beamsInYDir[1].Area}");
+                RhinoApp.WriteLine($"Member Dimensions: Slab Dimension - {crossSectionSlab} m; Floor Plate Dimension - {crossSectionGroundSlab} m; " +
+                                   $"Inner-Column Dimension (base floor) - {innerCol[1].Area} m2; Outer-Column Dimension (base floor) - { innerCol[1].Area} m2; " +
+                                   $"X-Beam Dimension - {beamsInXDir[1].Area} m2; Y-Beam Dimension - { beamsInYDir[1].Area} m2");
+
+                #endregion
 
 
-
-
+                #region Region Massing
 
                 //Massing -> Volume in m3
                 //-------------------------------------------------------------------------------------------
+
                 double slabMass = 0;
                 double innerColMass = 0;
                 double outerColMass = 0;
@@ -772,12 +812,12 @@ namespace B_GOpt.Views
 
                 for (int i = 0; i < innerCol.Count; i++)
                 {
-                    innerColMass = innerColMass + (innerCol[i].Area * innerCol[i].Length); 
+                    innerColMass = innerColMass + (innerCol[i].Area * innerCol[i].Length);
                 }
 
                 for (int i = 0; i < outerCol.Count; i++)
                 {
-                    outerColMass = outerColMass  + outerCol[i].Area * outerCol[i].Length;
+                    outerColMass = outerColMass + outerCol[i].Area * outerCol[i].Length;
                 }
 
                 for (int i = 0; i < edgeCol.Count; i++)
@@ -807,12 +847,14 @@ namespace B_GOpt.Views
                 foundationMass = baseSrf.GetArea() * crossSectionGroundSlab;
 
 
-                RhinoApp.WriteLine($"CoreArea: {Math.Round(coreArea, 1)} m2, CoreMass: {Math.Round(coreMass, 1)} m3, SlabMass: {Math.Round(slabMass, 1)} m3, " +
-                                   $"ColumnsMass: {Math.Round(colMass, 1)} m3");
+                RhinoApp.WriteLine($"Building Massings: CoreArea - {Math.Round(coreArea, 1)} m2; CoreMass - {Math.Round(coreMass, 1)} m3; SlabMass - {Math.Round(slabMass, 1)} m3; " +
+                                   $"ColumnsMass - {Math.Round(colMass, 1)} m3; BeamsMass - {Math.Round(beamMass, 1)} m3");
 
                 //Reinforcement calculation
                 double[] reinfMass = BuildingResults.CalculateReinforcement(slabMass, colMass, beamMass, coreMass, foundationMass, material);
                 double[] reinfCarbon = LCACalculation.CalculateReinforcementLCA(reinfMass, material);
+
+                #endregion
 
 
 
@@ -831,8 +873,8 @@ namespace B_GOpt.Views
 
                 
 
-                RhinoApp.WriteLine($"Reinforcement Mass: Slabs {Math.Round(reinfMass[0]), 1} m3, Columns {Math.Round(reinfMass[1], 1)} m3, Beams {Math.Round(reinfMass[2], 1)} m3, Cores {Math.Round(reinfMass[3], 1)} m3, Foundations {Math.Round(reinfMass[4], 1)} m3");
-                RhinoApp.WriteLine($"Reinforcement Carbon: Slabs {Math.Round(reinfCarbon[0], 0)} kg, Columns {Math.Round(reinfCarbon[1], 0)} kg, Beams {Math.Round(reinfCarbon[2], 0)} kg, Cores {Math.Round(reinfCarbon[3], 0)} kg, Foundations {Math.Round(reinfCarbon[4], 0)} kg");
+                RhinoApp.WriteLine($"Reinforcement Mass: Slabs - {Math.Round(reinfMass[0]), 1} m3; Columns - {Math.Round(reinfMass[1], 1)} m3; Beams - {Math.Round(reinfMass[2], 1)} m3; Cores - {Math.Round(reinfMass[3], 1)} m3; Foundations - {Math.Round(reinfMass[4], 1)} m3");
+                RhinoApp.WriteLine($"Reinforcement Carbon: Slabs - {Math.Round(reinfCarbon[0], 0)} kg; Columns - {Math.Round(reinfCarbon[1], 0)} kg; Beams - {Math.Round(reinfCarbon[2], 0)} kg; Cores - {Math.Round(reinfCarbon[3], 0)} kg; Foundations - {Math.Round(reinfCarbon[4], 0)} kg");
 
 
 
@@ -840,13 +882,29 @@ namespace B_GOpt.Views
                 //------------------------------------------------------------------------------------------------------------------------------------------------------
 
                 double totalWeight =   Math.Round((BuildingResults.CalculateWeight(slabMass, material ) + BuildingResults.CalculateWeight(colMass, material) + BuildingResults.CalculateWeight(beamMass, material) +
-                                         BuildingResults.CalculateWeight(coreMass, material) + BuildingResults.CalculateWeight(foundationMass, material)), 0);
+                                       BuildingResults.CalculateWeight(coreMass, material) + BuildingResults.CalculateWeight(foundationMass, material)), 0);
 
 
 
 
                 //Prompting the results to the dashboard
                 //-------------------------------------------------------------------------------------------
+
+                TextBlockBuildingPropsTitle.Text = "Building Dimensions";
+
+                TextBlockBuildingProps.Text = $"Height: {buildingGeom.BuildingHeight(brep)} m" + System.Environment.NewLine +
+                                              $"Length: {buildingGeom.BuildingLength(brep)} m" + System.Environment.NewLine +
+                                              $"Width: {buildingGeom.BuildingWidth(brep)} m" + System.Environment.NewLine +
+                                              $"Volume: {volume} m" + ("\u00B3") + System.Environment.NewLine +
+                                              $"Cores: {coreCount}";
+
+                TextBlockLoadPropsTitle.Text = "Load";
+
+
+                TextBlockLoadProps.Text = $"EG: {deadLoadSlab}  kN/m" + ("\u00B2") + System.Environment.NewLine +
+                                          $"g"+ ("\u2096") + $": {addDeadLoad}  kN/m" + ("\u00B2") + System.Environment.NewLine +
+                                          $"q" + ("\u2096") + $": {liveLoad}  kN/m" + ("\u00B2");
+
 
                 TextBlockSurfaceAreaValue.Text = surfaceArea.ToString() + "  m" + ("\u00B2");
                 TextBlockFarValue.Text = Math.Round(baseSrf.GetArea() / surfaceArea, 2).ToString();
@@ -860,8 +918,8 @@ namespace B_GOpt.Views
                 //------------------------------------------------------------------------------------------------------------------------------------------------------
                 buildingVariant = new BuildingVariant(brep, material, MyFunctions.EvaluateSystem(material, structSystem), embodiedCO2Total, actXSpac, actYSpac, 5210198, surfaceArea, totalWeight);
 
-                RhinoApp.WriteLine(buildingVariant.ToTextFile());
-                RhinoApp.WriteLine(buildingVariant.ToTextFile1());
+                //RhinoApp.WriteLine(buildingVariant.ToTextFile());
+                //RhinoApp.WriteLine(buildingVariant.ToTextFile1());
 
             }
         }
@@ -1160,9 +1218,6 @@ namespace B_GOpt.Views
         {
             Application.Current.Shutdown();
         }
-
-
-
 
     }
 }

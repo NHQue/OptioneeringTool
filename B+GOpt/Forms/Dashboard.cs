@@ -459,7 +459,7 @@
 
 //                            for (int k = 0; k < intersectedLines.Count; k++)
 //                            {
-//                                if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
+//                                if (!MyFunctions.IsLineInsideCores(cores, intersectedLines[k], docform))
 //                                {
 //                                    LineCurve lineCurve = new LineCurve(xBeamsIt[j]);
 //                                    Beam xBeam = new Beam(lineCurve, "Secondary", i, totalLoad, actYSpac);
@@ -476,7 +476,7 @@
 
 //                            for (int k = 0; k < intersectedLines.Count; k++)
 //                            {
-//                                if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
+//                                if (!MyFunctions.IsLineInsideCores(cores, intersectedLines[k], docform))
 //                                {
 //                                    LineCurve lineCurve = new LineCurve(yIntLines[j]);
 //                                    Beam yBeam = new Beam(lineCurve, "Primary", i, totalLoad, actXSpac);
@@ -491,7 +491,7 @@
 //                        List<Line> innerColumnsIt = StructGrid.InnerColumns(xIntLines, yIntLines, actFloorHeight, docform);
 //                        for (int j = 0; j < innerColumnsIt.Count; j++)
 //                        {
-//                            if (!MyFunctions.IsLineInsideBreps(cores, innerColumnsIt[j], docform))
+//                            if (!MyFunctions.IsLineInsideCores(cores, innerColumnsIt[j], docform))
 //                            {
 //                                LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
 //                                Column col = new Column(lineCurve, i, nStorey, totalLoad, actXSpac, actYSpac, 0);
@@ -513,7 +513,7 @@
 
 //                            for (int k = 0; k < intersectedLines.Count; k++)
 //                            {
-//                                if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
+//                                if (!MyFunctions.IsLineInsideCores(cores, intersectedLines[k], docform))
 //                                {
 //                                    LineCurve lineCurve = new LineCurve(intersectedLines[k]);
 //                                    Beam xBeam = new Beam(lineCurve, "Primary", i, totalLoad, actXSpac);
@@ -532,7 +532,7 @@
 
 //                            for (int k = 0; k < intersectedLines.Count; k++)
 //                            {
-//                                if (!MyFunctions.IsLineInsideBreps(cores, intersectedLines[k], docform))
+//                                if (!MyFunctions.IsLineInsideCores(cores, intersectedLines[k], docform))
 //                                {
 //                                    LineCurve lineCurve = new LineCurve(yBeamsIt[j]);
 //                                    Beam yBeam = new Beam(lineCurve, "Secondary", i, totalLoad, actYSpac);
@@ -548,7 +548,7 @@
 //                        List<Line> innerColumnsIt = StructGrid.InnerColumns(yIntLines, xIntLines, actFloorHeight, docform);
 //                        for (int j = 0; j < innerColumnsIt.Count; j++)
 //                        {
-//                            if (!MyFunctions.IsLineInsideBreps(cores, innerColumnsIt[j], docform))
+//                            if (!MyFunctions.IsLineInsideCores(cores, innerColumnsIt[j], docform))
 //                            {
 //                                LineCurve lineCurve = new LineCurve(innerColumnsIt[j]);
 //                                Column col = new Column(lineCurve, i, nStorey, totalLoad, actXSpac, actYSpac, 0);

@@ -74,6 +74,12 @@ namespace B_GOpt.Classes
         };
 
 
+        //---------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------
+        //Static Methods
+        //---------------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------------
+
 
         //Main Methods
         //---------------------------------------------------------------------------------------------------
@@ -98,63 +104,104 @@ namespace B_GOpt.Classes
 
             }
             else
-                RhinoApp.WriteLine("Error: No material sleceted!");
+                RhinoApp.WriteLine("Error: No material selected!");
 
             return area;
         }
 
-        public static double Beam(string material, double load, double length)
+        public static double Beam(string material, double load, double length, double distance, double concretePlateHeight)
         {
             double area = 0;
 
             if (material == "Concrete")
             {
-                area = ConcreteBeam(load, length);
+                area = ConcreteTBeam(load, length, concretePlateHeight);
             }
             else if (material == "Timber")
             {
-                area = TimberBeam(load, length);
+                area = TimberBeam(load, length, distance);
             }
             else if (material == "Steel")
             {
-                area = SteelBeam(load, length);
+                area = SteelBeam(load, length, distance);
             }
             else if (material == "Composite")
             {
 
             }
             else
-                RhinoApp.WriteLine("Error: No material selceted!");
+                RhinoApp.WriteLine("Error: No material selected!");
+
+            //RhinoApp.WriteLine($"Beam: {material} beam with area {area} m2");
 
             return area;
         }
 
+        public static double Slab(string material, string structSystem, double spanX, double spanY, double load)
+        {
+            double height = 0;
+
+            //Concrete slabs
+            if (material == "Concrete")
+            {
+                if (structSystem == "Plate")
+                    height = ConcreteFlatSlab(spanX, spanY);
+                else if (structSystem == "Beam")
+                    height = ConcreteSlab(spanX, spanY);
+                else
+                    RhinoApp.WriteLine("Error: No structural system selected!");
+            }
+            //Timber slabs
+            else if (material == "Timber")
+            {
+                if (structSystem == "Plate")
+                    height = ConcreteFlatSlab(spanX, spanY);
+                else if (structSystem == "Beam")
+                    height = ConcreteSlab(spanX, spanY);
+                else
+                    RhinoApp.WriteLine("Error: No structural system selected!");
+            }
+            //Steel slabs
+            else if (material == "Steel")
+            {
+                if (structSystem == "Plate")
+                    height = 0;
+                else if (structSystem == "Beam")
+                    height = 0;
+                else
+                    RhinoApp.WriteLine("Error: No structural system selected!");
+            }
+            //Composite slabs
+            else if (material == "Composite")
+            {
+                if (structSystem == "Plate")
+                    height = 0;
+                else if (structSystem == "Beam")
+                    height = 0;
+                else
+                    RhinoApp.WriteLine("Error: No structural system selected!");
+            }
+            else
+                RhinoApp.WriteLine("Error: No material selected!");
+
+            return height; 
+        }
 
 
-
-
-        //Static Methods
+        //Single Member Methods
         //---------------------------------------------------------------------------------------------------
 
         //Slabs
         //---------------------------------------------------------------------------------------------------------------
-        public static double ConcreteSlab(double spanX, double spanY)
+        public static double ConcreteFlatSlab(double spanX, double spanY)
         {
             double height = 0;                                              //m
             double spanLi = 0.8 * Math.Max(spanX, spanY);
 
             if (spanLi < 4.29)
-            {
                 height = (spanLi / 35 + 0.03) * 100;
-                if (height < 20)
-                    height = 20;
-            }
-            else if (spanLi > 4.29)
-            {
+            else
                 height = ((Math.Pow(spanLi, 2)) / 150 + 0.03) * 100;
-                if (height < 20)
-                    height = 20;
-            }
 
             double roundedHeight = Math.Ceiling(height);
             if (roundedHeight % 2 != 0)
@@ -162,7 +209,23 @@ namespace B_GOpt.Classes
 
             Console.WriteLine("Concrete slab with height: {0} cm, rounded height {1} cm", height, roundedHeight);
 
-            return roundedHeight/100;                   //return height in m
+            return Math.Max((roundedHeight/100), 0.2);                               //return height in m, min height is 0,2 m
+        }
+
+        public static double ConcreteSlab(double spanX, double spanY)
+        {
+            double height = 0;                                      //cm
+            double l = Math.Min(spanX, spanY);                      //m
+
+            height = (2.0 * l + 2) * 0.8;                           //-20% because of continous slab
+
+            double roundedHeight = Math.Ceiling(height);
+            if (roundedHeight % 2 != 0)
+                roundedHeight = roundedHeight + 1;
+
+            Console.WriteLine("Concrete slab with height: {0} cm, rounded height {1} cm", height, roundedHeight);
+
+            return Math.Max((roundedHeight / 100), 0.14);                             //return height in m, min height is 0,14 m
         }
 
         public static double TimberSlab(double spanX, double spanY)
@@ -198,12 +261,15 @@ namespace B_GOpt.Classes
             return totalRoundedHeight / 100;                   //return height in m
         }
 
+
         //Beams
         //---------------------------------------------------------------------------------------------------------------
-        public static double SteelBeam(double load, double length)              //IPE
+        public static double SteelBeam(double load, double length, double distance)              //IPE
         {
+            double lineLoad = load * distance; 
+
             double height;                                                      //cm
-            height = Math.Round(Math.Pow((50 * load * Math.Pow(length, 2)), (double)1 / 3));     //Check again if right!!
+            height = Math.Round(Math.Pow((50 * lineLoad * Math.Pow(length, 2)), (double)1 / 3));     //Check again if right!!
 
             string name = "";
             double area = 0;
@@ -239,10 +305,56 @@ namespace B_GOpt.Classes
             return area / (100 * 100);                                //return area in m2
         }
 
-        public static double TimberBeam(double load, double length)
+        public static double CompositeSteelBeam(double load, double length, double distance)                     //IPE
         {
-            double momSS = (load * Math.Pow(length, 2)) / 8;               //Single Span
-            double momCB = (load * Math.Pow(length, 2)) / 10;            //Continous Beam 
+            double lineLoad = load * distance;
+
+            double height;                                                            //cm
+            height = (0.1 * lineLoad * Math.Pow((0.8 * length), 2) + 100) / 100 ;     //Check again if right!!
+
+            string name = "";
+            double area = 0;
+            double profHeight = 0;
+
+            if (height <= IPEProfiles[0].Height)
+            {
+                name = IPEProfiles[0].Id;
+                area = IPEProfiles[0].Area;
+                profHeight = IPEProfiles[0].Height;
+            }
+            else if (height >= IPEProfiles[IPEProfiles.Count - 2].Height)
+            {
+                name = IPEProfiles[IPEProfiles.Count - 1].Id;
+                area = IPEProfiles[IPEProfiles.Count - 1].Area;
+                profHeight = IPEProfiles[IPEProfiles.Count - 1].Height;
+            }
+            else
+            {
+                for (int i = 0; i < IPEProfiles.Count - 1; i++)
+                {
+                    if (IPEProfiles[i].Height <= height && height <= IPEProfiles[i + 1].Height)
+                    {
+                        name = IPEProfiles[i + 1].Id;
+                        area = IPEProfiles[i + 1].Area;
+                        profHeight = IPEProfiles[i + 1].Height;
+                    }
+                }
+            }
+
+            Console.WriteLine("Composite steel beam: Selected Profil for height {0} cm: {1} with height {2} cm and area {3} cm2", height, name, profHeight, area);
+
+            return area / (100 * 100);                                //return area in m2
+        }
+
+
+
+
+        public static double TimberBeam(double load, double length, double distance)
+        {
+            double lineLoad = load * distance;
+
+            double momSS = (lineLoad * Math.Pow(length, 2)) / 8;               //Single Span
+            double momCB = (lineLoad * Math.Pow(length, 2)) / 10;            //Continous Beam 
 
             double height = Math.Round(5 * Math.Sqrt(momSS), 2);
             double roundedHeight = Math.Ceiling(height);
@@ -267,13 +379,41 @@ namespace B_GOpt.Classes
         }
 
 
-        public static double ConcreteBeam(double load, double length)
-        {
-            double momSS = (load * Math.Pow(length, 2)) / 8;                      //Single Span
-            double momCB = (load * Math.Pow(length, 2)) / 10;                   //Continous Beam 
+        //public static double ConcreteBeam(double load, double length)             
+        //{
+        //    double momSS = (load * Math.Pow(length, 2)) / 8;                      //Single Span
+        //    double momCB = (load * Math.Pow(length, 2)) / 10;                     //Continous Beam 
 
-            double height;                                                      //cm
-            height = Math.Round(1.6 * Math.Sqrt(momSS) + 5, 2);
+        //    double height;                                                        //cm
+        //    height = Math.Round(1.6 * Math.Sqrt(momSS) + 5, 2);
+
+        //    double roundedHeight = Math.Ceiling(height);
+        //    if (roundedHeight % 2 != 0)
+        //    {
+        //        roundedHeight = roundedHeight + 1;
+        //        if (roundedHeight < 20)
+        //            roundedHeight = 20;
+        //    }
+
+        //    double width = height / 2;                                                      //cm
+        //    double roundedWidth = Math.Ceiling(width);
+        //    if (roundedWidth % 2 != 0)
+        //    {
+        //        roundedWidth = roundedWidth + 1;
+        //    }
+
+        //    double area = roundedHeight * roundedWidth;
+
+        //    Console.WriteLine("Concrete beam with height: {0} cm, rounded height: {1} cm," +
+        //        " width: {2} cm, rounded width: {3} cm, area: {4} cm2", height, roundedHeight, width, roundedWidth, area);
+
+        //    return area;
+        //}
+
+        public static double ConcreteTBeam(double load, double length, double plateHeight)
+        {
+            double height;                                                        //cm
+            height = 1.2 * length * Math.Sqrt(load);                              //load in kN/m
 
             double roundedHeight = Math.Ceiling(height);
             if (roundedHeight % 2 != 0)
@@ -290,12 +430,12 @@ namespace B_GOpt.Classes
                 roundedWidth = roundedWidth + 1;
             }
 
-            double area = roundedHeight * roundedWidth;
+            double area = (roundedHeight - plateHeight) * roundedWidth;
 
-            Console.WriteLine("Concrete beam with height: {0} cm, rounded height: {1} cm," +
+            Console.WriteLine("Concrete T-Beam with height: {0} cm, rounded height: {1} cm," +
                 " width: {2} cm, rounded width: {3} cm, area: {4} cm2", height, roundedHeight, width, roundedWidth, area);
 
-            return area;
+            return area / ( 100 * 100);                                //return area in m2
         }
 
 
@@ -386,12 +526,6 @@ namespace B_GOpt.Classes
 
         //Core
         //---------------------------------------------------------------------------------------------------------------
-        public static void Core()
-        {
-
-
-        }
-
 
         public static double CoreWalls()
         {
@@ -407,14 +541,12 @@ namespace B_GOpt.Classes
         {
             double height = 0;
 
-            height = Math.Round(Math.Max((buildingHeight * 100) / 30, 10 * storeyCount), 0);
+            height = Math.Round(Math.Max((buildingHeight * 100) / 30, 10 * storeyCount), 0);    //height in cm 
 
             if (height % 2 != 0)
-            {
                 height = height + 1;
-            }
 
-            return (Math.Max(height, 30) / 100) / 100;                   //return height in m
+            return (Math.Max(height, 30)) / 100;                   //return height in m
         }
     }
 }

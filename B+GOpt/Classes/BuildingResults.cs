@@ -125,10 +125,47 @@ namespace B_GOpt.Classes
         }
 
 
-        public static void CalculateCosts()
+        public static double CalculateSlabDeadLoad(string material, double height)
         {
+            double deadLoadSlab = 0; ;                                    //kN/m2
+
+            if (material == "Concrete")
+                deadLoadSlab = gammaConcrete * height; 
+            else if (material == "Timber")
+                deadLoadSlab = gammaClt * height;
+            else if (material == "Concrete")
+                deadLoadSlab = gammaConcrete * height;
+            else
+                RhinoApp.WriteLine("Error: No material selected!");
+
+            return deadLoadSlab; 
+        }
 
 
+        public static double CalculateCost(double mass, string material)
+        {
+            double costs = 0;
+
+            if (material == "Concrete")
+            {
+                costs = mass * C30_37Cost;
+            }
+            else if (material == "Timber")
+            {
+                costs = mass * cltCost;
+            }
+            else if (material == "Steel")
+            {
+                costs = mass * steel_S355Cost;
+            }
+            else if (material == "Reinforcement")
+            {
+                costs = mass * reinforcBarsCost;
+            }
+            else
+                RhinoApp.WriteLine("Error: No material selected!");
+
+            return costs;
         }
 
     }

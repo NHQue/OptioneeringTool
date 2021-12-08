@@ -80,9 +80,8 @@ namespace B_GOpt.Classes
 
         public string ToTextFile1()
         {
-            return String.Format($"Material: {Material}, StructSystem: {DefinedStructSystem}, XSpan: {ActXSpac}, YSpan: {ActYSpac}, Carbon: {EmbodiedCO2}, Costs: {Costs}, Area: {SurfaceArea}, Weight{Weight}");
+            return String.Format($"Material: {Material}, StructSystem: {DefinedStructSystem}, XSpan: {ActXSpac}, YSpan: {ActYSpac}, Carbon: {EmbodiedCO2}, Costs: {Costs}, Area: {SurfaceArea}, Weight: {Weight}");
         }
-
 
 
 
