@@ -262,6 +262,43 @@ namespace B_GOpt.Classes
         }
 
 
+        public static double HBVSlab(double spanX, double spanY, double load)
+        {
+            double l = Math.Min(spanX, spanY);
+
+            double heightConcrete = 0;
+            double heightTimber = 0;
+
+            if (load <= 1)
+            {
+                heightConcrete = 1.1429 * l + 6.6667;
+                heightTimber = 2.3429 * l + 5.4667; 
+            }
+            if (load <= 2)
+            {
+                heightConcrete = 1.6 * l + 5.7333;
+                heightTimber = 2.2857 * l + 6;
+            }
+            if (load <= 3)
+            {
+                heightConcrete = 1.5429 * l + 6.2667;
+                heightTimber = 2.4571 * l + 5.7333;
+            }
+            if (load <= 4)
+            {
+                heightConcrete = 1.6 * l + 6.4;
+                heightTimber = 2.4571 * l + 5.7333;
+            }
+            if (load <= 5)
+            {
+                heightConcrete = 1.7714 * l + 5.4667;
+                heightTimber = 2 * l + 8;
+            }
+
+            return 0;                   //return height in m
+        }
+
+
         //Beams
         //---------------------------------------------------------------------------------------------------------------
         public static double SteelBeam(double load, double length, double distance)              //IPE

@@ -251,10 +251,7 @@ namespace B_GOpt.Views
                 RhinoList<Rhino.Geometry.Line> secondaryBeamLines = StructGrid.SecondaryBeams(bBox, actXSpac, actYSpac, yGridLines, xGridLines, beamDistance, docform);
 
 
-                for (int i = 0; i < secondaryBeamLines.Count; i++)
-                {
-                    docform.Objects.AddLine(secondaryBeamLines[i]);
-                }
+                
 
                 RhinoList<Rhino.Geometry.Line> xBeams = new RhinoList<Rhino.Geometry.Line>();
                 RhinoList<Rhino.Geometry.Line> yBeams = new RhinoList<Rhino.Geometry.Line>();
@@ -348,7 +345,7 @@ namespace B_GOpt.Views
 
                 //----------------------------------------------------------------------------------------------------------------------------------------------
                 //----------------------------------------------------------------------------------------------------------------------------------------------
-                //CREATES THE GRID D FOR ALL SLABS
+                //CREATES THE GRID 2D FOR ALL SLABS
                 //Iteration variable i corresponds to the storey
                 //----------------------------------------------------------------------------------------------------------------------------------------------
                 //----------------------------------------------------------------------------------------------------------------------------------------------

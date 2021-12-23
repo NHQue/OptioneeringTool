@@ -87,7 +87,6 @@ namespace B_GOpt.Classes
 
             int countNumber = 1;
 
-            //This works
             if (actXSpac > actYSpac)
             {
                 Line[] edges = bbox.GetEdges();
@@ -122,7 +121,6 @@ namespace B_GOpt.Classes
                 }
             }
 
-            //This works NOT
             else
             {
                 Line[] edges = bbox.GetEdges();
